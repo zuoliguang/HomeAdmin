@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:02:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-20 16:31:01
+ * @Last Modified time: 2018-08-20 17:10:21
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -67,11 +67,9 @@ class Home extends Base_Controller
 			$this->ajaxJson(3, "未找到该用户信息");
 		}
 
-		$db_pass = $admin["password"];
+		$hash_pass = $admin["password"];
 
-		$hash = password_hash($db_pass, PASSWORD_DEFAULT);
-
-		if (!password_verify($password, $hash)) {
+		if (!password_verify($password, $hash_pass)) {
 			$this->ajaxJson(4, "密码错误");
 		}
 
@@ -170,9 +168,77 @@ class Home extends Base_Controller
 		}
 	}
 
+	/**
+	 * 更新密码
+	 * @author zuoliguang 2018-08-20
+	 * @return [type] [description]
+	 */
 	public function updatePassword()
 	{
 		$this->load->view('home/admin/update_password.html');
+	}
+
+	/**
+	 * 更新密码操作
+	 * @author zuoliguang 2018-08-20
+	 * @param  string $value [description]
+	 * @return [type]        [description]
+	 */
+	public function doUpdatePassword()
+	{
+		if (!$this->input->is_ajax_request()) {
+			$this->ajaxJson(0, "访问方式错误!");
+		}
+
+		$postData = $this->input->post();
+
+		$password = $postData['password'];
+
+		$newpassword = $postData['newpassword'];
+
+		$renewpassword = $postData['renewpassword'];
+
+		if (empty($password) || empty($newpassword) || empty($renewpassword)) {
+			$this->ajaxJson(1, "参数不能为空!");
+		}
+
+		if ($newpassword !== $renewpassword) {
+			$this->ajaxJson(2, "确认新密码不正确!");
+		}
+
+		if ($password == $newpassword) {
+			$this->ajaxJson(3, "新旧密码相同!");
+		}
+
+		$loginfo = $this->session->tempdata(LOGIN_ADMIN_TAG);
+
+		$admin = $this->admin_model->getAdminById($loginfo["adminId"]);
+
+		if (empty($admin)) {
+			$this->ajaxJson(4, "未找到该用户信息");
+		}
+
+		$hash_pass = $admin["password"];
+
+		if (!password_verify($password, $hash_pass)) {
+			$this->ajaxJson(5, "旧密码验证错误");
+		}
+
+		// 更新密码
+		
+		$new_hash = password_hash($newpassword, PASSWORD_DEFAULT);
+
+		$update = [ "password" => $new_hash ];
+
+		$where = ["id" => intval($admin["id"])];
+
+		$res = $this->admin_model->update($update, $where);
+
+		if ($res > 0) {
+			$this->ajaxJson(200, "密码更新成功");
+		} else {
+			$this->ajaxJson(6, "更新失败");
+		}
 	}
 
 	/**

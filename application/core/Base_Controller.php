@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 15:54:58
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-20 16:24:55
+ * @Last Modified time: 2018-08-20 16:49:19
  */
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
@@ -67,6 +67,6 @@ class Base_Controller extends CI_Controller
 	public function ajaxJson($state=0, $message="", $data=[])
 	{
 		echo json_encode(["state"=>$state, "message"=>$message, "data"=>$data]);
-		exit();
+		exit();die();
 	}
 }
