@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:02:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-20 17:10:21
+ * @Last Modified time: 2018-08-20 17:21:17
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -242,24 +242,13 @@ class Home extends Base_Controller
 	}
 
 	/**
-	 * 分析系统各部分数据的展示
-	 * @author zuoliguang 2018-08-17
-	 * @param  string $value [description]
-	 * @return [type]        [description]
-	 */
-	public function dataCenter()
-	{
-		echo "数据中心欢迎页";
-	}
-
-	/**
 	 * 管理员管理列表
 	 * @author zuoliguang 2018-08-17
 	 * @return [type] [description]
 	 */
 	public function adminList()
 	{
-		echo "adminList";
+		$this->load->view('home/admin/admin_list.html');
 	}
 
 	/**
@@ -280,6 +269,17 @@ class Home extends Base_Controller
 	public function permission()
 	{
 		echo "permission";
+	}
+
+	/**
+	 * 分析系统各部分数据的展示
+	 * @author zuoliguang 2018-08-17
+	 * @param  string $value [description]
+	 * @return [type]        [description]
+	 */
+	public function dataCenter()
+	{
+		echo "数据中心欢迎页";
 	}
 
 }
