@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>表单</title>
+    <link rel="stylesheet" href="/static/lib/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/lib/frame/static/css/style.css">
+    <link rel="icon" href="/static/lib/frame/static/image/code.png">
+</head>
+<body class="body">
+
+<form class="layui-form" method="post" action="">
+
+    <input type="hidden" name="id" value="<?=$id?>">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">username</label>
+        <div class="layui-input-block">
+            <input type="text" name="username" value="<?=$username?>" lay-verify="username" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">icon</label>
+        <div class="layui-input-block">
+            <input type="text" name="icon" value="<?=$icon?>" lay-verify="icon" autocomplete="off" placeholder="默认头像" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">telphone</label>
+            <div class="layui-input-inline">
+                <input type="text" name="telphone" value="<?=$telphone?>" lay-verify="phone" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">email</label>
+            <div class="layui-input-inline">
+                <input type="text" name="email" value="<?=$email?>" lay-verify="email" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">个人网站</label>
+        <div class="layui-input-block">
+            <input type="text" name="web" value="<?=$web?>" lay-verify="url" autocomplete="off" placeholder="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+            <input type="radio" name="sex" <?php if($sex==0){ echo "checked"; } ?> value=0 title="未知">
+            <input type="radio" name="sex" <?php if($sex==1){ echo "checked"; } ?> value=1 title="男">
+            <input type="radio" name="sex" <?php if($sex==2){ echo "checked"; } ?> value=2 title="女">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">管理员类别</label>
+            <div class="layui-input-inline">
+                <input type="text" name="type" value="<?=$type?>" autocomplete="off" class="layui-input" disabled="true">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">管理员权限</label>
+            <div class="layui-input-inline">
+                <input type="text" name="right" value="<?=$right?>" autocomplete="off" class="layui-input" disabled="true">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="update">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<script src="/static/lib/frame/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function(){
+        var form = layui.form, layer = layui.layer, $ = layui.jquery;
+        //监听提交
+        form.on('submit(update)', function(data){
+
+            /*layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            });*/
+            
+            if (data.field.username=="") {
+                layer.alert("用户名称不能为空", {title: '提示!'});
+                return false;
+            }
+
+            $.post("/home/doUpdateAdmin", data.field, function(json){
+                if (json.state==200) {
+                    layer.alert("修改成功!", {title: '提示!'});
+                    return false;
+                } else {
+                    layer.alert(json.message, {title: '提示!'});
+                    return false;
+                }
+            }, "json");
+
+        });
+    });
+</script>
+</body>
+</html>

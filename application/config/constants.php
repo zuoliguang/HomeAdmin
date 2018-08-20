@@ -83,3 +83,11 @@ defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+/**
+ * 自定义信息
+ */
+defined('APP_NAME') OR define('APP_NAME', "HomeAdmin 1.0"); // login admin info
+defined('LOGIN_ADMIN_TAG') OR define('LOGIN_ADMIN_TAG', "login_admin_info"); // login admin info
+defined('DEFAULT_ICON') OR define('DEFAULT_ICON', "/static/images/default_icon.png"); // default icon
+

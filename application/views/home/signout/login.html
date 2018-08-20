@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>登录</title>
+    <link rel="stylesheet" href="/static/lib/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/lib/frame/static/css/style.css">
+    <link rel="icon" href="/static/lib/frame/static/image/code.png"> <!-- logo图片 -->
+</head>
+<body>
+
+<div class="login-main">
+    <header class="layui-elip">后台登录</header>
+    <form class="layui-form" method="post" action="">
+        <div class="layui-input-inline">
+            <input type="text" name="username" required lay-verify="required" placeholder="账号" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <input type="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-item">
+            <button type="reset" class="layui-btn layui-btn-danger btn-reset">重置</button>
+            <button type="button" class="layui-btn btn-submit" lay-submit="" lay-filter="sub">立即登录</button>
+        </div>
+        <!-- 该位置后期会使用到手机验证码找回的功能 -->
+        <!-- <p><a href="javascript:;" class="fl">忘记密码？</a></p> -->
+    </form>
+</div>
+
+<script src="/static/lib/frame/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.use(['form'], function () {
+        // 操作对象
+        var form = layui.form , $ = layui.jquery;
+        // 提交监听
+        form.on('submit(sub)', function (data) {
+            if (!!data.field.username==false) {
+                layer.alert("账号信息错误", {title: '提示!'});
+                return false;
+            }
+            if (!!data.field.password==false) {
+                layer.alert("密码信息错误", {title: '提示!'});
+                return false;
+            }
+            $.post("/home/doLogin", data.field, function(json){
+                if (json.state==200) {
+                    window.location.href = "/home/index";
+                    return false;
+                } else {
+                    layer.alert(json.message, {title: '提示!'});
+                    return false;
+                }
+            }, "json");
+        });
+    });
+</script>
+</body>
+</html>
