@@ -4,28 +4,17 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:51:08
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-20 16:28:50
+ * @Last Modified time: 2018-08-21 09:10:09
  */
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Admin_model extends Base_Model
 {
-	public $tableName = "admin";
-
 	function __construct()
 	{
 		parent::__construct();
-	}
 
-	public function getAdminById($id)
-	{
-		$this->bd_admin->select("*");
-
-		$this->bd_admin->from($this->tableName);
-
-		$this->bd_admin->where("id", $id);
-
-		return $this->bd_admin->get()->row_array();
+		$this->tableName = "admin";
 	}
 
 	public function getAdminByName($name)
@@ -65,12 +54,5 @@ class Admin_model extends Base_Model
 		return $this->bd_admin->affected_rows();
 	}
 
-	public function update($data=[], $where=[])
-	{
-		$this->bd_admin->where($where);
-
-		$this->bd_admin->update($this->tableName, $data);
-
-		return $this->bd_admin->affected_rows();
-	}
+	
 }

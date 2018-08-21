@@ -136,6 +136,8 @@
 .layui-layout-admin .my-footer {
     height: 40px;
     padding: 2px 0;
+    text-align: center;
+    font-size: 12px;
 }
 
 .layui-layout-admin .my-footer p {

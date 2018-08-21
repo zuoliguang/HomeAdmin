@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:02:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-20 17:21:17
+ * @Last Modified time: 2018-08-21 16:51:22
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -21,10 +21,17 @@ class Home extends Base_Controller
 		"1" => "读写"
 	];
 
+	public $sexDict = [
+		"0" => "未知",
+		"1" => "男",
+		"2" => "女"
+	];
+
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->model("homeadmin/admin_model");
+		$this->load->model("homeadmin/catalog_model");
 	}
 
 	/**
@@ -252,13 +259,56 @@ class Home extends Base_Controller
 	}
 
 	/**
+	 * ajax获取管理员列表
+	 * @author zuoliguang 2018-08-21
+	 * @return [type] [description]
+	 */
+	public function ajaxAdminListJson()
+	{
+		$post = $this->input->post();
+
+		$page = isset($post["cPage"]) ? intval($post["cPage"]) : 1;
+
+		$size = isset($post["pSize"]) ? intval($post["pSize"]) : 0; // 为0时使用默认
+
+		$start = (intval($page) - 1) * intval($size);
+
+		$fields = "id, username, icon, telphone, email, web, sex, type, right, FROM_UNIXTIME(last_login_time, '%Y-%m-%d %H:%i') AS last_login_time";
+
+		$where = []; // 搜索条件
+
+		!empty($post["username"]) && $where["username like"] = "%".$post["username"]."%"; // 模糊搜索
+
+		!empty($post["telphone"]) && $where["telphone"] = $post["telphone"];
+
+		!empty($post["email"]) && $where["email"] = $post["email"];
+
+		$data = $this->admin_model->all($fields, $where, $start, intval($size));
+
+		foreach ($data as &$admin) {
+
+			$admin["icon"] = empty($admin["icon"]) ? DEFAULT_ICON : $admin["icon"];
+
+			$admin["sex"] = $this->sexDict[$admin["sex"]];
+
+			$admin["type"] = $this->typeDict[$admin["type"]];
+
+			$admin["right"] = $this->rightDict[$admin["right"]];
+		}
+
+		$this->gridmanagerAjaxJson(count($data), $data);
+	}
+
+	/**
 	 * 菜单目录列表
 	 * @author zuoliguang 2018-08-17
 	 * @return [type] [description]
 	 */
 	public function catalogList()
 	{
-		echo "catalogList";
+		// $this->catalog_model->getTreeList();
+		$data = ["catalogs" => []];
+		$this->load->view('home/admin/catalog_list.html', $data);
 	}
 
 	/**
