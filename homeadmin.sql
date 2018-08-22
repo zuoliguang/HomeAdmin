@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2018-08-20 17:27:49
+Date: 2018-08-22 08:25:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -42,7 +42,7 @@ CREATE TABLE `ha_admin` (
 -- ----------------------------
 -- Records of ha_admin
 -- ----------------------------
-INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$XotixigZhdIQGoyEzxRn2uUkXdMdjBkKjCTqQJX0B/OQa9RCBmX8S', '', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1534756291');
+INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$XotixigZhdIQGoyEzxRn2uUkXdMdjBkKjCTqQJX0B/OQa9RCBmX8S', 'https://avatars1.githubusercontent.com/u/7259943', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1534839707');
 
 -- ----------------------------
 -- Table structure for `ha_catalog`
@@ -50,10 +50,11 @@ INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$XotixigZhdIQGoyEzxRn2uUkXdM
 DROP TABLE IF EXISTS `ha_catalog`;
 CREATE TABLE `ha_catalog` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `pid` int(11) NOT NULL DEFAULT '0' COMMENT '父类目录id 0为初级',
-  `title` varchar(50) NOT NULL COMMENT '目录名称',
+  `pid` int(11) NOT NULL DEFAULT '0' COMMENT '父类目录id 0/null为初级目录',
+  `title` varchar(50) NOT NULL DEFAULT '' COMMENT '目录名称',
   `icon` varchar(10) DEFAULT 'default' COMMENT '图标的标识',
-  `url` varchar(50) DEFAULT NULL COMMENT '链接地址',
+  `url` varchar(50) DEFAULT '' COMMENT '链接地址',
+  `is_del` tinyint(3) unsigned DEFAULT '0' COMMENT '删除状态 0未删除 1删除',
   `create_time` int(11) DEFAULT NULL,
   `modify_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
