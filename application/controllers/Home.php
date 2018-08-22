@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:02:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-21 16:51:22
+ * @Last Modified time: 2018-08-22 15:31:15
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -121,10 +121,12 @@ class Home extends Base_Controller
 
 		if (!$adminData) {
 
-			$this->load->view('home/signout/login.html');
+			$this->urlRedirect("/home/login");
 		} else {
 
-			$data = [ "admin" => $adminData ];
+			$catalogs = $this->catalog_model->getTreeList();
+
+			$data = [ "admin" => $adminData, "catalogs" => $catalogs];
 
 			$this->load->view('home/public/main.html', $data);
 		}
@@ -139,7 +141,7 @@ class Home extends Base_Controller
 	{
 		$loginfo = $this->session->tempdata(LOGIN_ADMIN_TAG);
 
-		$admin = $this->admin_model->getAdminById($loginfo["adminId"]);
+		$admin = $this->admin_model->getOneById($loginfo["adminId"]);
 
 		$admin["type"] = $this->typeDict[$admin["type"]];
 
@@ -219,7 +221,7 @@ class Home extends Base_Controller
 
 		$loginfo = $this->session->tempdata(LOGIN_ADMIN_TAG);
 
-		$admin = $this->admin_model->getAdminById($loginfo["adminId"]);
+		$admin = $this->admin_model->getOneById($loginfo["adminId"]);
 
 		if (empty($admin)) {
 			$this->ajaxJson(4, "未找到该用户信息");
@@ -306,9 +308,112 @@ class Home extends Base_Controller
 	 */
 	public function catalogList()
 	{
-		// $this->catalog_model->getTreeList();
-		$data = ["catalogs" => []];
+		$treeList = $this->catalog_model->getTreeList();
+
+		$data = ["catalogs" => $treeList];
+
 		$this->load->view('home/admin/catalog_list.html', $data);
+	}
+
+	/**
+	 * 获取一个菜单信息
+	 * @author zuoliguang 2018-08-22
+	 * @return [type] [description]
+	 */
+	public function getOneCatalog()
+	{
+		if (!$this->input->is_ajax_request()) {
+			$this->ajaxJson(0, "访问方式错误!");
+		}
+
+		$id = $this->input->post("id");
+
+		if (intval($id) == 0) {
+			$this->ajaxJson(1, "参数错误!");
+		}
+
+		$data = $this->catalog_model->getOneById($id);
+
+		if (empty($data)) {
+			$this->ajaxJson(2, "未找到该菜单信息!");
+		}
+
+		$this->ajaxJson(200, "ok", $data);
+	}
+
+	/**
+	 * 删除菜单
+	 * @author zuoliguang 2018-08-22
+	 * @return [type] [description]
+	 */
+	public function deleteCatalog()
+	{
+		if (!$this->input->is_ajax_request()) {
+			$this->ajaxJson(0, "访问方式错误!");
+		}
+
+		$id = $this->input->post("id");
+
+		if (intval($id) == 0) {
+			$this->ajaxJson(1, "参数错误!");
+		}
+
+		$res = $this->catalog_model->delete(["id" => $id]);
+
+		if ($res > 0) {
+			$this->ajaxJson(200);
+		} else {
+			$this->ajaxJson(2, "执行失败!");
+		}
+	}
+
+	/**
+	 * 对菜单信息新增、更新
+	 * @author zuoliguang 2018-08-22
+	 * @return [type] [description]
+	 */
+	public function doCatalog()
+	{
+		if (!$this->input->is_ajax_request()) {
+			$this->ajaxJson(0, "访问方式错误!");
+		}
+
+		$data = $this->input->post();
+
+		$act = $data["act"];
+
+		unset($data["act"]);
+
+		$res = 0;
+
+		if ($act == "create") { // 新增 
+
+			unset($data["id"]);
+
+			$data["create_time"] = $this->timestemp;
+
+			$res = $this->catalog_model->insert($data);
+
+		} elseif ($act == "update") { // 更新
+
+			$id = intval($data["id"]);
+
+			unset($data["id"]);
+
+			$data["modify_time"] = $this->timestemp;
+
+			$where = ["id" => $id];
+
+			$res = $this->catalog_model->update($data, $where);
+		} else {
+			$this->ajaxJson(1, "数据错误");
+		}
+
+		if ($res > 0) {
+			$this->ajaxJson(200);
+		} else {
+			$this->ajaxJson(2, "操作失败");
+		}
 	}
 
 	/**
@@ -318,7 +423,7 @@ class Home extends Base_Controller
 	 */
 	public function permission()
 	{
-		echo "permission";
+		echo "授权中心";
 	}
 
 	/**

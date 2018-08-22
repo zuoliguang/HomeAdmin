@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 15:54:58
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-21 11:05:45
+ * @Last Modified time: 2018-08-22 13:09:14
  */
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
@@ -51,9 +51,20 @@ class Base_Controller extends CI_Controller
 
 			if (!$adminData) {
 
-				$this->load->view('home/signout/login.html');
+				echo "<script language='JavaScript'>if (window != top) { top.location.href = '/home/login'; }</script>";exit();die();
 			}
 		}
+	}
+
+	/**
+	 * 页面跳转
+	 * @author zuoliguang 2018-08-22
+	 * @param  [type] $url [description]
+	 * @return [type]      [description]
+	 */
+	public function urlRedirect($url)
+	{
+		header("Location: $url");exit();die();
 	}
 
 	/**
@@ -66,8 +77,7 @@ class Base_Controller extends CI_Controller
 	 */
 	public function ajaxJson($state=0, $message="操作成功", $data=[])
 	{
-		echo json_encode(["state"=>$state, "message"=>$message, "data"=>$data]);
-		exit();die();
+		echo json_encode(["state"=>$state, "message"=>$message, "data"=>$data]);exit();die();
 	}
 
 	/**
@@ -80,7 +90,6 @@ class Base_Controller extends CI_Controller
 	 */
 	public function gridmanagerAjaxJson($totals=0, $data=[], $status="success")
 	{
-		echo json_encode(["totals"=>$totals, "status"=>$status, "data"=>$data]);
-		exit();die();
+		echo json_encode(["totals"=>$totals, "status"=>$status, "data"=>$data]);exit();die();
 	}
 }

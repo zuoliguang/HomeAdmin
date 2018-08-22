@@ -20,87 +20,68 @@
 </fieldset>
 
 <div class="layui-btn-group" style="margin-bottom: 15px">
-    <button class="layui-btn">增加</button>
-    <button class="layui-btn">编辑</button>
-    <button class="layui-btn">删除</button>
+    <button class="layui-btn" lay-filter="addcatalog-0" id="addcatalog-0"> <i class="layui-icon">&#xe608;</i> 添加一级菜单 </button>
 </div>
 
 <div class="layui-collapse" lay-filter="catalogs">
     <?php if (empty($catalogs)){ ?>
-        <div class="no-catalog-tip">没有找到目录信息！</div>
+        <div class="no-catalog-tip">没有找到目录信息</div>
     <?php } else { ?>
-        <?php foreach ($catalogs as $title => $item): ?>
+        <?php foreach ($catalogs as $item): ?>
         <div class="layui-colla-item">
-            <h2 class="layui-colla-title"><?=$title?></h2>
-            <div class="layui-colla-content">
-                <?php foreach ($item as $catalog): ?>
-                <p> <?=$catalog["title"]?> <?=$catalog["url"]?> <?=$catalog["icon"]?> </p>
-                <?php endforeach;?>
+            <h2 class="layui-colla-title"> 
+                [id:<?=$item["id"]?>] <?=$item["title"]?> | 
+                <a data-id='<?=$item["id"]?>' id="addcatalog-1" href="javascript:void(0);">添加子菜单</a> | 
+                <a data-id='<?=$item["id"]?>' id="updatecatalog" href="javascript:void(0);">编辑</a> | 
+                <a data-id='<?=$item["id"]?>' id="deletecatalog" href="javascript:void(0);">删除</a>
+            </h2>
+            <div class="layui-colla-content"> <!-- 作为下一级的 pid -->
+                <?php if(!empty($item["items"])) { ?>
+                    <?php foreach ($item["items"] as $catalog): ?>
+                    <p> 
+                        <?=$catalog["title"]?> [<?=$catalog["url"]?>] | 
+                        <a data-id='<?=$catalog["id"]?>' id="updatecatalog" href="javascript:void(0);">编辑</a> | 
+                        <a data-id='<?=$catalog["id"]?>' id="deletecatalog" href="javascript:void(0);">删除</a>
+                    </p>
+                    <?php endforeach;?>
+                <?php } else { ?>
+                    <p> 暂时无子菜单 </p>
+                <?php } ?>
             </div>
         </div>
         <?php endforeach;?>
     <?php } ?>
 </div>
 
-<div id="addModel" class="add-model">
-    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+<div id="action-model" class="action-model" style="display: none;">
+    <form class="layui-form" lay-filter="catalogs" style="padding: 15px">
+        <input id="act" type="hidden" name="act" value=""> <!-- 隐藏字段 create\update -->
+        <input id="id" type="hidden" name="id" value=""> <!-- 隐藏字段 id -->
+        <input id="pid" type="hidden" name="pid" value=""> <!-- 隐藏字段 pid -->
         <div class="layui-form-item">
-            <label class="layui-form-label">输入框</label>
+            <label class="layui-form-label">标签[<a style="color:#08bef1" href="https://www.layui.com/doc/element/icon.html" title="layui图标" target="_blank">Tag</a>]</label>
             <div class="layui-input-block">
-                <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input">
+                <input id="icon" type="text" name="icon" placeholder="默认标签" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">下拉选择框</label>
+            <label class="layui-form-label">菜单名</label>
             <div class="layui-input-block">
-                <select name="interest" lay-filter="aihao">
-                    <option value="0">写作</option>
-                    <option value="1">阅读</option>
-                </select>
+                <input id="title" type="text" name="title" placeholder="菜单名" autocomplete="off" class="layui-input">
             </div>
         </div>
-
+        
         <div class="layui-form-item">
-            <label class="layui-form-label">复选框</label>
+            <label class="layui-form-label">链接地址</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="like[write]" title="写作">
-                <input type="checkbox" name="like[read]" title="阅读">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">开关关</label>
-            <div class="layui-input-block">
-                <input type="checkbox" lay-skin="switch">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">开关开</label>
-            <div class="layui-input-block">
-                <input type="checkbox" checked lay-skin="switch">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">单选框</label>
-            <div class="layui-input-block">
-                <input type="radio" name="sex" value="0" title="男">
-                <input type="radio" name="sex" value="1" title="女" checked>
-            </div>
-        </div>
-
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">请填写描述</label>
-            <div class="layui-input-block">
-                <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+                <input id="url" type="text" name="url" placeholder="链接地址" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+                <button class="layui-btn" lay-submit lay-filter="catalog">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
@@ -109,11 +90,81 @@
 
 <script src="/static/lib/frame/layui/layui.js" charset="utf-8"></script>
 <script type="text/javascript">
-    layui.use(['element', 'layer'], function () {
-        var element = layui.element ,layer = layui.layer, $ = layui.jquery;
-        //监听折叠
-        element.on('collapse(catalogs)', function (data) {
-            layer.msg('展开状态：' + data.show);
+    layui.use(['element', 'layer', 'form'], function () {
+        var element = layui.element, layer = layui.layer, form = layui.form, $ = layui.jquery;
+        // 增加一级菜单
+        $("[id=addcatalog-0]").click(function(){
+            $("#pid").val(0);
+            $("#act").val("create");
+            layer.open({
+                type : 1,
+                title : "添加一级菜单",
+                content : $('#action-model'),
+                area : '500px'
+            });
+        });
+
+        // 增加二级菜单
+        $("[id=addcatalog-1]").click(function(){
+            var id = $(this).attr("data-id");
+            $("#pid").val(id);
+            $("#act").val("create");
+            layer.open({
+                type : 1,
+                title : "添加二级菜单",
+                content : $('#action-model'),
+                area : '500px'
+            });
+        });
+
+        // 更新菜单
+        $("[id=updatecatalog]").click(function(){
+            var id = $(this).attr("data-id");
+            $.post("/home/getOneCatalog", {id:id}, function(json){
+                if (json.state==200) {
+                    // 填充信息
+                    $("#act").val("update");
+                    $("#id").val(json.data.id);
+                    $("#pid").val(json.data.pid);
+                    $("#icon").val(json.data.icon);
+                    $("#title").val(json.data.title);
+                    $("#url").val(json.data.url);
+                    layer.open({
+                        type : 1,
+                        title : "编辑菜单",
+                        content : $('#action-model'),
+                        area : '500px'
+                    });
+                } else {
+                    layer.alert(json.message, {title: '提示!'});
+                }
+            }, "json");
+        });
+
+        // 删除菜单
+        $("[id=deletecatalog]").click(function(){
+            var id = $(this).attr("data-id");
+            $.post("/home/deleteCatalog", {id:id}, function(json){
+                if (json.state==200) {
+                    layer.alert("删除成功!", {title: '提示!'});
+                    window.location.reload();
+                } else {
+                    layer.alert(json.message, {title: '提示!'});
+                }
+            }, "json");
+        });
+
+        // 表单提交
+        form.on('submit(catalog)', function(data){
+            $.post("/home/doCatalog", data.field, function(json){
+                if (json.state==200) {
+                    layer.alert("操作成功!", {title: '提示!'});
+                    window.location.reload();
+                } else {
+                    layer.alert(json.message, {title: '提示!'});
+                }
+            }, "json");
+            return false; //阻止表单跳转
         });
 
     });
