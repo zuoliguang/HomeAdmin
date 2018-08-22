@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2018-08-22 08:25:24
+Date: 2018-08-22 15:32:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -42,7 +42,7 @@ CREATE TABLE `ha_admin` (
 -- ----------------------------
 -- Records of ha_admin
 -- ----------------------------
-INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$XotixigZhdIQGoyEzxRn2uUkXdMdjBkKjCTqQJX0B/OQa9RCBmX8S', 'https://avatars1.githubusercontent.com/u/7259943', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1534839707');
+INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$XotixigZhdIQGoyEzxRn2uUkXdMdjBkKjCTqQJX0B/OQa9RCBmX8S', 'https://avatars1.githubusercontent.com/u/7259943', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1534921747');
 
 -- ----------------------------
 -- Table structure for `ha_catalog`
@@ -52,18 +52,22 @@ CREATE TABLE `ha_catalog` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `pid` int(11) NOT NULL DEFAULT '0' COMMENT '父类目录id 0/null为初级目录',
   `title` varchar(50) NOT NULL DEFAULT '' COMMENT '目录名称',
-  `icon` varchar(10) DEFAULT 'default' COMMENT '图标的标识',
+  `icon` varchar(10) DEFAULT '&#xe63c;' COMMENT '图标的标识',
   `url` varchar(50) DEFAULT '' COMMENT '链接地址',
   `is_del` tinyint(3) unsigned DEFAULT '0' COMMENT '删除状态 0未删除 1删除',
   `create_time` int(11) DEFAULT NULL,
   `modify_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique` (`url`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='系统的目录列表';
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='系统的目录列表';
 
 -- ----------------------------
 -- Records of ha_catalog
 -- ----------------------------
+INSERT INTO `ha_catalog` VALUES ('1', '0', '管理/权限', '&#xe613;', '', '0', '1534908310', '1534919642');
+INSERT INTO `ha_catalog` VALUES ('2', '1', '管理员信息', '&#xe612;', '/home/adminList', '0', '1534919729', '1534921694');
+INSERT INTO `ha_catalog` VALUES ('3', '1', '菜单列表', '&#xe63c;', '/home/catalogList', '0', '1534919834', '1534922781');
+INSERT INTO `ha_catalog` VALUES ('4', '1', '授权中心', '&#xe628;', '/home/permission', '0', '1534919891', '1534922866');
 
 -- ----------------------------
 -- Table structure for `ha_permission`
