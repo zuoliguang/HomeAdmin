@@ -1,11 +1,11 @@
 <?php
 
 /**
- * 后台页面
+ * 基础后台页面
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:02:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-23 08:26:31
+ * @Last Modified time: 2018-08-23 08:56:06
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
