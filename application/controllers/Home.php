@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:02:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-22 15:31:15
+ * @Last Modified time: 2018-08-23 08:26:31
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -30,8 +30,8 @@ class Home extends Base_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model("homeadmin/admin_model");
-		$this->load->model("homeadmin/catalog_model");
+		$this->load->model("admin_model");
+		$this->load->model("catalog_model");
 	}
 
 	/**
@@ -41,7 +41,7 @@ class Home extends Base_Controller
 	 */
 	public function login()
 	{
-		$this->load->view('home/signout/login.html');
+		$this->load->view('signout/login.html');
 	}
 
 	/**
@@ -107,7 +107,7 @@ class Home extends Base_Controller
 	{
 		$this->session->sess_destroy();
 
-		$this->load->view('home/signout/login.html');
+		$this->load->view('signout/login.html');
 	}
 
 	/**
@@ -128,7 +128,7 @@ class Home extends Base_Controller
 
 			$data = [ "admin" => $adminData, "catalogs" => $catalogs];
 
-			$this->load->view('home/public/main.html', $data);
+			$this->load->view('public/main.html', $data);
 		}
 	}
 
@@ -147,7 +147,7 @@ class Home extends Base_Controller
 
 		$admin["right"] = $this->rightDict[$admin["right"]];
 
-		$this->load->view('home/admin/update_admin.html', $admin);
+		$this->load->view('admin/update_admin.html', $admin);
 	}
 
 	public function doUpdateAdmin()
@@ -184,7 +184,7 @@ class Home extends Base_Controller
 	 */
 	public function updatePassword()
 	{
-		$this->load->view('home/admin/update_password.html');
+		$this->load->view('admin/update_password.html');
 	}
 
 	/**
@@ -257,7 +257,7 @@ class Home extends Base_Controller
 	 */
 	public function adminList()
 	{
-		$this->load->view('home/admin/admin_list.html');
+		$this->load->view('admin/admin_list.html');
 	}
 
 	/**
@@ -312,7 +312,7 @@ class Home extends Base_Controller
 
 		$data = ["catalogs" => $treeList];
 
-		$this->load->view('home/admin/catalog_list.html', $data);
+		$this->load->view('admin/catalog_list.html', $data);
 	}
 
 	/**

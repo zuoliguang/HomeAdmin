@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 15:54:58
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-22 13:09:14
+ * @Last Modified time: 2018-08-23 08:21:50
  */
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
@@ -51,7 +51,8 @@ class Base_Controller extends CI_Controller
 
 			if (!$adminData) {
 
-				echo "<script language='JavaScript'>if (window != top) { top.location.href = '/home/login'; }</script>";exit();die();
+				echo "<script language='JavaScript'>if (window != top) { top.location.href = '/home/login'; } else { window.location.href = '/home/login'; }</script>";
+				exit();die();
 			}
 		}
 	}
