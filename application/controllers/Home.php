@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:02:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-23 10:52:05
+ * @Last Modified time: 2018-08-23 17:09:53
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -32,6 +32,7 @@ class Home extends Base_Controller
 		parent::__construct();
 		$this->load->model("admin_model");
 		$this->load->model("catalog_model");
+		$this->load->model("permission_model");
 	}
 
 	/**
@@ -124,8 +125,14 @@ class Home extends Base_Controller
 			$this->urlRedirect("/home/login");
 		} else {
 
-			$catalogs = $this->catalog_model->getTreeList();
+			if ($adminData["type"]==0) { // 超级管理员
 
+				$catalogs = $this->catalog_model->getTreeList();
+			} else {
+
+				$catalogs = $this->catalog_model->getTreeListByaid($adminData["adminId"]);
+			}
+			
 			$data = [ "admin" => $adminData, "catalogs" => $catalogs];
 
 			$this->load->view('public/main.html', $data);
@@ -150,6 +157,11 @@ class Home extends Base_Controller
 		$this->load->view('admin/update_admin.html', $admin);
 	}
 
+	/**
+	 * 更新管理员信息
+	 * @author zuoliguang 2018-08-23
+	 * @return [type] [description]
+	 */
 	public function doUpdateAdmin()
 	{
 		if (!$this->input->is_ajax_request()) {
@@ -308,8 +320,6 @@ class Home extends Base_Controller
 	 */
 	public function catalogList()
 	{
-		$jsonTree = $this->catalog_model->getLayuiTree();
-
 		$treeList = $this->catalog_model->getTreeList();
 
 		$data = ["catalogs" => $treeList];
@@ -441,7 +451,97 @@ class Home extends Base_Controller
 	 */
 	public function permission()
 	{
-		echo "授权中心";
+		$admins = $this->admin_model->allAdmins();
+
+		$allCatalogs = $this->catalog_model->getTreeList();
+
+		$types = $this->typeDict;
+
+		$rights = $this->rightDict;
+
+		array_walk($admins, function(&$admin, $k) use ($types, $rights){
+
+			$admin["type"] = $this->typeDict[$admin["type"]];
+
+			$admin["right"] = $this->rightDict[$admin["right"]];
+		});
+
+		$data = [ "admins" => $admins, "catalogs" =>$allCatalogs];
+
+		$this->load->view('admin/permission.html', $data);
+	}
+
+	/**
+	 * 获取权限列表
+	 * @author zuoliguang 2018-08-23
+	 * @return [type] [description]
+	 */
+	public function getPermissions()
+	{
+		if (!$this->input->is_ajax_request()) {
+			$this->ajaxJson(0, "访问方式错误!");
+		}
+
+		$admin_id = $this->input->post("admin_id");
+
+		// 如果是超级管理员，默认出全部权限
+		$admin = $this->admin_model->getOneById($admin_id);
+
+		$permission = [];
+
+		if ($admin["type"]==0) {
+
+			$allCatalogs = $this->catalog_model->getAllCatalogs();// 所有权限
+
+			array_walk($allCatalogs, function($catalog, $k) use ($admin_id, &$permission){
+
+				$permission[] = [ "admin_id" => $admin_id, "catalog_id" => $catalog["id"] ];
+			});
+
+		} else {
+
+			$permission = $this->permission_model->getPermissionByaid($admin_id);
+		}
+
+		$this->ajaxJson(200, "获取成功", $permission);
+	}
+
+	/**
+	 * 更新上传权限
+	 * @author zuoliguang 2018-08-23
+	 * @return [type] [description]
+	 */
+	public function updatePermissions()
+	{
+		if (!$this->input->is_ajax_request()) {
+			$this->ajaxJson(0, "访问方式错误!");
+		}
+
+		$data = $this->input->post();
+
+		$admin_id = $data["admin_id"];
+
+		$admin = $this->admin_model->getOneById($admin_id);
+
+		if ($admin["type"]==0) // 超级管理员时不用操作
+		{
+			$this->ajaxJson(200, "操作成功");
+		} else {
+
+			$this->permission_model->delete(["admin_id"=>intval($admin_id)], true);// 先删除原有的权限
+
+			$catalog_ids = $data["catalog_ids"];
+
+			$insertData = [];
+
+			foreach ($catalog_ids as $catalog_id) {
+				$insertData[] = [ "admin_id" => $admin_id, "catalog_id" => $catalog_id ];
+			}
+
+			$this->permission_model->insert_batch($insertData);
+
+			$this->ajaxJson(200, "新增成功");
+		}
 	}
 
 	/**
