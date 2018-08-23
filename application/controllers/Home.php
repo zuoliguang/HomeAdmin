@@ -5,33 +5,26 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:02:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-23 17:09:53
+ * @Last Modified time: 2018-08-23 17:16:48
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Home extends Base_Controller
 {
-	public $typeDict = [
-		"0" => "超级管理员",
-		"1" => "普通管理员"
-	];
+	public $typeDict = [ "0" => "超级管理员", "1" => "普通管理员" ];
 
-	public $rightDict = [
-		"0" => "只读",
-		"1" => "读写"
-	];
+	public $rightDict = [ "0" => "只读", "1" => "读写" ];
 
-	public $sexDict = [
-		"0" => "未知",
-		"1" => "男",
-		"2" => "女"
-	];
+	public $sexDict = [ "0" => "未知", "1" => "男", "2" => "女" ];
 
 	function __construct()
 	{
 		parent::__construct();
+
 		$this->load->model("admin_model");
+
 		$this->load->model("catalog_model");
+		
 		$this->load->model("permission_model");
 	}
 

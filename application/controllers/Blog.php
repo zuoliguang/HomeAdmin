@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-23 08:54:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-23 08:56:39
+ * @Last Modified time: 2018-08-23 17:18:43
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -16,8 +16,24 @@ class Blog extends Base_Controller {
 		parent::__construct();
 	}
 
-	public function test()
+	/**
+	 * [article description]
+	 * @author zuoliguang 2018-08-23
+	 * @param  string $value [description]
+	 */
+	public function article()
 	{
-		ssxasa();
+		# code...
+	}
+
+	/**
+	 * [top description]
+	 * @author zuoliguang 2018-08-23
+	 * @param  string $value [description]
+	 * @return [type]        [description]
+	 */
+	public function top($value='')
+	{
+		# code...
 	}
 }
