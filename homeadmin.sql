@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2018-08-22 15:32:50
+Date: 2018-08-23 08:41:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -35,14 +35,16 @@ CREATE TABLE `ha_admin` (
   `right` tinyint(4) DEFAULT '0' COMMENT '权限 0只读 1读写',
   `last_login_time` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique` (`username`,`password`),
-  KEY `telphone` (`telphone`)
+  UNIQUE KEY `unique` (`username`),
+  KEY `telphone` (`telphone`),
+  KEY `username` (`username`),
+  KEY `email` (`email`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='管理员账户';
 
 -- ----------------------------
 -- Records of ha_admin
 -- ----------------------------
-INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$XotixigZhdIQGoyEzxRn2uUkXdMdjBkKjCTqQJX0B/OQa9RCBmX8S', 'https://avatars1.githubusercontent.com/u/7259943', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1534921747');
+INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$XotixigZhdIQGoyEzxRn2uUkXdMdjBkKjCTqQJX0B/OQa9RCBmX8S', 'https://avatars1.githubusercontent.com/u/7259943', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1534983729');
 
 -- ----------------------------
 -- Table structure for `ha_catalog`
@@ -58,7 +60,8 @@ CREATE TABLE `ha_catalog` (
   `create_time` int(11) DEFAULT NULL,
   `modify_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique` (`url`)
+  UNIQUE KEY `unique` (`url`),
+  KEY `title` (`title`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='系统的目录列表';
 
 -- ----------------------------

@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 15:59:41
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-22 14:13:14
+ * @Last Modified time: 2018-08-23 08:36:19
  */
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
@@ -70,7 +70,6 @@ class Base_Model extends CI_Model
 		} else { // 软删除
 			return $this->update(["is_del" => 1], $where);
 		}
-
 	}
 
 	/**

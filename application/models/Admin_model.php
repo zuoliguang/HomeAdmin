@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:51:08
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-21 09:10:09
+ * @Last Modified time: 2018-08-23 08:44:36
  */
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
@@ -17,6 +17,12 @@ class Admin_model extends Base_Model
 		$this->tableName = "admin";
 	}
 
+	/**
+	 * 获取一个符合账户名称的管理员
+	 * @author zuoliguang 2018-08-23
+	 * @param  [type] $name [description]
+	 * @return [type]       [description]
+	 */
 	public function getAdminByName($name)
 	{
 		$this->bd_admin->select("*");
@@ -28,6 +34,12 @@ class Admin_model extends Base_Model
 		return $this->bd_admin->get()->row_array();
 	}
 
+	/**
+	 * 依据手机号获取管理员信息
+	 * @author zuoliguang 2018-08-23
+	 * @param  [type] $telphone [description]
+	 * @return [type]           [description]
+	 */
 	public function getAdminsByTelphone($telphone)
 	{
 		$this->bd_admin->select("*");
@@ -39,6 +51,11 @@ class Admin_model extends Base_Model
 		return $this->bd_admin->get()->result_array();
 	}
 
+	/**
+	 * 登录打点
+	 * @author zuoliguang 2018-08-23
+	 * @return [type] [description]
+	 */
 	public function loginAdmin()
 	{
 		$admin = $this->session->tempdata(LOGIN_ADMIN_TAG);

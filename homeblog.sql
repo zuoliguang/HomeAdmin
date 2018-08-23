@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2018-08-22 16:08:50
+Date: 2018-08-23 08:43:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,7 +30,10 @@ CREATE TABLE `hb_article` (
   `tags` varchar(60) DEFAULT '' COMMENT '标签',
   `create_time` int(11) DEFAULT NULL,
   `modify_time` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique` (`title`,`author`) USING BTREE,
+  KEY `times` (`times`),
+  KEY `tags` (`tags`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
