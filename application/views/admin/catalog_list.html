@@ -20,39 +20,26 @@
 </fieldset>
 
 <div class="layui-btn-group" style="margin-bottom: 15px">
-    <button class="layui-btn" lay-filter="addcatalog-0" id="addcatalog-0"> <i class="layui-icon">&#xe608;</i> 添加一级菜单 </button>
+    <button class="layui-btn layui-btn-primary layui-btn-small" lay-filter="addcatalog-0" id="addcatalog-0"> <i class="layui-icon">&#xe608;</i> 添加一级菜单 </button>
 </div>
 
-<div class="layui-collapse" lay-filter="catalogs">
-    <?php if (empty($catalogs)){ ?>
-        <div class="no-catalog-tip">没有找到目录信息</div>
-    <?php } else { ?>
-        <?php foreach ($catalogs as $item): ?>
-        <div class="layui-colla-item">
-            <h2 class="layui-colla-title"> 
-                [id:<?=$item["id"]?>] <?=$item["title"]?> | 
-                <a data-id='<?=$item["id"]?>' id="addcatalog-1" href="javascript:void(0);">添加子菜单</a> | 
-                <a data-id='<?=$item["id"]?>' id="updatecatalog" href="javascript:void(0);">编辑</a> | 
-                <a data-id='<?=$item["id"]?>' id="deletecatalog" href="javascript:void(0);">删除</a>
-            </h2>
-            <div class="layui-colla-content"> <!-- 作为下一级的 pid -->
-                <?php if(!empty($item["items"])) { ?>
-                    <?php foreach ($item["items"] as $catalog): ?>
-                    <p> 
-                        <?=$catalog["title"]?> [<?=$catalog["url"]?>] | 
-                        <a data-id='<?=$catalog["id"]?>' id="updatecatalog" href="javascript:void(0);">编辑</a> | 
-                        <a data-id='<?=$catalog["id"]?>' id="deletecatalog" href="javascript:void(0);">删除</a>
-                    </p>
-                    <?php endforeach;?>
-                <?php } else { ?>
-                    <p> 暂时无子菜单 </p>
-                <?php } ?>
-            </div>
-        </div>
-        <?php endforeach;?>
-    <?php } ?>
+<!-- 树形展示 -->
+<ul id="tree-list"></ul>
+
+<!-- 一级选择 -->
+<div id="catalog1-model" class="layui-btn-group catalog1-model" style="display: none;">
+    <button id="create-catalog" class="layui-btn">增加子菜单</button>
+    <button id="update-catalog" class="layui-btn">编辑</button>
+    <button id="delete-catalog" class="layui-btn">删除</button>
 </div>
 
+<!-- 二级选择 -->
+<div id="catalog2-model" class="layui-btn-group catalog2-model" style="display: none;">
+    <button id="update-catalog" class="layui-btn">编辑</button>
+    <button id="delete-catalog" class="layui-btn">删除</button>
+</div>
+
+<!-- 新增，编辑层 -->
 <div id="action-model" class="action-model" style="display: none;">
     <form class="layui-form" lay-filter="catalogs" style="padding: 15px">
         <input id="act" type="hidden" name="act" value=""> <!-- 隐藏字段 create\update -->
@@ -90,8 +77,9 @@
 
 <script src="/static/lib/frame/layui/layui.js" charset="utf-8"></script>
 <script type="text/javascript">
-    layui.use(['element', 'layer', 'form'], function () {
-        var element = layui.element, layer = layui.layer, form = layui.form, $ = layui.jquery;
+    var actionID = 0;
+    layui.use(['layer', 'form', 'tree'], function () {
+        var layer = layui.layer, form = layui.form, tree = layui.tree, $ = layui.jquery;
         // 增加一级菜单
         $("[id=addcatalog-0]").click(function(){
             $("#pid").val(0);
@@ -104,9 +92,9 @@
             });
         });
 
-        // 增加二级菜单
-        $("[id=addcatalog-1]").click(function(){
-            var id = $(this).attr("data-id");
+        // 增加二级菜单        
+        $("[id=create-catalog]").click(function(){
+            var id = actionID;
             $("#pid").val(id);
             $("#act").val("create");
             layer.open({
@@ -116,10 +104,10 @@
                 area : '500px'
             });
         });
-
+        
         // 更新菜单
-        $("[id=updatecatalog]").click(function(){
-            var id = $(this).attr("data-id");
+        $("[id=update-catalog]").click(function(){
+            var id = actionID;
             $.post("/home/getOneCatalog", {id:id}, function(json){
                 if (json.state==200) {
                     // 填充信息
@@ -142,8 +130,8 @@
         });
 
         // 删除菜单
-        $("[id=deletecatalog]").click(function(){
-            var id = $(this).attr("data-id");
+        $("[id=delete-catalog]").click(function(){
+            var id = actionID;
             $.post("/home/deleteCatalog", {id:id}, function(json){
                 if (json.state==200) {
                     layer.alert("删除成功!", {title: '提示!'});
@@ -166,6 +154,34 @@
             }, "json");
             return false; //阻止表单跳转
         });
+
+        // 树形展示
+        $.post("/home/ajaxCatalogLayuiTreeList", {}, function(json){
+            if (json.state==200) {
+                tree({
+                    elem: '#tree-list',
+                    nodes: json.data,
+                    click: function(node){
+                        actionID = node.id; // 临时存储当前页面的js中
+                        if (!!node.children) {
+                            layer.open({
+                                type : 1,
+                                title : "操作",
+                                content : $('#catalog1-model')
+                            });
+                        } else {
+                            layer.open({
+                                type : 1,
+                                title : "操作",
+                                content : $('#catalog2-model')
+                            });
+                        }
+                    }
+                });
+            }else {
+                layer.alert(json.message, {title: '提示!'});
+            }
+        }, "json");
 
     });
 </script>

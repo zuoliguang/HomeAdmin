@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:02:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-23 08:56:06
+ * @Last Modified time: 2018-08-23 10:52:05
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -308,11 +308,29 @@ class Home extends Base_Controller
 	 */
 	public function catalogList()
 	{
+		$jsonTree = $this->catalog_model->getLayuiTree();
+
 		$treeList = $this->catalog_model->getTreeList();
 
 		$data = ["catalogs" => $treeList];
 
 		$this->load->view('admin/catalog_list.html', $data);
+	}
+
+	/**
+	 * 获取LayuiTree的菜单list
+	 * @author zuoliguang 2018-08-23
+	 * @return [type] [description]
+	 */
+	public function ajaxCatalogLayuiTreeList()
+	{
+		if (!$this->input->is_ajax_request()) {
+			$this->ajaxJson(0, "访问方式错误!");
+		}
+
+		$treeList = $this->catalog_model->getLayuiTree();
+
+		$this->ajaxJson(200, "ok!", $treeList);
 	}
 
 	/**

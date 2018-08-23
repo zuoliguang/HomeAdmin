@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2018-08-23 09:44:31
+Date: 2018-08-23 12:26:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -44,7 +44,7 @@ CREATE TABLE `ha_admin` (
 -- ----------------------------
 -- Records of ha_admin
 -- ----------------------------
-INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$XotixigZhdIQGoyEzxRn2uUkXdMdjBkKjCTqQJX0B/OQa9RCBmX8S', 'https://avatars1.githubusercontent.com/u/7259943', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1534983729');
+INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$XotixigZhdIQGoyEzxRn2uUkXdMdjBkKjCTqQJX0B/OQa9RCBmX8S', 'https://avatars1.githubusercontent.com/u/7259943', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1534997436');
 
 -- ----------------------------
 -- Table structure for `ha_catalog`
@@ -60,19 +60,20 @@ CREATE TABLE `ha_catalog` (
   `create_time` int(11) DEFAULT NULL,
   `modify_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique` (`url`),
+  UNIQUE KEY `unique` (`url`,`title`) USING BTREE,
   KEY `title` (`title`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='系统的目录列表';
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='系统的目录列表';
 
 -- ----------------------------
 -- Records of ha_catalog
 -- ----------------------------
-INSERT INTO `ha_catalog` VALUES ('1', '0', '管理/权限', '&#xe613;', '', '0', '1534908310', '1534919642');
+INSERT INTO `ha_catalog` VALUES ('1', '0', '管理/权限', '&#xe613;', '/', '0', '1534908310', '1534998229');
 INSERT INTO `ha_catalog` VALUES ('2', '1', '管理员信息', '&#xe612;', '/home/adminList', '0', '1534919729', '1534921694');
 INSERT INTO `ha_catalog` VALUES ('3', '1', '菜单列表', '&#xe63c;', '/home/catalogList', '0', '1534919834', '1534922781');
 INSERT INTO `ha_catalog` VALUES ('4', '1', '授权中心', '&#xe628;', '/home/permission', '0', '1534919891', '1534922866');
-INSERT INTO `ha_catalog` VALUES ('5', '0', '博客管理', '&#xe632;', '/', '0', '1534985946', null);
-INSERT INTO `ha_catalog` VALUES ('6', '5', '博文管理', '&#xe60a;', '/blog/test', '0', '1534986040', null);
+INSERT INTO `ha_catalog` VALUES ('5', '0', '博客管理', '&#xe632;', '/', '0', '1534985946', '1534998216');
+INSERT INTO `ha_catalog` VALUES ('6', '5', '博文管理', '&#xe60a;', '/blog/article', '0', '1534986040', '1534997910');
+INSERT INTO `ha_catalog` VALUES ('7', '5', '首页展示图', '&#xe634;', '/blog/top', '0', '1534997724', null);
 
 -- ----------------------------
 -- Table structure for `ha_permission`
