@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:02:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-23 17:16:48
+ * @Last Modified time: 2018-08-24 09:28:07
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -19,6 +19,9 @@ class Home extends Base_Controller
 
 	function __construct()
 	{
+		// 设置该区域的权限操作
+		$this->rightUris = [ "doUpdatePassword", "deleteCatalog", "doCatalog", "updatePermissions" ];
+
 		parent::__construct();
 
 		$this->load->model("admin_model");

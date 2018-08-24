@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 15:54:58
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-23 08:21:50
+ * @Last Modified time: 2018-08-24 09:25:52
  */
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
@@ -15,11 +15,11 @@ class Base_Controller extends CI_Controller
 
 	public $microtimestemp;
 
-	public $unLoginActions = [ // 不需要登录验证的操作
-		"home/login",
-		"home/doLogin",
-		"home/logout"
-	];
+	// 不需要登录验证的操作
+	public $unLoginActions = [ "home/login", "home/doLogin", "home/logout" ];
+
+	// 设置操作权限的路由
+	public $rightUris; 
 
 	function __construct()
 	{
@@ -33,7 +33,9 @@ class Base_Controller extends CI_Controller
 		
 		$this->microtimestemp = microtime();
 
-		$this->checkLogin();
+		$this->checkLogin(); // 检查登录状态
+
+		$this->checkRight(); // 检查该操作权限
 	}
 
 	/**
@@ -47,12 +49,33 @@ class Base_Controller extends CI_Controller
 
 		if (!in_array($uri, $this->unLoginActions)) {
 
-			$adminData = $this->session->tempdata(LOGIN_ADMIN_TAG);
+			$admin = $this->session->tempdata(LOGIN_ADMIN_TAG);
 
-			if (!$adminData) {
+			if (!$admin) { // 登录信息过期
 
 				echo "<script language='JavaScript'>if (window != top) { top.location.href = '/home/login'; } else { window.location.href = '/home/login'; }</script>";
 				exit();die();
+			}
+		}
+	}
+
+	/**
+	 * 检查用户权限 right 字段 0只读 1读写 当管理员只读时，提示权限信息
+	 * @author zuoliguang 2018-08-24
+	 * @return [type] [description]
+	 */
+	public function checkRight()
+	{
+
+		$admin = $this->session->tempdata(LOGIN_ADMIN_TAG);
+
+		if ($admin["right"]==0) // 只读
+		{
+			$uriName = $this->uri->segment(2);
+
+			if (in_array($uriName, $this->rightUris)) 
+			{
+				$this->ajaxJson(403, "暂时没有操作权限");
 			}
 		}
 	}
