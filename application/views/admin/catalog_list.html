@@ -163,7 +163,7 @@
                     nodes: json.data,
                     click: function(node){
                         actionID = node.id; // 临时存储当前页面的js中
-                        if (!!node.children) {
+                        if (node.is_first==1) {
                             layer.open({
                                 type : 1,
                                 title : "操作",

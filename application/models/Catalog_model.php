@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:51:08
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-24 09:36:48
+ * @Last Modified time: 2018-08-24 11:33:51
  */
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
@@ -146,6 +146,8 @@ class Catalog_model extends Base_Model
 				$treeList[$catalog["id"]]["id"] = $catalog["id"];
 				
 				$treeList[$catalog["id"]]["name"] = $catalog["title"];
+
+				$treeList[$catalog["id"]]["is_first"] = 1;
 
 			} else {
 
