@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2018-08-23 17:12:03
+Date: 2018-08-24 11:24:55
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,7 +23,7 @@ CREATE TABLE `ha_admin` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL COMMENT '账户名称',
   `password` varchar(100) NOT NULL COMMENT '密码 password_hash 算法生成',
-  `icon` varchar(50) DEFAULT NULL COMMENT '用户头像地址',
+  `icon` varchar(150) DEFAULT NULL COMMENT '用户头像地址',
   `telphone` varchar(20) DEFAULT NULL COMMENT '手机号码',
   `email` varchar(50) DEFAULT NULL COMMENT '邮箱地址',
   `web` varchar(255) DEFAULT NULL COMMENT '个人网站地址',
@@ -39,12 +39,13 @@ CREATE TABLE `ha_admin` (
   KEY `telphone` (`telphone`),
   KEY `username` (`username`),
   KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='管理员账户';
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='管理员账户';
 
 -- ----------------------------
 -- Records of ha_admin
 -- ----------------------------
-INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$XotixigZhdIQGoyEzxRn2uUkXdMdjBkKjCTqQJX0B/OQa9RCBmX8S', 'https://avatars1.githubusercontent.com/u/7259943', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1535015111');
+INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$p0TtmYTZtN1JmzhNbvfqae47LZ.glSEOw5.7JcDWPfd.rwyViCmpm', 'http://himg.bdimg.com/sys/portrait/item/39557a6c67636778797afd33.jpg', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1535080129');
+INSERT INTO `ha_admin` VALUES ('2', 'test', '$2y$10$2HQevjH9yZeTkUcbd4i6fO3IjFH0GtmUYG3.cMISOoDDLgSldhDKq', '', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', null, null, null, '1', '0', '1535080082');
 
 -- ----------------------------
 -- Table structure for `ha_catalog`
@@ -85,8 +86,10 @@ CREATE TABLE `ha_permission` (
   `catalog_id` int(11) NOT NULL COMMENT '菜单id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique` (`admin_id`,`catalog_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='目录的权限列表';
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='目录的权限列表';
 
 -- ----------------------------
 -- Records of ha_permission
 -- ----------------------------
+INSERT INTO `ha_permission` VALUES ('1', '2', '6');
+INSERT INTO `ha_permission` VALUES ('2', '2', '7');

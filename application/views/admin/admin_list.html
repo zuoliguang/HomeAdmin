@@ -6,6 +6,8 @@
 	<script type="text/javascript" src="/static/lib/GridManager/js/gm.js"></script>
     <title>表格</title>
     <link rel="stylesheet" type="text/css" href="/static/css/gridmanager.css">
+    <link rel="stylesheet" href="/static/lib/frame/layui/css/layui.css">
+    <link rel="icon" href="/static/images/logo.png">
 </head>
 
 <body>
@@ -25,6 +27,7 @@
 		<div class="sa-ele">
 			<button class="search-action">搜索</button>
 			<button class="reset-action">重置</button>
+			<button style="margin-bottom: 4px;" id="create-admin" class="layui-btn layui-btn-mini"><i class="layui-icon">&#xe654;</i></button>
 		</div>
 	</section>
 
@@ -38,9 +41,106 @@
 		<button id="destroy-gm" disabled>[表格]数据清除</button>
 	</section>
 
-	<script type="text/javascript">
-		var dataUrl = "/home/ajaxAdminListJson"; // 数据地址
-	</script>
-	<script type="text/javascript" src="/static/js/gridmanager_adminlist.js"></script>
+<!-- 新增，编辑层 -->
+<div id="action-model" class="action-model" style="display: none;">
+    <form class="layui-form" lay-filter="catalogs" style="padding: 20px">
+        <div class="layui-form-item">
+            <label class="layui-form-label">username</label>
+            <div class="layui-input-block">
+                <input id="username" type="text" name="username" placeholder="" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        
+        <div class="layui-form-item">
+            <label class="layui-form-label">password</label>
+            <div class="layui-input-block">
+                <input id="password" type="password" name="password" placeholder="" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        
+        <div class="layui-form-item">
+            <label class="layui-form-label">repassword</label>
+            <div class="layui-input-block">
+                <input id="repassword" type="password" name="repassword" placeholder="" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        
+        <div class="layui-form-item">
+            <label class="layui-form-label">telphone</label>
+            <div class="layui-input-block">
+                <input id="telphone" type="text" name="telphone" placeholder="" autocomplete="off" lay-verify="phone" class="layui-input">
+            </div>
+        </div>
+        
+        <div class="layui-form-item">
+            <label class="layui-form-label">email</label>
+            <div class="layui-input-block">
+                <input id="email" type="text" name="email" placeholder="" autocomplete="off" lay-verify="email" class="layui-input">
+            </div>
+        </div>
+        
+        <div class="layui-form-item">
+            <label class="layui-form-label">管理类型</label>
+            <div class="layui-input-block">
+				<select name="type" lay-verify="required">
+					<option value=1>普通管理员</option>
+					<option value=0>超级管理员</option>
+				</select> 
+            </div>
+        </div>
+        
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限</label>
+            <div class="layui-input-block">
+				<select name="right" lay-verify="required">
+					<option value=0>只读</option>
+					<option value=1>读写</option>
+				</select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="createadmin">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+	var dataUrl = "/home/ajaxAdminListJson"; // 数据地址
+</script>
+<script type="text/javascript" src="/static/js/gridmanager_adminlist.js"></script>
+<script src="/static/lib/frame/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript">
+	layui.use(['layer', 'form'], function(){
+		var layer = layui.layer, form = layui.form, $ = layui.jquery;
+
+		// 弹出层
+		$("[id=create-admin]").click(function(){
+			layer.open({
+                type : 1,
+                title : "添加管理员",
+                content : $('#action-model'),
+                area : '500px'
+            });
+		});
+
+		// 表单提交
+        form.on('submit(createadmin)', function(data){
+        	// console.log(data.field);
+            $.post("/home/doCreateAdmin", data.field, function(json){
+                if (json.state==200) {
+                    layer.alert("操作成功!", {title: '提示!'});
+                    window.location.reload();
+                } else {
+                    layer.alert(json.message, {title: '提示!'});
+                }
+            }, "json");
+            return false; //阻止表单跳转
+        });
+	});
+</script>
 </body>
 </html>

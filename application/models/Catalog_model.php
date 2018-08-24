@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:51:08
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-23 17:05:56
+ * @Last Modified time: 2018-08-24 09:36:48
  */
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
@@ -35,6 +35,8 @@ class Catalog_model extends Base_Model
 		$this->bd_admin->from($this->tableName);
 
 		$this->bd_admin->where($where);
+
+		$this->bd_admin->order_by("id", "ASC");
 
 		return $this->bd_admin->get()->result_array();
 	}
@@ -75,7 +77,9 @@ class Catalog_model extends Base_Model
 
 		$this->bd_admin->where($where);
 
-		$this->bd_admin->where_in('id', $ids);
+		$this->bd_admin->where_in("id", $ids);
+
+		$this->bd_admin->order_by("id", "ASC");
 
 		return $this->bd_admin->get()->result_array();
 	}

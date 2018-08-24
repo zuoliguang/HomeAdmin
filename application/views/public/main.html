@@ -62,7 +62,7 @@
         <div class="layui-side-scroll">
             <!-- 左侧主菜单添加选项卡监听 -->
             <ul class="layui-nav layui-nav-tree" lay-filter="side-main">
-                <?php if(!empty($catalogs)): ?>
+                <?php if(!empty($catalogs)){ ?>
                     <?php foreach($catalogs as $catalog): ?>
                         <li class="layui-nav-item">
                             <a href="javascript:;"><i class="layui-icon"><?=$catalog["icon"]?></i><?=$catalog["title"]?></a>
@@ -75,7 +75,11 @@
                             <?php endif; ?>
                         </li>
                     <?php endforeach;?>
-                <?php endif; ?>
+                <?php } else { ?>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;"><i class="layui-icon">&#xe607;</i>联系管理员申请权限</a>
+                    </li>
+                <?php } ?>
             </ul>
         </div>
     </div>

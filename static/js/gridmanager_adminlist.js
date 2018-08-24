@@ -2,7 +2,7 @@
 * @Author: zuoliguang
 * @Date:   2018-08-21 10:09:08
 * @Last Modified by:   zuoliguang
-* @Last Modified time: 2018-08-21 14:48:15
+* @Last Modified time: 2018-08-24 11:24:08
 */
 
 // GridManager 渲染
@@ -145,7 +145,7 @@ function init() {
 				align: 'center',
 				text: '<span style="color: red">操作</span>',
 				// 直接返回 htmlString
-				template: '<span class="plugin-action" gm-click="delectRowData">删除</span>'
+				template: '<span class="plugin-action" gm-click="editRowData">编辑</span><span class="plugin-action" gm-click="delectRowData">删除</span>'
 			}
 		],
 		
@@ -168,15 +168,25 @@ function init() {
 function delectRowData(rowData){
 	// 执行删除操作
 	if(window.confirm('确认要删除['+rowData.id+']?')){
-		window.alert('该操作暂时不提供，联系开发人员');
+		window.alert('该操作暂时不提供，联系开发人员，解锁更高权限');
 	}
 }
 
- /**
-  * 搜索, 重置
-  * @author zuoliguang 2018-08-21
-  * @return {[type]} [description]
-  */
+/**
+ * 更新操作
+ * @author zuoliguang 2018-08-24
+ * @param  {[type]} rowData [description]
+ * @return {[type]}         [description]
+ */
+function editRowData(rowData){
+	window.alert('该操作暂时不提供，联系开发人员，解锁更高权限');
+}
+
+/**
+* 搜索, 重置
+* @author zuoliguang 2018-08-21
+* @return {[type]} [description]
+*/
 (function(){
 	// 搜索
 	document.querySelector('.search-action').addEventListener('click', function () {

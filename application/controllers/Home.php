@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:02:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-24 09:28:07
+ * @Last Modified time: 2018-08-24 11:00:33
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -20,7 +20,7 @@ class Home extends Base_Controller
 	function __construct()
 	{
 		// 设置该区域的权限操作
-		$this->rightUris = [ "doUpdatePassword", "deleteCatalog", "doCatalog", "updatePermissions" ];
+		$this->rightUris = [ "doCreateAdmin", "doUpdatePassword", "deleteCatalog", "doCatalog", "updatePermissions" ];
 
 		parent::__construct();
 
@@ -48,7 +48,8 @@ class Home extends Base_Controller
 	 */
 	public function doLogin()
 	{
-		if (!$this->input->is_ajax_request()) {
+		if (!$this->input->is_ajax_request()) 
+		{
 			$this->ajaxJson(0, "访问方式错误");
 		}
 
@@ -136,6 +137,42 @@ class Home extends Base_Controller
 	}
 
 	/**
+	 * 创建管理员
+	 * @author zuoliguang 2018-08-24
+	 * @return [type] [description]
+	 */
+	public function doCreateAdmin()
+	{
+		if (!$this->input->is_ajax_request()) {
+			$this->ajaxJson(0, "访问方式错误");
+		}
+
+		$postData = $this->input->post();
+
+		$password = $postData["password"];
+
+		$repassword = $postData["repassword"];
+
+		if ($password !== $repassword) {
+			$this->ajaxJson(1, "两次密码输入不一致");
+		}
+
+		$hash_pass = password_hash($password, PASSWORD_DEFAULT);
+
+		$postData["password"] = $hash_pass;
+
+		unset($postData["repassword"]);
+
+		$res = $this->admin_model->insert($postData);
+
+		if ($res > 0) {
+			$this->ajaxJson(200, "ok");
+		} else {
+			$this->ajaxJson(2, "操作失败");
+		}
+	}
+
+	/**
 	 * 更新账号信息
 	 * @author zuoliguang 2018-08-20
 	 * @return [type] [description]
@@ -203,7 +240,8 @@ class Home extends Base_Controller
 	 */
 	public function doUpdatePassword()
 	{
-		if (!$this->input->is_ajax_request()) {
+		if (!$this->input->is_ajax_request()) 
+		{
 			$this->ajaxJson(0, "访问方式错误!");
 		}
 
@@ -330,7 +368,8 @@ class Home extends Base_Controller
 	 */
 	public function ajaxCatalogLayuiTreeList()
 	{
-		if (!$this->input->is_ajax_request()) {
+		if (!$this->input->is_ajax_request()) 
+		{
 			$this->ajaxJson(0, "访问方式错误!");
 		}
 
@@ -346,7 +385,8 @@ class Home extends Base_Controller
 	 */
 	public function getOneCatalog()
 	{
-		if (!$this->input->is_ajax_request()) {
+		if (!$this->input->is_ajax_request()) 
+		{
 			$this->ajaxJson(0, "访问方式错误!");
 		}
 
@@ -372,7 +412,8 @@ class Home extends Base_Controller
 	 */
 	public function deleteCatalog()
 	{
-		if (!$this->input->is_ajax_request()) {
+		if (!$this->input->is_ajax_request()) 
+		{
 			$this->ajaxJson(0, "访问方式错误!");
 		}
 
@@ -398,7 +439,8 @@ class Home extends Base_Controller
 	 */
 	public function doCatalog()
 	{
-		if (!$this->input->is_ajax_request()) {
+		if (!$this->input->is_ajax_request()) 
+		{
 			$this->ajaxJson(0, "访问方式错误!");
 		}
 
@@ -474,7 +516,8 @@ class Home extends Base_Controller
 	 */
 	public function getPermissions()
 	{
-		if (!$this->input->is_ajax_request()) {
+		if (!$this->input->is_ajax_request()) 
+		{
 			$this->ajaxJson(0, "访问方式错误!");
 		}
 
@@ -509,7 +552,8 @@ class Home extends Base_Controller
 	 */
 	public function updatePermissions()
 	{
-		if (!$this->input->is_ajax_request()) {
+		if (!$this->input->is_ajax_request()) 
+		{
 			$this->ajaxJson(0, "访问方式错误!");
 		}
 
