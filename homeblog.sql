@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2018-08-24 13:16:25
+Date: 2018-08-24 17:09:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,8 +28,12 @@ CREATE TABLE `hb_about_me` (
   `area` varchar(100) DEFAULT NULL COMMENT '区',
   `location` varchar(255) DEFAULT NULL COMMENT '详细地址',
   `email` varchar(100) DEFAULT NULL COMMENT '电子邮箱',
-  `wchat_public` varchar(100) DEFAULT NULL COMMENT '个人微信公众号',
+  `wchat_public_img` varchar(255) DEFAULT NULL COMMENT '微信公众号图片地址',
+  `wchat_pay_img` varchar(255) DEFAULT NULL COMMENT '微信支付图片地址',
+  `alipay_img` varchar(255) DEFAULT NULL COMMENT '阿里支付图片',
   `introduce` text COMMENT '简介信息',
+  `is_default` tinyint(4) DEFAULT '0' COMMENT '是否默认',
+  `is_del` tinyint(4) DEFAULT '0',
   `create_time` int(11) DEFAULT NULL,
   `modify_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -48,12 +52,13 @@ CREATE TABLE `hb_article` (
   `category_id` int(11) DEFAULT NULL COMMENT '文章分类',
   `title` varchar(50) DEFAULT '' COMMENT '文章标题',
   `intro` varchar(100) DEFAULT '' COMMENT '文章简介',
-  `pic` varchar(255) DEFAULT NULL COMMENT '文章配图',
+  `img` varchar(255) DEFAULT NULL COMMENT '文章配图',
   `author` varchar(30) DEFAULT '' COMMENT '作者名称，这里记录后台账号名称',
   `body` text COMMENT '文章内容-使用在线编辑',
   `times` int(11) DEFAULT '0' COMMENT '浏览次数-文章排行',
   `admire` int(11) DEFAULT NULL COMMENT '被赞的次数 （一个IP 1次/天）',
   `tags` varchar(60) DEFAULT '' COMMENT '标签',
+  `link_url` varchar(255) DEFAULT NULL COMMENT '如果是转载，该位置添加地址',
   `is_recommend` tinyint(4) DEFAULT '0' COMMENT '特别推荐 0否 1是',
   `is_del` tinyint(4) DEFAULT '0' COMMENT '软删除标识 0未删除 1删除',
   `create_time` int(11) DEFAULT NULL,
@@ -151,4 +156,22 @@ CREATE TABLE `hb_pv` (
 
 -- ----------------------------
 -- Records of hb_pv
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `hb_tops`
+-- ----------------------------
+DROP TABLE IF EXISTS `hb_tops`;
+CREATE TABLE `hb_tops` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) NOT NULL COMMENT '展示标题',
+  `img` varchar(200) NOT NULL COMMENT '背景图',
+  `id_del` tinyint(4) DEFAULT '0',
+  `create_time` int(11) DEFAULT NULL,
+  `modify_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='博客首页头栏';
+
+-- ----------------------------
+-- Records of hb_tops
 -- ----------------------------

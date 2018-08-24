@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-23 08:54:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-24 09:58:53
+ * @Last Modified time: 2018-08-24 17:04:57
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -14,7 +14,7 @@ class Blog extends Base_Controller {
 	function __construct()
 	{
 		// 设置该区域的权限操作
-		$this->rightUris = [ "doCreateCategory", "doUpdateCategory", "deleteCategory", "doCreateArticle", "doUpdateArticle" ];
+		$this->rightUris = [ "doCreateCategory", "doUpdateCategory", "deleteCategory", "doCreateArticle", "doUpdateArticle", "deleteArticle" ];
 
 		parent::__construct();
 	}
@@ -68,6 +68,8 @@ class Blog extends Base_Controller {
 	{
 		# code...
 	}
+
+	/******************************************************/
 
 	/**
 	 * 文章管理列表
@@ -129,15 +131,37 @@ class Blog extends Base_Controller {
 		# code...
 	}
 
-	/*----------------------------------------------------------------------*/
+	/******************************************************/
 
 	/**
-	 * 首页头信息
+	 * 首页头栏信息管理
 	 * @author zuoliguang 2018-08-23
 	 * @param  string $value [description]
 	 * @return [type]        [description]
 	 */
-	public function topList($value='')
+	public function ajaxTopList()
+	{
+		# code...
+	}
+
+	public function doCreateTop()
+	{
+		# code...
+	}
+
+	public function doUpdateTop()
+	{
+		# code...
+	}
+
+	public function deleteTop()
+	{
+		# code...
+	}
+
+	/******************************************************/
+
+	public function aboutMe()
 	{
 		# code...
 	}
