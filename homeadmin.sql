@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2018-08-24 11:24:55
+Date: 2018-08-24 13:16:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -44,8 +44,8 @@ CREATE TABLE `ha_admin` (
 -- ----------------------------
 -- Records of ha_admin
 -- ----------------------------
-INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$p0TtmYTZtN1JmzhNbvfqae47LZ.glSEOw5.7JcDWPfd.rwyViCmpm', 'http://himg.bdimg.com/sys/portrait/item/39557a6c67636778797afd33.jpg', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1535080129');
-INSERT INTO `ha_admin` VALUES ('2', 'test', '$2y$10$2HQevjH9yZeTkUcbd4i6fO3IjFH0GtmUYG3.cMISOoDDLgSldhDKq', '', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', null, null, null, '1', '0', '1535080082');
+INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$p0TtmYTZtN1JmzhNbvfqae47LZ.glSEOw5.7JcDWPfd.rwyViCmpm', 'http://himg.bdimg.com/sys/portrait/item/39557a6c67636778797afd33.jpg', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1535087679');
+INSERT INTO `ha_admin` VALUES ('2', 'test', '$2y$10$2HQevjH9yZeTkUcbd4i6fO3IjFH0GtmUYG3.cMISOoDDLgSldhDKq', '', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', null, null, null, '1', '0', '1535087713');
 
 -- ----------------------------
 -- Table structure for `ha_catalog`
@@ -63,7 +63,7 @@ CREATE TABLE `ha_catalog` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique` (`url`,`title`) USING BTREE,
   KEY `title` (`title`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='系统的目录列表';
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='系统的目录列表';
 
 -- ----------------------------
 -- Records of ha_catalog
@@ -75,6 +75,8 @@ INSERT INTO `ha_catalog` VALUES ('4', '1', '授权中心', '&#xe628;', '/home/pe
 INSERT INTO `ha_catalog` VALUES ('5', '0', '博客管理', '&#xe632;', '/', '0', '1534985946', '1534998216');
 INSERT INTO `ha_catalog` VALUES ('6', '5', '博文管理', '&#xe60a;', '/blog/article', '0', '1534986040', '1534997910');
 INSERT INTO `ha_catalog` VALUES ('7', '5', '首页展示图', '&#xe634;', '/blog/top', '0', '1534997724', null);
+INSERT INTO `ha_catalog` VALUES ('8', '0', '工具管理', '&#xe631;', '/', '0', '1535081373', null);
+INSERT INTO `ha_catalog` VALUES ('9', '8', '测试', '&#xe64e;', '/', '0', '1535081776', null);
 
 -- ----------------------------
 -- Table structure for `ha_permission`
@@ -86,10 +88,11 @@ CREATE TABLE `ha_permission` (
   `catalog_id` int(11) NOT NULL COMMENT '菜单id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique` (`admin_id`,`catalog_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='目录的权限列表';
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='目录的权限列表';
 
 -- ----------------------------
 -- Records of ha_permission
 -- ----------------------------
-INSERT INTO `ha_permission` VALUES ('1', '2', '6');
-INSERT INTO `ha_permission` VALUES ('2', '2', '7');
+INSERT INTO `ha_permission` VALUES ('4', '2', '7');
+INSERT INTO `ha_permission` VALUES ('3', '2', '6');
+INSERT INTO `ha_permission` VALUES ('5', '2', '9');
