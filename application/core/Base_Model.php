@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 15:59:41
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-23 08:36:19
+ * @Last Modified time: 2018-08-27 15:05:31
  */
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
@@ -19,6 +19,8 @@ class Base_Model extends CI_Model
 
 	public $tableName;
 
+	public $database = null; 
+
 	function __construct()
 	{
 		parent::__construct();
@@ -28,6 +30,8 @@ class Base_Model extends CI_Model
 		$this->microtimestemp = microtime();
 
 		$this->bd_admin = $this->load->database('homeadmin', true);
+
+		$this->bd_blog = $this->load->database('homeblog', true);
 	}
 
 	/**
@@ -38,9 +42,9 @@ class Base_Model extends CI_Model
 	 */
 	public function insert($data=[])
 	{
-		$this->bd_admin->insert($this->tableName, $data);
+		$this->database->insert($this->tableName, $data);
 
-		return $this->bd_admin->insert_id();
+		return $this->database->insert_id();
 	}
 
 	/**
@@ -51,7 +55,7 @@ class Base_Model extends CI_Model
 	 */
 	public function insert_batch($data=[])
 	{
-		$this->bd_admin->insert_batch($this->tableName, $data);
+		$this->database->insert_batch($this->tableName, $data);
 	}
 
 	/**
@@ -63,10 +67,10 @@ class Base_Model extends CI_Model
 	 */
 	public function delete($where, $flag=false)
 	{
-		$this->bd_admin->where($where);
+		$this->database->where($where);
 
 		if ($flag) { // 真删除
-			$this->bd_admin->delete($this->tableName);
+			$this->database->delete($this->tableName);
 		} else { // 软删除
 			return $this->update(["is_del" => 1], $where);
 		}
@@ -80,13 +84,13 @@ class Base_Model extends CI_Model
 	 */
 	public function getOneById($id)
 	{
-		$this->bd_admin->select("*");
+		$this->database->select("*");
 
-		$this->bd_admin->from($this->tableName);
+		$this->database->from($this->tableName);
 
-		$this->bd_admin->where("id", $id);
+		$this->database->where("id", $id);
 
-		return $this->bd_admin->get()->row_array();
+		return $this->database->get()->row_array();
 	}
 
 	/**
@@ -98,11 +102,11 @@ class Base_Model extends CI_Model
 	 */
 	public function update($data=[], $where=[])
 	{
-		$this->bd_admin->where($where);
+		$this->database->where($where);
 
-		$this->bd_admin->update($this->tableName, $data);
+		$this->database->update($this->tableName, $data);
 
-		return $this->bd_admin->affected_rows();
+		return $this->database->affected_rows();
 	}
 
 	/**
@@ -114,9 +118,9 @@ class Base_Model extends CI_Model
 	 */
 	public function update_batch($data=[], $field="")
 	{
-		$this->bd_admin->update_batch($this->tableName, $data, $field);
+		$this->database->update_batch($this->tableName, $data, $field);
 
-		return $this->bd_admin->affected_rows();
+		return $this->database->affected_rows();
 	}
 
 	/**
@@ -134,18 +138,33 @@ class Base_Model extends CI_Model
 	{
 		$size = ($size==0) ? $this->pageSize : $size;
 
-		$this->bd_admin->select($fields);
+		$this->database->select($fields);
 
-		$this->bd_admin->from($this->tableName);
+		$this->database->from($this->tableName);
 
-		$this->bd_admin->where($where);
+		$this->database->where($where);
 
-		$this->bd_admin->limit($size, $start);
+		$this->database->limit($size, $start);
 
-		$this->bd_admin->order_by($orderBy, $orderType);
+		$this->database->order_by($orderBy, $orderType);
 
-		return $this->bd_admin->get()->result_array();
+		return $this->database->get()->result_array();
 	}
 
+	/**
+	 * 获取查询条件的数据量
+	 * @author zuoliguang 2018-08-27
+	 * @param  array  $where [description]
+	 * @return [type]        [description]
+	 */
+	public function count($where=[])
+	{
+		$this->database->select("*");
 
+		$this->database->from($this->tableName);
+
+		$this->database->where($where);
+
+		return $this->database->get()->num_rows();
+	}
 }

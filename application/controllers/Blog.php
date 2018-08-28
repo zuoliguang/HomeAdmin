@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-23 08:54:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-24 17:04:57
+ * @Last Modified time: 2018-08-27 17:25:52
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -17,6 +17,18 @@ class Blog extends Base_Controller {
 		$this->rightUris = [ "doCreateCategory", "doUpdateCategory", "deleteCategory", "doCreateArticle", "doUpdateArticle", "deleteArticle" ];
 
 		parent::__construct();
+
+		$this->load->model("category_model");
+	}
+
+	/**
+	 * 分类页面
+	 * @author zuoliguang 2018-08-27
+	 * @return [type] [description]
+	 */
+	public function category()
+	{
+		$this->load->view('blog/category.html');
 	}
 
 	/**
@@ -26,7 +38,20 @@ class Blog extends Base_Controller {
 	 */
 	public function ajaxCategoryList()
 	{
-		# code...
+		$page = $this->input->get("page");
+
+		$size = $this->input->get("limit");
+
+		$start = (intval($page) - 1 ) * intval($size);
+
+		$where = ["is_del"=>0];
+
+		$data = $this->category_model->all("*", $where, $start, $size);
+
+		$count = $this->category_model->count($where);
+
+		$this->ajaxLayuiTableDatas(0, "ok", $count, $data);
+		
 	}
 
 	/**
@@ -36,7 +61,33 @@ class Blog extends Base_Controller {
 	 */
 	public function doCreateCategory()
 	{
-		# code...
+		if (!$this->input->is_ajax_request()) 
+		{
+			$this->ajaxJson(0, "访问方式错误");
+		}
+
+		$title = $this->input->post("title");
+
+		$tags = $this->input->post("tags");
+
+		$data = [
+
+			"title" => $title,
+
+			"tags" => $tags,
+
+			"create_time" => $this->timestemp
+		];
+
+		$res = $this->category_model->insert($data);
+
+		if ($res > 0) 
+		{
+			$this->ajaxJson(200);
+
+		} else {
+			$this->ajaxJson(1, "添加失败");
+		}
 	}
 
 	/**
@@ -46,7 +97,16 @@ class Blog extends Base_Controller {
 	 */
 	public function getOneCategory()
 	{
-		# code...
+		if (!$this->input->is_ajax_request()) 
+		{
+			$this->ajaxJson(0, "访问方式错误");
+		}
+
+		$id = $this->input->post("id");
+
+		$data = $this->category_model->getOneById($id);
+
+		$this->ajaxJson(200, "获取成功", $data);
 	}
 
 	/**
@@ -56,7 +116,35 @@ class Blog extends Base_Controller {
 	 */
 	public function doUpdateCategory()
 	{
-		# code...
+		if (!$this->input->is_ajax_request()) 
+		{
+			$this->ajaxJson(0, "访问方式错误");
+		}
+
+		$id = $this->input->post("update_id");
+
+		$title = $this->input->post("update_title");
+
+		$tags = $this->input->post("update_tags");
+
+		$data = [
+
+			"title" => $title,
+
+			"tags" => $tags,
+
+			"modify_time" => $this->timestemp
+		];
+
+		$res = $this->category_model->update($data, ["id"=>intval($id)]);
+
+		if ($res > 0) 
+		{
+			$this->ajaxJson(200);
+
+		} else {
+			$this->ajaxJson(1, "操作失败");
+		}
 	}
 
 	/**
@@ -66,7 +154,16 @@ class Blog extends Base_Controller {
 	 */
 	public function deleteCategory()
 	{
-		# code...
+		if (!$this->input->is_ajax_request()) 
+		{
+			$this->ajaxJson(0, "访问方式错误");
+		}
+
+		$id = $this->input->post("id");
+
+		$this->category_model->delete(["id"=>intval($id)]);
+
+		$this->ajaxJson(200);
 	}
 
 	/******************************************************/

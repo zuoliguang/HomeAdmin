@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 15:54:58
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-24 09:25:52
+ * @Last Modified time: 2018-08-27 14:51:04
  */
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
@@ -115,5 +115,19 @@ class Base_Controller extends CI_Controller
 	public function gridmanagerAjaxJson($totals=0, $data=[], $status="success")
 	{
 		echo json_encode(["totals"=>$totals, "status"=>$status, "data"=>$data]);exit();die();
+	}
+
+	/**
+	 * layui 数据表格
+	 * @author zuoliguang 2018-08-27
+	 * @param  integer $code  [description]
+	 * @param  string  $msg   [description]
+	 * @param  integer $count [description]
+	 * @param  array   $data  [description]
+	 * @return [type]         [description]
+	 */
+	public function ajaxLayuiTableDatas($code=0, $msg="", $count=0, $data=[])
+	{
+		echo json_encode(["code"=>$code, "msg"=>$msg, "count"=>$count, "data"=>$data]);exit();die();
 	}
 }

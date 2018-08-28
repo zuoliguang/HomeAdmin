@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2018-08-24 17:09:20
+Date: 2018-08-28 13:04:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -83,17 +83,19 @@ CREATE TABLE `hb_category` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(50) DEFAULT NULL COMMENT '文章分类名称',
   `tags` varchar(255) DEFAULT NULL COMMENT '该分类下所有包含的标签',
-  `is_del` tinyint(4) DEFAULT NULL,
+  `is_del` tinyint(4) DEFAULT '0',
   `create_time` int(11) DEFAULT NULL,
   `modify_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique` (`title`),
   KEY `tags` (`tags`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of hb_category
 -- ----------------------------
+INSERT INTO `hb_category` VALUES ('1', '生活', '工作,生活,家庭,规划', '0', '1535355597', '1535361231');
+INSERT INTO `hb_category` VALUES ('2', '程序', 'PHP,GO,Python,JS,HTML,框架,服务器,LINUX', '0', '1535357906', null);
 
 -- ----------------------------
 -- Table structure for `hb_comment`

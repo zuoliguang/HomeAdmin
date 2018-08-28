@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:51:08
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-24 11:33:51
+ * @Last Modified time: 2018-08-27 13:50:07
  */
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
@@ -14,9 +14,9 @@ class Catalog_model extends Base_Model
 	{
 		parent::__construct();
 
-		$this->tableName = "catalog";
+		$this->database = $this->bd_admin;
 
-		$this->load->helper('html');
+		$this->tableName = "catalog";
 	}
 
 	/**

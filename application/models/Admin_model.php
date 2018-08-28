@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:51:08
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-23 13:24:43
+ * @Last Modified time: 2018-08-27 13:49:31
  */
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
@@ -13,6 +13,8 @@ class Admin_model extends Base_Model
 	function __construct()
 	{
 		parent::__construct();
+
+		$this->database = $this->bd_admin;
 
 		$this->tableName = "admin";
 	}
