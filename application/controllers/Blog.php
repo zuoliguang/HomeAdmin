@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-23 08:54:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-27 17:25:52
+ * @Last Modified time: 2018-09-06 16:01:49
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -47,6 +47,11 @@ class Blog extends Base_Controller {
 		$where = ["is_del"=>0];
 
 		$data = $this->category_model->all("*", $where, $start, $size);
+
+		foreach ($data as &$category) {
+			
+			$category["create_time"] = date("Y-m-d H:i:s", $category["create_time"]);
+		}
 
 		$count = $this->category_model->count($where);
 
