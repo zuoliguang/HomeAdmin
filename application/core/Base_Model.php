@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 15:59:41
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-27 15:05:31
+ * @Last Modified time: 2018-09-07 09:50:49
  */
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
@@ -14,8 +14,6 @@ class Base_Model extends CI_Model
 	public $timestemp;
 	
 	public $microtimestemp;
-
-	public $pageSize = 20;
 
 	public $tableName;
 
@@ -134,10 +132,8 @@ class Base_Model extends CI_Model
 	 * @param  string  $orderType [description]
 	 * @return [type]             [description]
 	 */
-	public function all($fields="*", $where=[], $start=0, $size=0, $orderBy="id", $orderType="ASC")
+	public function all($fields="*", $where=[], $start=0, $size=20, $orderBy="id", $orderType="ASC")
 	{
-		$size = ($size==0) ? $this->pageSize : $size;
-
 		$this->database->select($fields);
 
 		$this->database->from($this->tableName);

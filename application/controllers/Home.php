@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:02:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-08-24 11:00:33
+ * @Last Modified time: 2018-09-07 11:14:36
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -315,9 +315,9 @@ class Home extends Base_Controller
 	{
 		$post = $this->input->post();
 
-		$page = isset($post["cPage"]) ? intval($post["cPage"]) : 1;
+		$page = isset($post["page"]) ? intval($post["page"]) : 1;
 
-		$size = isset($post["pSize"]) ? intval($post["pSize"]) : 0; // 为0时使用默认
+		$size = isset($post["limit"]) ? intval($post["limit"]) : 20; // 为0时使用默认
 
 		$start = (intval($page) - 1) * intval($size);
 
@@ -344,7 +344,9 @@ class Home extends Base_Controller
 			$admin["right"] = $this->rightDict[$admin["right"]];
 		}
 
-		$this->gridmanagerAjaxJson(count($data), $data);
+		$count = $this->admin_model->count($where);
+
+		$this->ajaxLayuiTableDatas(0, "ok", $count, $data);
 	}
 
 	/**
@@ -489,24 +491,50 @@ class Home extends Base_Controller
 	 */
 	public function permission()
 	{
-		$admins = $this->admin_model->allAdmins();
-
 		$allCatalogs = $this->catalog_model->getTreeList();
 
-		$types = $this->typeDict;
+		$data = [ "catalogs" =>$allCatalogs];
 
-		$rights = $this->rightDict;
+		$this->load->view('admin/permission.html', $data);
+	}
 
-		array_walk($admins, function(&$admin, $k) use ($types, $rights){
+	/**
+	 * ajax获取权限信息
+	 * @author zuoliguang 2018-09-07
+	 * @return [type] [description]
+	 */
+	public function ajaxPermissionListJson()
+	{
+		$post = $this->input->post();
+
+		$page = isset($post["page"]) ? intval($post["page"]) : 1;
+
+		$size = isset($post["limit"]) ? intval($post["limit"]) : 20; // 为0时使用默认
+
+		$start = (intval($page) - 1) * intval($size);
+
+		$fields = "id, username, telphone, email, type, right";
+
+		$where = []; // 搜索条件
+
+		!empty($post["username"]) && $where["username like"] = "%".$post["username"]."%"; // 模糊搜索
+
+		!empty($post["telphone"]) && $where["telphone"] = $post["telphone"];
+
+		!empty($post["email"]) && $where["email"] = $post["email"];
+
+		$data = $this->admin_model->all($fields, $where, $start, intval($size));
+
+		foreach ($data as &$admin) {
 
 			$admin["type"] = $this->typeDict[$admin["type"]];
 
 			$admin["right"] = $this->rightDict[$admin["right"]];
-		});
+		}
 
-		$data = [ "admins" => $admins, "catalogs" =>$allCatalogs];
+		$count = $this->admin_model->count($where);
 
-		$this->load->view('admin/permission.html', $data);
+		$this->ajaxLayuiTableDatas(0, "ok", $count, $data);
 	}
 
 	/**

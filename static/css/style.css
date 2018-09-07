@@ -587,3 +587,7 @@ html body .layui-nav .layui-nav-bar {
         display: none;
     }
 }
+
+.layui-form-label { width: 40px; }
+
+.layui-form-item { margin-bottom: 0px;margin-top: 10px; }

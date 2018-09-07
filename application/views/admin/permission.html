@@ -5,103 +5,123 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title></title>
-    <link rel="stylesheet" href="/static/lib/frame/layui/css/layui.css">
-    <link rel="stylesheet" href="/static/lib/frame/static/css/style.css">
+    <title>Data-Table 表格</title>
+    <link rel="stylesheet" href="/static/lib/layui-2.3.0/css/layui.css">
+    <link rel="stylesheet" href="/static/css/style.css">
     <link rel="icon" href="/static/images/logo.png">
-    <style type="text/css">
-        .no-catalog-tip { line-height: 40px; padding-left: 10px; font-size: 15px; }
-    </style>
 </head>
 <body class="body">
+    <div class="my-btn-box">
+        <div class="layui-form-item">
+            <label class="layui-form-label">账号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="username" autocomplete="off" class="layui-input search-field">
+            </div>
+            <label class="layui-form-label">电话</label>
+            <div class="layui-input-inline">
+                <input type="text" name="telphone" autocomplete="off" class="layui-input search-field">
+            </div>
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-inline">
+                <input type="text" name="email" autocomplete="off" class="layui-input search-field">
+            </div>
+            <div class="layui-input-inline">
+                <button class="layui-btn" id="search-action">搜索</button>
+            </div>
+        </div>
+    </div>
 
-<table class="layui-table">
-    <!-- 宽 -->
-    <colgroup>
-        <col width="50">
-        <col width="150">
-        <col width="130">
-        <col width="250">
-        <col width="200">
-        <col width="100">
-        <col><!-- 剩余的全部 -->
-    </colgroup>
-    <!-- 标题 -->
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>账号</th>
-            <th>电话</th>
-            <th>email</th>
-            <th>类别</th>
-            <th>权限</th>
-            <th>操作</th>
-        </tr> 
-    </thead>
-    <!-- 内容 -->
-    <tbody>
-        <?php foreach($admins as $admin): ?>
-            <tr>
-                <th><?=$admin["id"]?></th>
-                <th><?=$admin["username"]?></th>
-                <th><?=$admin["telphone"]?></th>
-                <th><?=$admin["email"]?></th>
-                <th><?=$admin["type"]?></th>
-                <th><?=$admin["right"]?></th>
-                <th>
-                    <button id="update-permission" data-id="<?=$admin['id']?>" data-name="<?=$admin['username']?>" class="layui-btn layui-btn-small layui-btn-primary"> <i class="layui-icon">&#xe642;</i> </button>
-                </th>
-            </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+    <!-- 表格 -->
+    <table id="datalist" lay-filter="tabledata"></table>
 
-
-<!-- 新增，编辑层 -->
-<div id="action-model" class="action-model" style="display: none;">
-    <form class="layui-form" lay-filter="catalogs" style="padding: 15px">
-        <input id="admin_id" type="hidden" name="admin_id" value=""> <!-- 隐藏字段 id -->
-        <div class="layui-collapse">
-            <?php foreach($catalogs as $first): ?>
-                <div class="layui-colla-item">
-                    <h2 class="layui-colla-title"><?=$first["title"]?></h2>
-                    <div class="layui-colla-content layui-show">
-                        <?php foreach($first["items"] as $item): ?>
-                            <input type="checkbox" id="checkboxitem" data-id="<?=$item['id']?>" name="catalog_id" value="<?=$item['id']?>" title="<?=$item['title']?>" lay-skin="primary">
-                        <?php endforeach; ?>
+    <!-- 新增，编辑层 -->
+    <div id="action-model" class="action-model" style="display: none;">
+        <form class="layui-form" lay-filter="catalogs" style="padding: 15px">
+            <input id="admin_id" type="hidden" name="admin_id" value=""> <!-- 隐藏字段 id -->
+            <div class="layui-collapse">
+                <?php foreach($catalogs as $first): ?>
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title"><?=$first["title"]?></h2>
+                        <div class="layui-colla-content layui-show">
+                            <?php foreach($first["items"] as $item): ?>
+                                <input type="checkbox" id="checkboxitem" data-id="<?=$item['id']?>" name="catalog_id" value="<?=$item['id']?>" title="<?=$item['title']?>" lay-skin="primary">
+                            <?php endforeach; ?>
+                        </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <div style="width: 100%;text-align: center;padding: 5px;margin-top: 15px;">
-            <button class="layui-btn" lay-submit lay-filter="permission">立即提交</button>
-        </div>
-    </form>
-</div>
+                <?php endforeach; ?>
+            </div>
+            <div style="width: 100%;text-align: center;padding: 5px;margin-top: 15px;">
+                <button class="layui-btn" lay-submit lay-filter="permission">立即提交</button>
+            </div>
+        </form>
+    </div>
 
-<script src="/static/lib/frame/layui/layui.js" charset="utf-8"></script>
+    <!-- 编辑选项 -->
+    <div style="display: none;" id="barDo">
+        <a style="line-height: 28px;" class="layui-btn " id="btn-update" lay-event="edit">编辑</a>
+    </div>
+
+<script type="text/javascript" src="/static/lib/layui-2.3.0/layui.js"></script>
 <script type="text/javascript">
-    layui.use(['layer', 'form', 'tree', 'element'], function () {
-        var layer = layui.layer, form = layui.form, tree = layui.tree, $ = layui.jquery;
-        // 编辑权限
-        $("[id=update-permission]").click(function(){
-            var name = $(this).attr("data-name");
-            var admin_id = $(this).attr("data-id");
-            $("#admin_id").val(admin_id);
-            $.post("/home/getPermissions", {admin_id : admin_id}, function(json){
-                if (json.state==200) {
-                    $.each(json.data, function(i, vo){
-                        $("#checkboxitem[data-id='"+vo.catalog_id+"']").attr("checked", true);
-                        layui.form.render(); //重新渲染显示效果
-                    });
-                    layer.open({
-                        type : 1,
-                        title : name + " 权限设置",
-                        content : $('#action-model'),
-                        area : '300px'
-                    });
+    layui.use(['table', 'layer', 'form', 'tree'], function () {
+        var table = layui.table, layer = layui.layer, form = layui.form, tree = layui.tree, $ = layui.jquery;
+
+        //渲染数据结构
+        var tablesIns = table.render({
+            elem: '#datalist',
+            height: 'full-90',
+            url: '/home/ajaxPermissionListJson', //数据接口
+            method: 'post', // 传递方式
+            page: true, //开启分页
+            cols: [[ //表头
+                {field: 'id', title: 'ID', width:50, sort: true, fixed: 'left'},
+                {field: 'username', title: '账号', width:200},
+                {field: 'telphone', title: '电话', width:200},
+                {field: 'email', title: 'email', width:200},
+                {field: 'type', title: '类别', width:150},
+                {field: 'right', title: '权限', width:100},
+                {title: '操作', align:'center', fixed: 'right', width:200, toolbar: '#barDo'}
+            ]]
+        });
+
+        // 搜索
+        $("#search-action").click(function(){
+            tablesIns.reload({
+                where: { // 重载时搜索的字段
+                    username: $(".search-field[name='username']").val(),
+                    telphone: $(".search-field[name='telphone']").val(),
+                    email: $(".search-field[name='email']").val()
+                },
+                page: {
+                    curr: 1  //重新从第 1 页开始
                 }
-            }, "json");
+            });
+        });
+
+        // 操作
+        table.on('tool(tabledata)', function(obj){
+            var data = obj.data;
+            var layEvent = obj.event;
+            if (layEvent=="edit") {
+                console.log(data);
+                var name = data.username;
+                var admin_id = data.id;
+                $("#admin_id").val(admin_id);
+                $.post("/home/getPermissions", {admin_id : admin_id}, function(json){
+                    if (json.state==200) {
+                        $.each(json.data, function(i, vo){
+                            $("#checkboxitem[data-id='"+vo.catalog_id+"']").attr("checked", true);
+                            layui.form.render(); //重新渲染显示效果
+                        });
+                        layer.open({
+                            type : 1,
+                            title : name + " 权限设置",
+                            content : $('#action-model'),
+                            area : '300px'
+                        });
+                    }
+                }, "json");
+            }    
         });
 
         // 表单提交

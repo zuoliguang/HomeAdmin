@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-23 08:54:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-09-06 16:01:49
+ * @Last Modified time: 2018-09-07 10:59:28
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -38,13 +38,19 @@ class Blog extends Base_Controller {
 	 */
 	public function ajaxCategoryList()
 	{
-		$page = $this->input->get("page");
+		$post = $this->input->post();
+		
+		$page = isset($post["page"]) ? intval($post["page"]) : 1;
 
-		$size = $this->input->get("limit");
+		$size = isset($post["limit"]) ? intval($post["limit"]) : 20; // 为0时使用默认
 
 		$start = (intval($page) - 1 ) * intval($size);
 
 		$where = ["is_del"=>0];
+
+		!empty($post["title"]) && $where["title like"] = "%".$post["title"]."%"; // 模糊搜索
+
+		!empty($post["tags"]) && $where["tags like"] = "%".$post["tags"]."%"; // 模糊搜索
 
 		$data = $this->category_model->all("*", $where, $start, $size);
 

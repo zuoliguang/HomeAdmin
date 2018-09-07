@@ -3,144 +3,189 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>表格</title>
-	<link rel="stylesheet" type="text/css" href="/static/lib/GridManager/css/gm.css">
-    <script type="text/javascript" src="/static/lib/GridManager/js/gm.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/gridmanager.css">
     <link rel="stylesheet" href="/static/lib/layui-2.3.0/css/layui.css">
+    <link rel="stylesheet" href="/static/css/style.css">
     <link rel="icon" href="/static/images/logo.png">
 </head>
 
-<body>
-	<section class="search-area">
-		<div class="sa-ele">
-			<label class="se-title">账号:</label>
-			<input class="se-con" name="username"/>
-		</div>
-		<div class="sa-ele">
-			<label class="se-title">电话:</label>
-			<input class="se-con" name="telphone"/>
-		</div>
-		<div class="sa-ele">
-			<label class="se-title">邮箱:</label>
-			<input class="se-con" name="email"/>
-		</div>
-		<div class="sa-ele">
-			<button class="search-action">搜索</button>
-			<button class="reset-action">重置</button>
-			<button style="margin-bottom: 4px;" id="create-admin" class="layui-btn layui-btn-mini"><i class="layui-icon">&#xe654;</i></button>
-		</div>
-	</section>
+<body class="body">
+	<div class="my-btn-box">
+        <div class="layui-form-item">
+            <label class="layui-form-label">账号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="username" autocomplete="off" class="layui-input search-field">
+            </div>
+            <label class="layui-form-label">电话</label>
+            <div class="layui-input-inline">
+                <input type="text" name="telphone" autocomplete="off" class="layui-input search-field">
+            </div>
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-inline">
+                <input type="text" name="email" autocomplete="off" class="layui-input search-field">
+            </div>
+            <div class="layui-input-inline">
+                <button class="layui-btn" id="search-action">搜索</button>
+                <button class="layui-btn layui-btn-mini" id="create-action">添加</button>
+            </div>
+        </div>
+	</div>
 
-	<section class="grid-main">
-		<table></table>
-	</section>
+    <!-- 表格 -->
+    <table id="datalist" lay-filter="tabledata"></table>
 
-	<!-- 隐藏数据初始按钮 -->
-	<section class="bottom-bar" style="display: none;">
-		<button id="init-gm" disabled>[表格]初始化</button>
-		<button id="destroy-gm" disabled>[表格]数据清除</button>
-	</section>
+    <!-- 新增，编辑层 -->
+    <div id="action-model" class="action-model" style="display: none;">
+        <form class="layui-form" lay-filter="catalogs" style="padding: 20px">
+            <div class="layui-form-item">
+                <label class="layui-form-label">username</label>
+                <div class="layui-input-block">
+                    <input id="username" type="text" name="username" placeholder="" lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            
+            <div class="layui-form-item">
+                <label class="layui-form-label">password</label>
+                <div class="layui-input-block">
+                    <input id="password" type="password" name="password" placeholder="" lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            
+            <div class="layui-form-item">
+                <label class="layui-form-label">repassword</label>
+                <div class="layui-input-block">
+                    <input id="repassword" type="password" name="repassword" placeholder="" lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            
+            <div class="layui-form-item">
+                <label class="layui-form-label">telphone</label>
+                <div class="layui-input-block">
+                    <input id="telphone" type="text" name="telphone" placeholder="" autocomplete="off" lay-verify="phone" class="layui-input">
+                </div>
+            </div>
+            
+            <div class="layui-form-item">
+                <label class="layui-form-label">email</label>
+                <div class="layui-input-block">
+                    <input id="email" type="text" name="email" placeholder="" autocomplete="off" lay-verify="email" class="layui-input">
+                </div>
+            </div>
+            
+            <div class="layui-form-item">
+                <label class="layui-form-label">管理类型</label>
+                <div class="layui-input-block">
+    				<select name="type" lay-verify="required">
+    					<option value=1>普通管理员</option>
+    					<option value=0>超级管理员</option>
+    				</select> 
+                </div>
+            </div>
+            
+            <div class="layui-form-item">
+                <label class="layui-form-label">权限</label>
+                <div class="layui-input-block">
+    				<select name="right" lay-verify="required">
+    					<option value=0>只读</option>
+    					<option value=1>读写</option>
+    				</select>
+                </div>
+            </div>
 
-<!-- 新增，编辑层 -->
-<div id="action-model" class="action-model" style="display: none;">
-    <form class="layui-form" lay-filter="catalogs" style="padding: 20px">
-        <div class="layui-form-item">
-            <label class="layui-form-label">username</label>
-            <div class="layui-input-block">
-                <input id="username" type="text" name="username" placeholder="" lay-verify="required" autocomplete="off" class="layui-input">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="createadmin">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
             </div>
-        </div>
-        
-        <div class="layui-form-item">
-            <label class="layui-form-label">password</label>
-            <div class="layui-input-block">
-                <input id="password" type="password" name="password" placeholder="" lay-verify="required" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        
-        <div class="layui-form-item">
-            <label class="layui-form-label">repassword</label>
-            <div class="layui-input-block">
-                <input id="repassword" type="password" name="repassword" placeholder="" lay-verify="required" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        
-        <div class="layui-form-item">
-            <label class="layui-form-label">telphone</label>
-            <div class="layui-input-block">
-                <input id="telphone" type="text" name="telphone" placeholder="" autocomplete="off" lay-verify="phone" class="layui-input">
-            </div>
-        </div>
-        
-        <div class="layui-form-item">
-            <label class="layui-form-label">email</label>
-            <div class="layui-input-block">
-                <input id="email" type="text" name="email" placeholder="" autocomplete="off" lay-verify="email" class="layui-input">
-            </div>
-        </div>
-        
-        <div class="layui-form-item">
-            <label class="layui-form-label">管理类型</label>
-            <div class="layui-input-block">
-				<select name="type" lay-verify="required">
-					<option value=1>普通管理员</option>
-					<option value=0>超级管理员</option>
-				</select> 
-            </div>
-        </div>
-        
-        <div class="layui-form-item">
-            <label class="layui-form-label">权限</label>
-            <div class="layui-input-block">
-				<select name="right" lay-verify="required">
-					<option value=0>只读</option>
-					<option value=1>读写</option>
-				</select>
-            </div>
-        </div>
+        </form>
+    </div>
 
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="createadmin">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-            </div>
-        </div>
-    </form>
-</div>
+    <!-- 编辑选项 -->
+    <div style="display: none;" id="barDo">
+        <a style="line-height: 28px;" class="layui-btn" id="btn-update" lay-event="edit">编辑</a>
+        <a style="line-height: 28px;" class="layui-btn layui-btn-danger" lay-event="del">删除</a>
+    </div>
 
-<script type="text/javascript">
-	var dataUrl = "/home/ajaxAdminListJson"; // 数据地址
-</script>
-<script type="text/javascript" src="/static/js/gridmanager_adminlist.js"></script>
-<script type="text/javascript" src="/static/lib/layui-2.3.0/layui.js"></script>
-<script type="text/javascript">
-	layui.use(['layer', 'form'], function(){
-		var layer = layui.layer, form = layui.form, $ = layui.jquery;
+    <script type="text/javascript" src="/static/lib/layui-2.3.0/layui.js"></script>
+    <script type="text/javascript">
+    	layui.use(['table', 'layer', 'form'], function(){
+    		var table = layui.table, layer = layui.layer, form = layui.form, $ = layui.jquery;
 
-		// 弹出层
-		$("[id=create-admin]").click(function(){
-			layer.open({
-                type : 1,
-                title : "添加管理员",
-                content : $('#action-model'),
-                area : '500px'
+            //渲染数据结构
+            var tablesIns = table.render({
+                elem: '#datalist',
+                height: 'full-100',
+                url: '/home/ajaxAdminListJson', //数据接口
+                method: 'post', // 传递方式
+                page: true, //开启分页
+                cols: [[ //表头
+                    {field: 'id', title: 'ID', width:50, sort: true, fixed: 'left'},
+                    {field: 'icon', title: '头像', width:60, templet: function(d){
+                        return "<img style='width:27px;' src='"+d.icon+"'>";
+                    }},
+                    {field: 'username', title: '名称', width:150},
+                    {field: 'sex', title: '性别', width:100},
+                    {field: 'email', title: '邮箱', width:200},
+                    {field: 'telphone', title: '联系方式', width:200},
+                    {field: 'type', title: '类型', width:100},
+                    {field: 'right', title: '权限', width:100},
+                    {field: 'last_login_time', title: '最近登录', width:150},
+                    {title: '操作', align:'center', fixed: 'right', width:200, toolbar: '#barDo'}
+                ]]
             });
-		});
 
-		// 表单提交
-        form.on('submit(createadmin)', function(data){
-        	// console.log(data.field);
-            $.post("/home/doCreateAdmin", data.field, function(json){
-                if (json.state==200) {
-                    layer.alert("操作成功!", {title: '提示!'});
-                    window.location.reload();
-                } else {
-                    layer.alert(json.message, {title: '提示!'});
+            // 搜索
+            $("#search-action").click(function(){
+                tablesIns.reload({
+                    where: { // 重载时搜索的字段
+                        username: $(".search-field[name='username']").val(),
+                        telphone: $(".search-field[name='telphone']").val(),
+                        email: $(".search-field[name='email']").val()
+                    },
+                    page: {
+                        curr: 1  //重新从第 1 页开始
+                    }
+                });
+            });
+
+            // 操作
+            table.on('tool(tabledata)', function(obj){
+                var data = obj.data;
+                var layEvent = obj.event;
+                if (layEvent=="edit") {
+                    console.log(data);
+                    layer.alert("暂时不提供该操作^_^!", {title: '提示!'});
+                } else if (layEvent === 'del') {
+                    console.log(data);
+                    layer.alert("暂时不提供该操作^_^!", {title: '提示!'});
                 }
-            }, "json");
-            return false; //阻止表单跳转
-        });
-	});
-</script>
+                    
+            });
+
+    		// 弹出层
+    		$("#create-action").click(function(){
+    			layer.open({
+                    type : 1,
+                    title : "添加管理员",
+                    content : $('#action-model'),
+                    area : '500px'
+                });
+    		});
+
+    		// 表单提交
+            form.on('submit(createadmin)', function(data){
+            	console.log(data.field);
+                $.post("/home/doCreateAdmin", data.field, function(json){
+                    if (json.state==200) {
+                        layer.alert("操作成功!", {title: '提示!'});
+                        window.location.reload();
+                    } else {
+                        layer.alert(json.message, {title: '提示!'});
+                    }
+                }, "json");
+                return false; //阻止表单跳转
+            });
+    	});
+    </script>
 </body>
 </html>
