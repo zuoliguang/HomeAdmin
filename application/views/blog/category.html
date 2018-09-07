@@ -11,7 +11,7 @@
     <link rel="icon" href="/static/images/logo.png">
 </head>
 <body class="body">
-    <div class="my-btn-box">
+    <div class="my-btn-box search-box">
         <div class="layui-form-item">
             <label class="layui-form-label">分类</label>
             <div class="layui-input-inline">
@@ -98,15 +98,15 @@
             //渲染数据结构
             var tablesIns = table.render({
                 elem: '#datalist',
-                height: 'full-90',
+                height: 'full-100',
                 url: '/blog/ajaxCategoryList', //数据接口
                 method: 'post', // 传递方式
                 page: true, //开启分页
                 cols: [[ //表头
                     {field: 'id', title: 'ID', width:50, sort: true, fixed: 'left'},
-                    {field: 'title', title: '分类名称', width:100},
-                    {field: 'tags', title: '相关标签', width:300},
-                    {field: 'create_time', title: '创建时间', width:500},
+                    {field: 'title', title: '分类名称', width:200},
+                    {field: 'tags', title: '相关标签', width:400},
+                    {field: 'create_time', title: '创建时间', width:300},
                     {title: '操作', align:'center', fixed: 'right', width:300, toolbar: '#barDo'}
                 ]]
             });

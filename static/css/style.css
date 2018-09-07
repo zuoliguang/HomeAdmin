@@ -587,7 +587,6 @@ html body .layui-nav .layui-nav-bar {
         display: none;
     }
 }
+.search-box .layui-form-label { width: 40px; }
 
-.layui-form-label { width: 40px; }
-
-.layui-form-item { margin-bottom: 0px;margin-top: 10px; }
+.search-box .layui-form-item { margin-bottom: 0px;margin-top: 10px; }

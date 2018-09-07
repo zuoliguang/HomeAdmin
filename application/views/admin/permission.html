@@ -11,7 +11,7 @@
     <link rel="icon" href="/static/images/logo.png">
 </head>
 <body class="body">
-    <div class="my-btn-box">
+    <div class="my-btn-box search-box">
         <div class="layui-form-item">
             <label class="layui-form-label">账号</label>
             <div class="layui-input-inline">
@@ -69,7 +69,7 @@
         //渲染数据结构
         var tablesIns = table.render({
             elem: '#datalist',
-            height: 'full-90',
+            height: 'full-100',
             url: '/home/ajaxPermissionListJson', //数据接口
             method: 'post', // 传递方式
             page: true, //开启分页
@@ -78,7 +78,7 @@
                 {field: 'username', title: '账号', width:200},
                 {field: 'telphone', title: '电话', width:200},
                 {field: 'email', title: 'email', width:200},
-                {field: 'type', title: '类别', width:150},
+                {field: 'type', title: '类别', width:200},
                 {field: 'right', title: '权限', width:100},
                 {title: '操作', align:'center', fixed: 'right', width:200, toolbar: '#barDo'}
             ]]
