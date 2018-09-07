@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50547
 File Encoding         : 65001
 
-Date: 2018-08-28 13:04:11
+Date: 2018-09-07 12:19:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -44,8 +44,8 @@ CREATE TABLE `ha_admin` (
 -- ----------------------------
 -- Records of ha_admin
 -- ----------------------------
-INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$p0TtmYTZtN1JmzhNbvfqae47LZ.glSEOw5.7JcDWPfd.rwyViCmpm', 'http://himg.bdimg.com/sys/portrait/item/39557a6c67636778797afd33.jpg', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1535358485');
-INSERT INTO `ha_admin` VALUES ('2', 'test', '$2y$10$2HQevjH9yZeTkUcbd4i6fO3IjFH0GtmUYG3.cMISOoDDLgSldhDKq', '', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', null, null, null, '1', '0', '1535098995');
+INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$p0TtmYTZtN1JmzhNbvfqae47LZ.glSEOw5.7JcDWPfd.rwyViCmpm', 'http://himg.bdimg.com/sys/portrait/item/39557a6c67636778797afd33.jpg', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1536290830');
+INSERT INTO `ha_admin` VALUES ('2', 'test', '$2y$10$2HQevjH9yZeTkUcbd4i6fO3IjFH0GtmUYG3.cMISOoDDLgSldhDKq', '', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', null, null, null, '1', '0', '1536290796');
 
 -- ----------------------------
 -- Table structure for `ha_catalog`
@@ -92,8 +92,14 @@ CREATE TABLE `ha_permission` (
   `catalog_id` int(11) NOT NULL COMMENT '菜单id',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique` (`admin_id`,`catalog_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='目录的权限列表';
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='目录的权限列表';
 
 -- ----------------------------
 -- Records of ha_permission
 -- ----------------------------
+INSERT INTO `ha_permission` VALUES ('1', '2', '8');
+INSERT INTO `ha_permission` VALUES ('2', '2', '9');
+INSERT INTO `ha_permission` VALUES ('3', '2', '10');
+INSERT INTO `ha_permission` VALUES ('4', '2', '11');
+INSERT INTO `ha_permission` VALUES ('5', '2', '12');
+INSERT INTO `ha_permission` VALUES ('6', '2', '13');
