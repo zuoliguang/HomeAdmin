@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-23 08:54:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-09-07 10:59:28
+ * @Last Modified time: 2018-09-15 21:08:17
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -19,6 +19,8 @@ class Blog extends Base_Controller {
 		parent::__construct();
 
 		$this->load->model("category_model");
+
+		$this->load->model("article_model");
 	}
 
 	/**
@@ -180,13 +182,54 @@ class Blog extends Base_Controller {
 	/******************************************************/
 
 	/**
+	 * 分类页面
+	 * @author zuoliguang 2018-08-27
+	 * @return [type] [description]
+	 */
+	public function articles()
+	{
+		$this->load->view('blog/articles.html');
+	}
+
+	/**
 	 * 文章管理列表
 	 * @author zuoliguang 2018-08-23
 	 * @param  string $value [description]
 	 */
 	public function ajaxArticleList()
 	{
-		# code...
+		$post = $this->input->post();
+		
+		$page = isset($post["page"]) ? intval($post["page"]) : 1;
+
+		$size = isset($post["limit"]) ? intval($post["limit"]) : 20; // 为0时使用默认
+
+		$start = (intval($page) - 1 ) * intval($size);
+
+		$where = ['1' => 1];
+
+		!empty($post["category_id"]) && $where["category_id"] = $post["category_id"];
+
+		!empty($post["title"]) && $where["title like"] = "%".$post["title"]."%"; // 模糊搜索
+
+		!empty($post["tags"]) && $where["tags like"] = "%".$post["tags"]."%"; // 模糊搜索
+
+		!empty($post["is_recommend"]) && $where["is_recommend"] = $post["is_recommend"];
+
+		!empty($post["is_show"]) && $where["is_show"] = $post["is_show"];
+
+		!empty($post["create_time"]) && $where["create_time <="] = $post["create_time"]; // 传来的为截止时间
+
+		$data = $this->article_model->all("*", $where, $start, $size);
+
+		foreach ($data as &$article) {
+			
+			$article["create_time"] = date("Y-m-d H:i:s", $article["create_time"]);
+		}
+
+		$count = $this->article_model->count($where);
+
+		$this->ajaxLayuiTableDatas(0, "ok", $count, $data);
 	}
 
 	/**
@@ -196,7 +239,7 @@ class Blog extends Base_Controller {
 	 */
 	public function createArticle()
 	{
-		# code...
+		$this->load->view('blog/create-article.html');
 	}
 
 	/**

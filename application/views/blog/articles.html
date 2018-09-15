@@ -9,18 +9,46 @@
     <link rel="stylesheet" href="/static/lib/layui-2.3.0/css/layui.css">
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="icon" href="/static/images/logo.png">
+    <style type="text/css">
+        .my-btn-box { height: 80px; }
+        .my-btn-box .layui-form-label { margin-bottom: 5px; }
+        .my-btn-box .layui-input-inline { margin-bottom: 5px; }
+    </style>
 </head>
 <body class="body">
     <div class="my-btn-box search-box">
         <div class="layui-form-item">
+
             <label class="layui-form-label">分类</label>
+            <div class="layui-input-inline">
+                <input type="text" name="category_id" autocomplete="off" class="layui-input search-field">
+            </div>
+
+            <label class="layui-form-label">标题</label>
             <div class="layui-input-inline">
                 <input type="text" name="title" autocomplete="off" class="layui-input search-field">
             </div>
+
             <label class="layui-form-label">标签</label>
             <div class="layui-input-inline">
                 <input type="text" name="tags" autocomplete="off" class="layui-input search-field">
             </div>
+
+            <label class="layui-form-label">推荐</label>
+            <div class="layui-input-inline">
+                <input type="text" name="is_recommend" autocomplete="off" class="layui-input search-field">
+            </div>
+
+            <label class="layui-form-label">显示</label>
+            <div class="layui-input-inline">
+                <input type="text" name="is_show" autocomplete="off" class="layui-input search-field">
+            </div>
+
+            <label class="layui-form-label">时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="create_time" autocomplete="off" class="layui-input search-field" placeholder="截止创建时间">
+            </div>
+
             <div class="layui-input-inline" style="float: right;">
                 <button class="layui-btn" id="search-action">搜索</button>
                 <button class="layui-btn layui-btn-mini" id="create-action">添加</button>
@@ -30,59 +58,6 @@
 
     <!-- 表格 -->
     <table id="datalist" lay-filter="tabledata"></table>
-
-    <!-- 新增模态框 -->
-    <div style="display: none;" id="add-model">
-        <form class="layui-form" lay-filter="catalogs" style="padding: 15px">
-            <div class="layui-form-item">
-                <label class="layui-form-label">分类</label>
-                <div class="layui-input-block">
-                    <input id="title" type="text" name="title" placeholder="分类名称" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            
-            <div class="layui-form-item">
-                <label class="layui-form-label">标签</label>
-                <div class="layui-input-block">
-                    <input id="tags" type="text" name="tags" placeholder="相关标签 , 间隔" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit lay-filter="addcategory">立即提交</button>
-                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <!-- 编辑模态框 -->
-    <div style="display: none;" id="update-model">
-        <form class="layui-form" lay-filter="catalogs" style="padding: 15px">
-            <input type="hidden" id="update_id" name="update_id"> <!-- id -->
-            <div class="layui-form-item">
-                <label class="layui-form-label">分类</label>
-                <div class="layui-input-block">
-                    <input id="update_title" type="text" name="update_title" placeholder="分类名称" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            
-            <div class="layui-form-item">
-                <label class="layui-form-label">标签</label>
-                <div class="layui-input-block">
-                    <input id="update_tags" type="text" name="update_tags" placeholder="相关标签 , 间隔" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit lay-filter="updatecategory">立即提交</button>
-                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                </div>
-            </div>
-        </form>
-    </div>
 
     <!-- 编辑选项 -->
     <div style="display: none;" id="barDo">
@@ -99,15 +74,20 @@
             var tablesIns = table.render({
                 elem: '#datalist',
                 height: 'full-100',
-                url: '/blog/ajaxCategoryList', //数据接口
+                url: '/blog/ajaxArticleList', //数据接口
                 method: 'post', // 传递方式
                 page: true, //开启分页
                 cols: [[ //表头
                     {field: 'id', title: 'ID', width:50, sort: true, fixed: 'left'},
-                    {field: 'title', title: '分类名称', width:200},
-                    {field: 'tags', title: '相关标签', width:400},
-                    {field: 'create_time', title: '创建时间', width:300},
-                    {title: '操作', align:'center', fixed: 'right', width:300, toolbar: '#barDo'}
+                    {field: 'title', title: '标题', width:100},
+                    {field: 'category', title: '分类', width:100},
+                    {field: 'author', title: '作者', width:100},
+                    {field: 'times', title: '浏览次数', width:100},
+                    {field: 'tags', title: '标签', width:100},
+                    {field: 'is_recommend', title: '推荐', width:100},
+                    {field: 'is_show', title: '显示/隐藏', width:100},
+                    {field: 'create_time', title: '创建时间', width:100},
+                    {title: '操作', align:'center', fixed: 'right', width:200, toolbar: '#barDo'}
                 ]]
             });
 
@@ -127,10 +107,12 @@
             // 新增
             $("#create-action").click(function(){
                 layer.open({
-                    type : 1,
-                    title : "添加博文分类",
-                    content : $('#add-model'),
-                    area : '500px'
+                    type: 2,
+                    title : "添加博文",
+                    area: ['1000px', '450px'],
+                    fixed: false, //不固定
+                    maxmin: true,
+                    content: '/blog/createArticle'
                 });
             });
 

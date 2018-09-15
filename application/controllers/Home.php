@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 16:02:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-09-07 11:14:36
+ * @Last Modified time: 2018-09-15 20:22:49
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -38,7 +38,11 @@ class Home extends Base_Controller
 	 */
 	public function login()
 	{
-		$this->load->view('signout/login.html');
+		$bgid = rand(1, 15);
+		
+		$data = ['bgid' => $bgid];
+
+		$this->load->view('signout/login.html', $data);
 	}
 
 	/**
@@ -105,7 +109,7 @@ class Home extends Base_Controller
 	{
 		$this->session->sess_destroy();
 
-		$this->load->view('signout/login.html');
+		$this->urlRedirect("/home/login");
 	}
 
 	/**
