@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-23 08:54:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-09-15 21:08:17
+ * @Last Modified time: 2018-09-15 22:26:41
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -259,7 +259,11 @@ class Blog extends Base_Controller {
 	 */
 	public function updateArticle()
 	{
-		# code...
+		$id = $this->input->get('id');
+
+		$data = [];
+
+		$this->load->view('blog/update-article.html', $data);
 	}
 
 	/**

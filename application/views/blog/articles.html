@@ -147,31 +147,6 @@
                     
             });
 
-            // 新增表单提交
-            form.on('submit(addcategory)', function(data){
-                $.post("/blog/doCreateCategory", data.field, function(json){
-                    if (json.state==200) {
-                        layer.alert("操作成功!", {title: '提示!'});
-                        window.location.reload();
-                    } else {
-                        layer.alert(json.message, {title: '提示!'});
-                    }
-                }, "json");
-                return false; //阻止表单跳转
-            });
-
-            // 更新表单提交
-            form.on('submit(updatecategory)', function(data){
-                $.post("/blog/doUpdateCategory", data.field, function(json){
-                    if (json.state==200) {
-                        layer.alert("操作成功!", {title: '提示!'});
-                        window.location.reload();
-                    } else {
-                        layer.alert(json.message, {title: '提示!'});
-                    }
-                }, "json");
-                return false; //阻止表单跳转
-            });
         });
     </script>
 </body>
