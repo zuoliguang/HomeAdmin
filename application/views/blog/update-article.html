@@ -116,7 +116,7 @@
             data.field.content = layedit.getContent(editor);
 
             $.post("/blog/doUpdateArticle", data.field, function(data){
-                alert(data.message);
+                layer.alert(data.message, {title: '提示!'});
             },"json");
 
             // return false; // 更新完内页面刷新

@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本机
-Source Server Version : 50547
+Source Server         : localhost
+Source Server Version : 50553
 Source Host           : localhost:3306
 Source Database       : homeblog
 
 Target Server Type    : MYSQL
-Target Server Version : 50547
+Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-09-07 12:19:42
+Date: 2018-09-16 22:12:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -54,12 +54,13 @@ CREATE TABLE `hb_article` (
   `intro` varchar(100) DEFAULT '' COMMENT '文章简介',
   `img` varchar(255) DEFAULT NULL COMMENT '文章配图',
   `author` varchar(30) DEFAULT '' COMMENT '作者名称，这里记录后台账号名称',
-  `body` text COMMENT '文章内容-使用在线编辑',
+  `content` text COMMENT '文章内容-使用在线编辑',
   `times` int(11) DEFAULT '0' COMMENT '浏览次数-文章排行',
   `admire` int(11) DEFAULT NULL COMMENT '被赞的次数 （一个IP 1次/天）',
   `tags` varchar(60) DEFAULT '' COMMENT '标签',
   `link_url` varchar(255) DEFAULT NULL COMMENT '如果是转载，该位置添加地址',
   `is_recommend` tinyint(4) DEFAULT '0' COMMENT '特别推荐 0否 1是',
+  `is_show` tinyint(4) DEFAULT '0' COMMENT '显隐性 0 隐藏 1 显示',
   `is_del` tinyint(4) DEFAULT '0' COMMENT '软删除标识 0未删除 1删除',
   `create_time` int(11) DEFAULT NULL,
   `modify_time` int(11) DEFAULT NULL,
@@ -69,11 +70,12 @@ CREATE TABLE `hb_article` (
   KEY `tags` (`tags`),
   KEY `is_recommend` (`is_recommend`),
   KEY `category_id` (`category_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of hb_article
 -- ----------------------------
+INSERT INTO `hb_article` VALUES ('1', '1', '测试', '测试', 'http://www.homeblog.com/public/images/b06.jpg', 'zlgcg', '<p>这是一段<b>测试<strike>内容</strike>。</b></p><p><b><img src=\"/upload/image/2018-09-16/2018-04-06_093151.jpg\" alt=\"HOMEADMIN图片\"></b></p><b></b>', '0', '0', '测试', 'http://www.homeblog.com/index/list', '0', '0', '0', '1537067374', '1537079983');
 
 -- ----------------------------
 -- Table structure for `hb_category`
@@ -89,13 +91,14 @@ CREATE TABLE `hb_category` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique` (`title`),
   KEY `tags` (`tags`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of hb_category
 -- ----------------------------
 INSERT INTO `hb_category` VALUES ('1', '生活', '工作,生活,家庭,规划', '0', '1535355597', '1535361231');
-INSERT INTO `hb_category` VALUES ('2', '程序', 'PHP,GO,Python,JS,HTML,框架,服务器,LINUX', '0', '1535357906', null);
+INSERT INTO `hb_category` VALUES ('2', '编程', 'PHP,GO,Python,JS,HTML,框架,服务器,LINUX', '0', '1535357906', '1537066820');
+INSERT INTO `hb_category` VALUES ('3', '职场', '初级职称,中级职称,高级职称,职业生涯', '0', '1537067119', null);
 
 -- ----------------------------
 -- Table structure for `hb_comment`
@@ -168,12 +171,15 @@ CREATE TABLE `hb_tops` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(200) NOT NULL COMMENT '展示标题',
   `img` varchar(200) NOT NULL COMMENT '背景图',
-  `id_del` tinyint(4) DEFAULT '0',
+  `is_del` tinyint(4) DEFAULT '0',
   `create_time` int(11) DEFAULT NULL,
   `modify_time` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='博客首页头栏';
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_index` (`img`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='博客首页头栏';
 
 -- ----------------------------
 -- Records of hb_tops
 -- ----------------------------
+INSERT INTO `hb_tops` VALUES ('2', 'test测试标题', 'http://www.homeadmin.com/upload/image/2018-09-16/2018-09-16-1537105020.jpg', '0', '1537105026', null);
+INSERT INTO `hb_tops` VALUES ('3', 'test', 'http://www.homeadmin.com/upload/image/2018-09-16/2018-09-16-1537106485.jpg', '0', '1537105126', '1537106881');

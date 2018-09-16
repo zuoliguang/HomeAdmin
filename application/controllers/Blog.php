@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-23 08:54:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-09-16 12:14:11
+ * @Last Modified time: 2018-09-16 22:08:55
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -21,6 +21,8 @@ class Blog extends Base_Controller {
 		$this->load->model("category_model");
 
 		$this->load->model("article_model");
+
+		$this->load->model("tops_model");
 	}
 
 	/**
@@ -210,7 +212,7 @@ class Blog extends Base_Controller {
 
 		$start = (intval($page) - 1 ) * intval($size);
 
-		$where = ['1' => 1];
+		$where = ['is_del' => 0];
 
 		!empty($post["category_id"]) && $where["category_id"] = $post["category_id"];
 
@@ -288,7 +290,7 @@ class Blog extends Base_Controller {
 			$this->ajaxJson(200);
 		} else {
 
-			$this->ajaxJson(1, "保存失败");
+			$this->ajaxJson(1, "操作失败");
 		}
 	}
 
@@ -351,10 +353,28 @@ class Blog extends Base_Controller {
 	 */
 	public function deleteArticle()
 	{
-		# code...
+		if (!$this->input->is_ajax_request()) 
+		{
+			$this->ajaxJson(0, "访问方式错误");
+		}
+
+		$id = $this->input->post("id");
+
+		$this->article_model->delete(["id"=>intval($id)]);
+
+		$this->ajaxJson(200);
 	}
 
 	/******************************************************/
+
+	/**
+	 * 首页顶部列表
+	 * @return [type] [description]
+	 */
+	public function tops()
+	{
+		$this->load->view('blog/tops.html');
+	}
 
 	/**
 	 * 首页头栏信息管理
@@ -364,22 +384,121 @@ class Blog extends Base_Controller {
 	 */
 	public function ajaxTopList()
 	{
-		# code...
+		$post = $this->input->post();
+		
+		$page = isset($post["page"]) ? intval($post["page"]) : 1;
+
+		$size = isset($post["limit"]) ? intval($post["limit"]) : 20; // 为0时使用默认
+
+		$start = (intval($page) - 1 ) * intval($size);
+
+		$where = ['is_del' => 0];
+
+		!empty($post["title"]) && $where["title like"] = "%".$post["title"]."%"; // 模糊搜索
+
+		$data = $this->tops_model->all("*", $where, $start, $size);
+
+		foreach ($data as &$top) {
+			
+			$top['create_time'] = date("Y-m-d H:i:s", intval($top['create_time']));
+		}
+
+		$count = $this->tops_model->count($where);
+
+		$this->ajaxLayuiTableDatas(0, "ok", $count, $data);
 	}
 
+	/**
+	 * 新增tops
+	 * @return [type] [description]
+	 */
 	public function doCreateTop()
 	{
-		# code...
+		$data = $this->input->post();
+
+		$top = [];
+
+		$top['title'] = $data['title'];
+
+		$top['img'] = $data['img'];
+
+		$top['create_time'] = $this->timestemp;
+
+		$id = $this->tops_model->insert($top);
+
+		if ($id > 0) {
+			
+			$this->ajaxJson(200);
+		} else {
+
+			$this->ajaxJson(1, "操作失败");
+		}
 	}
 
+	/**
+	 * 获取一个top信息
+	 * @return [type] [description]
+	 */
+	public function getOneTop()
+	{
+		$id = $this->input->post("id");
+
+		$data = $this->tops_model->getOneById($id);
+
+		$image = $data['img'];
+
+		$image_info = getimagesize($image);
+
+		$data['width'] = $image_info[0];
+
+		$data['height'] = $image_info[1];
+
+		$this->ajaxJson(200, "获取成功", $data);
+	}
+
+	/**
+	 * 更新top操作
+	 * @return [type] [description]
+	 */
 	public function doUpdateTop()
 	{
-		# code...
+		$data = $this->input->post();
+
+		$top = [];
+
+		foreach ($data as $k => $v) {
+			
+			if (strpos($k, "update_")!==false) {
+				
+				$top[str_replace("update_", "", $k)] = $v;
+			}
+		}
+
+		$top['modify_time'] = $this->timestemp;
+
+		$res = $this->tops_model->update($top, ['id'=>intval($top['id'])]);
+
+		if ($res > 0) {
+			
+			$this->ajaxJson(200);
+		} else {
+
+			$this->ajaxJson(1, "操作失败");
+		}
 	}
 
 	public function deleteTop()
 	{
-		# code...
+		if (!$this->input->is_ajax_request()) 
+		{
+			$this->ajaxJson(0, "访问方式错误");
+		}
+
+		$id = $this->input->post("id");
+
+		$this->tops_model->delete(["id"=>intval($id)]);
+
+		$this->ajaxJson(200);
 	}
 
 	/******************************************************/

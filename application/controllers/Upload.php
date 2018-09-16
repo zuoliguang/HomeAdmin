@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-23 08:54:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-09-16 15:01:54
+ * @Last Modified time: 2018-09-16 21:05:38
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -43,7 +43,7 @@ class Upload extends Base_Controller {
 
 		$this->load->library('upload', $this->upload_config);
 
-		$src = "/upload/image/".date('Y-m-d');
+		$src = $_SERVER['HTTP_ORIGIN']."/upload/image/".date('Y-m-d');
 
 		// 上传结果操作
 		$result = [];
@@ -66,6 +66,12 @@ class Upload extends Base_Controller {
 
 			$src .= "/".$file_name;
 
+			$image_info = getimagesize($src);
+
+			$width = $image_info[0];
+
+			$height = $image_info[1];
+
 			$result = [
 				'code' => 0,
 
@@ -74,6 +80,10 @@ class Upload extends Base_Controller {
 				'data' => [
 
 					'src' => $src,
+
+					'width' => $width,
+
+					'height' => $height,
 
 					'title' => 'HOMEADMIN图片'
 				]

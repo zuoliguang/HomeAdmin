@@ -154,8 +154,8 @@
                         content: '/blog/updateArticle?id='+id
                     });
                 } else if (layEvent === 'del') {
-                    layer.confirm('真的删除该分类?', function(index){
-                        $.post("/blog/deleteCategory", {id: data.id}, function(json){
+                    layer.confirm('真的删除该文章?', function(index){
+                        $.post("/blog/deleteArticle", {id: data.id}, function(json){
                             if (json.state==200) {
                                 layer.alert(json.message, {title: '提示!'});
                                 window.location.reload();

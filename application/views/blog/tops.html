@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Data-Table 表格</title>
+    <link rel="stylesheet" href="/static/lib/layui-2.3.0/css/layui.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" href="/static/images/logo.png">
+</head>
+<body class="body">
+    <div class="my-btn-box search-box">
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" autocomplete="off" class="layui-input search-field">
+            </div>
+            <div class="layui-input-inline" style="float: right;">
+                <button class="layui-btn" id="search-action">搜索</button>
+                <button class="layui-btn layui-btn-mini" id="create-action">添加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 表格 -->
+    <table id="datalist" lay-filter="tabledata"></table>
+
+    <!-- 新增模态框 -->
+    <div style="display: none;" id="add-model">
+        <form class="layui-form" lay-filter="catalogs" style="padding: 15px">
+            <div class="layui-form-item">
+                <label class="layui-form-label">标题</label>
+                <div class="layui-input-block">
+                    <input id="title" type="text" name="title" placeholder="标题" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            
+            <div class="layui-form-item">
+                <label class="layui-form-label">图片</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="img" id="upload-img-url" value="">
+                    <button type="button" class="layui-btn" id="upload-img">
+                        <i class="layui-icon">&#xe67c;</i>上传图片
+                    </button>
+                </div>
+                <div class="layui-input-block" id="upload-img-tip" style="margin-top: 10px;display: none;">
+                    <p>100 x 100</p>
+                    <img style="width:100px;" src="">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="add-top">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- 编辑模态框 -->
+    <div style="display: none;" id="update-model">
+        <form class="layui-form" lay-filter="catalogs" style="padding: 15px">
+            <input type="hidden" id="update_id" name="update_id"> <!-- id -->
+            <div class="layui-form-item">
+                <label class="layui-form-label">标题</label>
+                <div class="layui-input-block">
+                    <input id="update_title" type="text" name="update_title" placeholder="标题" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            
+            <div class="layui-form-item">
+                <label class="layui-form-label">图片</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="update_img" id="update-img-url" value="">
+                    <button type="button" class="layui-btn" id="update-img">
+                        <i class="layui-icon">&#xe67c;</i>上传图片
+                    </button>
+                </div>
+                <div class="layui-input-block" id="update-img-tip" style="margin-top: 10px;">
+                    <p>100 x 100</p>
+                    <img style="width:100px;" src="">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="update-top">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- 编辑选项 -->
+    <div style="display: none;" id="barDo">
+        <a style="line-height: 28px;" class="layui-btn " id="btn-update" lay-event="edit">编辑</a>
+        <a style="line-height: 28px;" class="layui-btn layui-btn-danger" lay-event="del">删除</a>
+    </div>
+
+    <script type="text/javascript" src="/static/lib/layui-2.3.0/layui.js"></script>
+    <script type="text/javascript">
+        layui.use(['table', 'layer', 'form', 'upload'], function(){
+            var table = layui.table, form = layui.form, upload = layui.upload, $ = layui.jquery;
+            
+            //渲染数据结构
+            var tablesIns = table.render({
+                elem: '#datalist',
+                height: 'full-100',
+                url: '/blog/ajaxTopList', //数据接口
+                method: 'post', // 传递方式
+                page: true, //开启分页
+                cols: [[ //表头
+                    {field: 'id', title: 'ID', align:'center', width:80, sort: true, fixed: 'left'},
+                    {field: 'title', title: '分类名称', align:'center', width:200},
+                    {field: 'img', title: '图片', align:'center', width:300},
+                    {field: 'create_time', title: '创建时间', align:'center', width:300},
+                    {title: '操作', align:'center', fixed: 'right', width:300, toolbar: '#barDo'}
+                ]]
+            });
+
+            // 搜索
+            $("#search-action").click(function(){
+                tablesIns.reload({
+                    where: { // 重载时搜索的字段
+                        title: $(".search-field[name='title']").val()
+                    },
+                    page: {
+                        curr: 1  //重新从第 1 页开始
+                    }
+                });
+            });
+
+            // 新增
+            $("#create-action").click(function(){
+                layer.open({
+                    type : 1,
+                    title : "添加Top展示",
+                    content : $('#add-model'),
+                    area : '500px'
+                });
+            });
+
+            // 文件上传
+            var uploadImg = upload.render({
+                elem: '#upload-img', //绑定元素
+                url: '/upload/uploadEditorImage', //上传接口
+                done: function(res){
+                    //上传完毕回调
+                    var width = res.data.width;
+                    var height = res.data.height;
+                    var imgurl = res.data.src;
+                    $("#upload-img-tip p").html(width+" x "+height);
+                    $("#upload-img-tip img").attr('src', imgurl);
+                    $("#upload-img-url").val(imgurl);
+                    $("#upload-img-tip").show();
+                },
+                error: function(){
+                    //请求异常回调
+                    layer.alert("error", {title: '提示!'});
+                }
+            });
+            // 更新文件上传
+            var uploadImg = upload.render({
+                elem: '#update-img', //绑定元素
+                url: '/upload/uploadEditorImage', //上传接口
+                done: function(res){
+                    //上传完毕回调
+                    var width = res.data.width;
+                    var height = res.data.height;
+                    var imgurl = res.data.src;
+                    $("#update-img-tip p").html(width+" x "+height);
+                    $("#update-img-tip img").attr('src', imgurl);
+                    $("#update-img-url").val(imgurl);
+                    $("#update-img-tip").show();
+                },
+                error: function(){
+                    //请求异常回调
+                    layer.alert("error", {title: '提示!'});
+                }
+            });
+
+
+
+            // 新增表单提交
+            form.on('submit(add-top)', function(data){
+                $.post("/blog/doCreateTop", data.field, function(json){
+                    layer.alert(json.message, {title: '提示!'});
+                }, "json");
+            });
+
+            // 操作
+            table.on('tool(tabledata)', function(obj){
+                var data = obj.data;
+                var layEvent = obj.event;
+                if (layEvent=="edit") {
+                    $.post("/blog/getOneTop", {id: data.id}, function(json){
+                        if (json.state==200) {
+                            $("#update_id").val(json.data.id);
+                            $("#update_title").val(json.data.title);
+                            var width = json.data.width;
+                            var height = json.data.height;
+                            var imgurl = json.data.img;
+                            $("#update-img-tip p").html(width+" x "+height);
+                            $("#update-img-tip img").attr('src', imgurl);
+                            $("#update-img-url").val(imgurl);
+                            $("#update-img-tip").show();
+                            layer.open({
+                                type : 1,
+                                title : "编辑Top",
+                                content : $('#update-model'),
+                                area : '500px'
+                            });
+                        }
+                    }, "json");
+                } else if (layEvent === 'del') {
+                    layer.confirm('真的删除该top展示?', function(index){
+                        $.post("/blog/deleteTop", {id: data.id}, function(json){
+                            if (json.state==200) {
+                                layer.alert(json.message, {title: '提示!'});
+                                window.location.reload();
+                            }
+                        }, "json");
+                    });
+                }
+                    
+            });
+
+            // 更新表单提交
+            form.on('submit(update-top)', function(data){
+                $.post("/blog/doUpdateTop", data.field, function(json){
+                    if (json.state==200) {
+                        layer.alert("操作成功!", {title: '提示!'});
+                        window.location.reload();
+                    } else {
+                        layer.alert(json.message, {title: '提示!'});
+                    }
+                }, "json");
+                return false; //阻止表单跳转
+            });
+
+        });
+    </script>
+</body>
+</html>

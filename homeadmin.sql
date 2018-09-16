@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本机
-Source Server Version : 50547
+Source Server         : localhost
+Source Server Version : 50553
 Source Host           : localhost:3306
 Source Database       : homeadmin
 
 Target Server Type    : MYSQL
-Target Server Version : 50547
+Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-09-07 12:19:29
+Date: 2018-09-16 22:12:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -44,8 +44,8 @@ CREATE TABLE `ha_admin` (
 -- ----------------------------
 -- Records of ha_admin
 -- ----------------------------
-INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$p0TtmYTZtN1JmzhNbvfqae47LZ.glSEOw5.7JcDWPfd.rwyViCmpm', 'http://himg.bdimg.com/sys/portrait/item/39557a6c67636778797afd33.jpg', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1536290830');
-INSERT INTO `ha_admin` VALUES ('2', 'test', '$2y$10$2HQevjH9yZeTkUcbd4i6fO3IjFH0GtmUYG3.cMISOoDDLgSldhDKq', '', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', null, null, null, '1', '0', '1536290796');
+INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$p0TtmYTZtN1JmzhNbvfqae47LZ.glSEOw5.7JcDWPfd.rwyViCmpm', 'http://himg.bdimg.com/sys/portrait/item/39557a6c67636778797afd33.jpg', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1537104025');
+INSERT INTO `ha_admin` VALUES ('2', 'test', '$2y$10$2HQevjH9yZeTkUcbd4i6fO3IjFH0GtmUYG3.cMISOoDDLgSldhDKq', '', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', null, null, null, '1', '0', '1535098995');
 
 -- ----------------------------
 -- Table structure for `ha_catalog`
@@ -76,7 +76,7 @@ INSERT INTO `ha_catalog` VALUES ('5', '0', '配置管理', '&#xe631;', '/', '0',
 INSERT INTO `ha_catalog` VALUES ('6', '5', '测试配置', '&#xe64e;', '/config/test', '0', '1535347120', null);
 INSERT INTO `ha_catalog` VALUES ('7', '0', '博客管理', '&#xe632;', '/', '0', '1535347172', null);
 INSERT INTO `ha_catalog` VALUES ('8', '7', '博文分类', '&#xe630;', '/blog/category', '0', '1535347269', null);
-INSERT INTO `ha_catalog` VALUES ('9', '7', '博文管理', '&#xe60a;', '/blog/article', '0', '1535347378', null);
+INSERT INTO `ha_catalog` VALUES ('9', '7', '博文管理', '&#xe60a;', '/blog/articles', '0', '1535347378', '1537014559');
 INSERT INTO `ha_catalog` VALUES ('10', '7', '首页展示图', '&#xe634;', '/blog/tops', '0', '1535347508', null);
 INSERT INTO `ha_catalog` VALUES ('11', '7', '关于我', '&#xe60c;', '/blog/aboutme', '0', '1535347595', null);
 INSERT INTO `ha_catalog` VALUES ('12', '7', '友情链接', '&#xe64c;', '/blog/friendship', '0', '1535347702', null);
