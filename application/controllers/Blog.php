@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-23 08:54:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-09-15 22:26:41
+ * @Last Modified time: 2018-09-16 12:14:11
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -188,7 +188,11 @@ class Blog extends Base_Controller {
 	 */
 	public function articles()
 	{
-		$this->load->view('blog/articles.html');
+		$data = [];
+
+		$data['categoryList'] = $this->category_model->all("id,title", ["is_del"=>0], 0, 100);
+
+		$this->load->view('blog/articles.html', $data);
 	}
 
 	/**
@@ -218,13 +222,15 @@ class Blog extends Base_Controller {
 
 		!empty($post["is_show"]) && $where["is_show"] = $post["is_show"];
 
-		!empty($post["create_time"]) && $where["create_time <="] = $post["create_time"]; // 传来的为截止时间
+		!empty($post["create_time"]) && $where["create_time <="] = strtotime($post["create_time"]); // 传来的为截止时间
 
 		$data = $this->article_model->all("*", $where, $start, $size);
 
 		foreach ($data as &$article) {
 			
 			$article["create_time"] = date("Y-m-d H:i:s", $article["create_time"]);
+
+			$article["category"] = $this->category_model->getOneById($article["category_id"])['title'];
 		}
 
 		$count = $this->article_model->count($where);
@@ -239,7 +245,11 @@ class Blog extends Base_Controller {
 	 */
 	public function createArticle()
 	{
-		$this->load->view('blog/create-article.html');
+		$data = [];
+
+		$data['categoryList'] = $this->category_model->all("id,title", ["is_del"=>0], 0, 100);
+
+		$this->load->view('blog/create-article.html', $data);
 	}
 
 	/**
@@ -249,7 +259,37 @@ class Blog extends Base_Controller {
 	 */
 	public function doCreateArticle()
 	{
-		# code...
+		$data = $this->input->post();
+
+		// 保存字段
+		$addFileds = ['category_id', 'content', 'img', 'intro', 'is_recommend', 'is_show', 'link_url', 'tags', 'title'];
+
+		$new = [];
+
+		foreach ($addFileds as $field) {
+			
+			$new[$field] = $data[$field];
+		}
+
+		$adminData = $this->session->tempdata(LOGIN_ADMIN_TAG);
+
+		$new['author'] = $adminData['username'];
+
+		$new['times'] = 0; // 浏览
+
+		$new['admire'] = 0; // 赞
+
+		$new['create_time'] = $this->timestemp;
+		
+		$id = $this->article_model->insert($new);
+
+		if ($id > 0) {
+			
+			$this->ajaxJson(200);
+		} else {
+
+			$this->ajaxJson(1, "保存失败");
+		}
 	}
 
 	/**
@@ -263,6 +303,10 @@ class Blog extends Base_Controller {
 
 		$data = [];
 
+		$data['article'] = $this->article_model->getOneById($id);
+
+		$data['categoryList'] = $this->category_model->all("id,title", ["is_del"=>0], 0, 100);
+
 		$this->load->view('blog/update-article.html', $data);
 	}
 
@@ -273,7 +317,31 @@ class Blog extends Base_Controller {
 	 */
 	public function doUpdateArticle()
 	{
-		# code...
+		$data = $this->input->post();
+
+		// 更新字段
+		$updateFileds = ['category_id', 'content', 'img', 'intro', 'is_recommend', 'is_show', 'link_url', 'tags', 'title'];
+
+		$update = [];
+
+		foreach ($updateFileds as $field) {
+			
+			$update[$field] = $data[$field];
+		}
+
+		$update['modify_time'] = $this->timestemp;
+
+		$id = intval($data['id']);
+
+		$res = $this->article_model->update($update, ['id'=>$id]);
+
+		if ($res > 0) {
+			
+			$this->ajaxJson(200);
+		} else {
+
+			$this->ajaxJson(1, "保存失败");
+		}
 	}
 	
 	/**

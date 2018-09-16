@@ -21,7 +21,12 @@
 
             <label class="layui-form-label">分类</label>
             <div class="layui-input-inline">
-                <input type="text" name="category_id" autocomplete="off" class="layui-input search-field">
+                <select name="category_id" class="layui-input search-field">
+                    <option value="">请选择分类</option>
+                    <?php foreach($categoryList as $cate){ ?>
+                    <option value="<?=$cate['id']?>"><?=$cate['title']?></option>
+                    <?php } ?>
+                </select>
             </div>
 
             <label class="layui-form-label">标题</label>
@@ -36,17 +41,25 @@
 
             <label class="layui-form-label">推荐</label>
             <div class="layui-input-inline">
-                <input type="text" name="is_recommend" autocomplete="off" class="layui-input search-field">
+                <select name="is_recommend" class="layui-input search-field">
+                    <option value="">请选择是否推荐</option>
+                    <option value="0">否</option>
+                    <option value="1">是</option>
+                </select>
             </div>
 
             <label class="layui-form-label">显示</label>
             <div class="layui-input-inline">
-                <input type="text" name="is_show" autocomplete="off" class="layui-input search-field">
+                <select name="is_show" class="layui-input search-field">
+                    <option value="">请选择是否显示</option>
+                    <option value="0">否</option>
+                    <option value="1">是</option>
+                </select>
             </div>
 
             <label class="layui-form-label">时间</label>
             <div class="layui-input-inline">
-                <input type="text" name="create_time" autocomplete="off" class="layui-input search-field" placeholder="截止创建时间">
+                <input type="text" id="create_time" name="create_time" autocomplete="off" class="layui-input search-field" placeholder="截止创建时间">
             </div>
 
             <div class="layui-input-inline" style="float: right;">
@@ -67,9 +80,15 @@
 
     <script type="text/javascript" src="/static/lib/layui-2.3.0/layui.js"></script>
     <script type="text/javascript">
-        layui.use(['table', 'layer', 'form'], function(){
-            var table = layui.table, form = layui.form, $ = layui.jquery;
+        layui.use(['table', 'layer', 'form', 'laydate'], function(){
+            var table = layui.table, form = layui.form, $ = layui.jquery, laydate = layui.laydate;
             
+            // 时间选择
+            laydate.render({ 
+                elem:"#create_time", 
+                type: 'datetime' 
+            });
+
             //渲染数据结构
             var tablesIns = table.render({
                 elem: '#datalist',
@@ -78,15 +97,15 @@
                 method: 'post', // 传递方式
                 page: true, //开启分页
                 cols: [[ //表头
-                    {field: 'id', title: 'ID', width:50, sort: true, fixed: 'left'},
-                    {field: 'title', title: '标题', width:100},
-                    {field: 'category', title: '分类', width:100},
-                    {field: 'author', title: '作者', width:100},
-                    {field: 'times', title: '浏览次数', width:100},
-                    {field: 'tags', title: '标签', width:100},
-                    {field: 'is_recommend', title: '推荐', width:100},
-                    {field: 'is_show', title: '显示/隐藏', width:100},
-                    {field: 'create_time', title: '创建时间', width:100},
+                    {field: 'id', title: 'ID', align:'center', width:50, sort: true, fixed: 'left'},
+                    {field: 'title', title: '标题', align:'center', width:150},
+                    {field: 'category', title: '分类', align:'center', width:100},
+                    {field: 'author', title: '作者', align:'center', width:100},
+                    {field: 'times', title: '浏览次数', align:'center', width:100},
+                    {field: 'tags', title: '标签', align:'center', width:100},
+                    {field: 'is_recommend', title: '推荐', align:'center', width:80},
+                    {field: 'is_show', title: '显示/隐藏', align:'center', width:100},
+                    {field: 'create_time', title: '创建时间', align:'center', width:180},
                     {title: '操作', align:'center', fixed: 'right', width:200, toolbar: '#barDo'}
                 ]]
             });
@@ -95,8 +114,12 @@
             $("#search-action").click(function(){
                 tablesIns.reload({
                     where: { // 重载时搜索的字段
+                        category_id: $(".search-field[name='category_id']").val(),
                         title: $(".search-field[name='title']").val(),
-                        tags: $(".search-field[name='tags']").val()
+                        tags: $(".search-field[name='tags']").val(),
+                        is_recommend: $(".search-field[name='is_recommend']").val(),
+                        is_show: $(".search-field[name='is_show']").val(),
+                        create_time: $(".search-field[name='create_time']").val()
                     },
                     page: {
                         curr: 1  //重新从第 1 页开始
@@ -121,19 +144,15 @@
                 var data = obj.data;
                 var layEvent = obj.event;
                 if (layEvent=="edit") {
-                    $.post("/blog/getOneCategory", {id: data.id}, function(json){
-                        if (json.state==200) {
-                            $("#update_id").val(json.data.id);
-                            $("#update_title").val(json.data.title);
-                            $("#update_tags").val(json.data.tags);
-                            layer.open({
-                                type : 1,
-                                title : "编辑博文分类",
-                                content : $('#update-model'),
-                                area : '500px'
-                            });
-                        }
-                    }, "json");
+                    var id = data.id;
+                    layer.open({
+                        type: 2,
+                        title : "编辑博文",
+                        area: ['1000px', '450px'],
+                        fixed: false, //不固定
+                        maxmin: true,
+                        content: '/blog/updateArticle?id='+id
+                    });
                 } else if (layEvent === 'del') {
                     layer.confirm('真的删除该分类?', function(index){
                         $.post("/blog/deleteCategory", {id: data.id}, function(json){
