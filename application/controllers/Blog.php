@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-23 08:54:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-09-16 22:08:55
+ * @Last Modified time: 2018-09-17 21:36:31
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -23,6 +23,8 @@ class Blog extends Base_Controller {
 		$this->load->model("article_model");
 
 		$this->load->model("tops_model");
+
+		$this->load->model("aboutme_model");
 	}
 
 	/**
@@ -443,15 +445,24 @@ class Blog extends Base_Controller {
 	{
 		$id = $this->input->post("id");
 
-		$data = $this->tops_model->getOneById($id);
+		$data = $this->tops_model->getOneById(intval($id));
 
 		$image = $data['img'];
 
-		$image_info = getimagesize($image);
+		if (file_exists($image)) { // 文件的可读性
+			
+			$image_info = getimagesize($image);
 
-		$data['width'] = $image_info[0];
+			$data['width'] = $image_info[0];
 
-		$data['height'] = $image_info[1];
+			$data['height'] = $image_info[1];
+
+		} else {
+
+			$data['width'] = 0;
+
+			$data['height'] = 0;
+		}
 
 		$this->ajaxJson(200, "获取成功", $data);
 	}
@@ -487,6 +498,10 @@ class Blog extends Base_Controller {
 		}
 	}
 
+	/**
+	 * 删除top
+	 * @return [type] [description]
+	 */
 	public function deleteTop()
 	{
 		if (!$this->input->is_ajax_request()) 
@@ -503,7 +518,70 @@ class Blog extends Base_Controller {
 
 	/******************************************************/
 
+	/**
+	 * 关于我 
+	 * 默认使用最后一条数据
+	 * @return [type] [description]
+	 */
 	public function aboutMe()
+	{
+		$where = ['is_del' => 0];
+
+		$data = $this->aboutme_model->all("*", $where, 0, 1, "id", "DESC");
+
+		if (empty($data)) {
+
+			$this->load->view('blog/aboutme.html');
+
+		} else {
+
+			$this->load->view('blog/aboutme.html', $data);
+		}
+	}
+
+	/**
+	 * 保存关于我的信息
+	 * @return [type] [description]
+	 */
+	public function saveAboutMe()
+	{
+		# code...
+	}
+
+	/******************************************************/
+
+	/**
+	 * 友情链接地址
+	 * @return [type] [description]
+	 */
+	public function friendships()
+	{
+		# code...
+	}
+
+	public function insertFriendships()
+	{
+		# code...
+	}
+
+	public function getOneFriendships()
+	{
+		# code...
+	}
+
+	public function updateFriendships()
+	{
+		# code...
+	}
+
+	public function deleteFriendships()
+	{
+		# code...
+	}
+
+	/******************************************************/
+
+	public function dataCenter()
 	{
 		# code...
 	}

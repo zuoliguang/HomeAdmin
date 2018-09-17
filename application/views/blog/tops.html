@@ -113,7 +113,9 @@
                 cols: [[ //表头
                     {field: 'id', title: 'ID', align:'center', width:80, sort: true, fixed: 'left'},
                     {field: 'title', title: '分类名称', align:'center', width:200},
-                    {field: 'img', title: '图片', align:'center', width:300},
+                    {field: 'img', title: '图片', align:'center', width:300, templet: function(d){
+                        return "<img style='width:50px;' src='"+d.img+"'>";
+                    }},
                     {field: 'create_time', title: '创建时间', align:'center', width:300},
                     {title: '操作', align:'center', fixed: 'right', width:300, toolbar: '#barDo'}
                 ]]
@@ -160,6 +162,7 @@
                     layer.alert("error", {title: '提示!'});
                 }
             });
+
             // 更新文件上传
             var uploadImg = upload.render({
                 elem: '#update-img', //绑定元素
