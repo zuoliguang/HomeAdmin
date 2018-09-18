@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-23 08:54:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-09-17 21:36:31
+ * @Last Modified time: 2018-09-18 20:46:27
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -449,7 +449,7 @@ class Blog extends Base_Controller {
 
 		$image = $data['img'];
 
-		if (file_exists($image)) { // 文件的可读性
+		if ( @fopen($image, 'r' ) ) { // 文件的可读性
 			
 			$image_info = getimagesize($image);
 
@@ -545,7 +545,9 @@ class Blog extends Base_Controller {
 	 */
 	public function saveAboutMe()
 	{
-		# code...
+		$data = $this->input->post();
+
+		echo json_encode($data);die();
 	}
 
 	/******************************************************/

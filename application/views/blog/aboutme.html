@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="/static/lib/layui-2.3.0/css/layui.css">
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="icon" href="/static/images/logo.png">
+    <style type="text/css">
+        .wchat_public_img { width: 88%; display: inline; }
+        .wchat_pay_img { width: 88%; display: inline; }
+        .alipay_img { width: 88%; display: inline; }
+    </style>
 </head>
 <body class="body">
 
@@ -17,110 +22,146 @@
     <div class="layui-form-item">
         <label class="layui-form-label">匿名名称</label>
         <div class="layui-input-block">
-            <input type="text" name="nickname" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+            <input type="text" name="nickname" lay-verify="nickname" autocomplete="off" placeholder="匿名名称" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">职业</label>
         <div class="layui-input-block">
-            <input type="text" name="duty" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+            <input type="text" name="duty" lay-verify="duty" autocomplete="off" placeholder="职业" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">地区</label>
+        <label class="layui-form-label">省/辖区</label>
         <div class="layui-input-inline">
-            <select name="province">
-                <option value="">请选择省</option>
-                <option value="浙江" selected="">浙江省</option>
-                <option value="你的工号">江西省</option>
-                <option value="你最喜欢的老师">福建省</option>
-            </select>
+            <input type="text" name="province" lay-verify="province" placeholder="省" autocomplete="off" class="layui-input">
         </div>
+        <label class="layui-form-label">市/辖区</label>
         <div class="layui-input-inline">
-            <select name="city">
-                <option value="">请选择市</option>
-                <option value="杭州">杭州</option>
-                <option value="宁波" disabled="">宁波</option>
-                <option value="温州">温州</option>
-                <option value="温州">台州</option>
-                <option value="温州">绍兴</option>
-            </select>
+            <input type="text" name="city" lay-verify="city" placeholder="市" autocomplete="off" class="layui-input">
         </div>
+        <label class="layui-form-label">县/区</label>
         <div class="layui-input-inline">
-            <select name="area">
-                <option value="">请选择县/区</option>
-                <option value="西湖区">西湖区</option>
-                <option value="余杭区">余杭区</option>
-                <option value="拱墅区">临安市</option>
-            </select>
+            <input type="text" name="area" lay-verify="area" placeholder="县/区" autocomplete="off" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">详细地址</label>
         <div class="layui-input-block">
-            <input type="text" name="location" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+            <input type="text" name="location" lay-verify="location" autocomplete="off" placeholder="请输入地址" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">邮箱地址</label>
         <div class="layui-input-block">
-            <input type="text" name="email" lay-verify="url" autocomplete="off" class="layui-input">
+            <input type="text" name="email" lay-verify="email" autocomplete="off" placeholder="邮箱地址" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">微信公众号</label>
         <div class="layui-input-block">
-            <button type="button" class="layui-btn" id="test1">
+            <button type="button" class="layui-btn layui-show-md-inline" id="upload_wchat_public_img">
                 <i class="layui-icon">&#xe67c;</i>上传图片
             </button>
-            <input type="text" name="wchat_public_img" lay-verify="url" autocomplete="off" class="layui-input">
+            <input type="text" name="wchat_public_img" lay-verify="url" autocomplete="off" class="layui-input wchat_public_img" disabled>
         </div>
     </div>
 
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">微信支付</label>
         <div class="layui-input-block">
-            <button type="button" class="layui-btn" id="test1">
+            <button type="button" class="layui-btn" id="upload_wchat_pay_img">
                 <i class="layui-icon">&#xe67c;</i>上传图片
             </button>
-            <input type="text" name="wchat_pay_img" lay-verify="url" autocomplete="off" class="layui-input">
+            <input type="text" name="wchat_pay_img" lay-verify="url" autocomplete="off" class="layui-input wchat_pay_img" disabled>
         </div>
     </div>
 
     <div class="layui-form-item">
         <label class="layui-form-label">支付宝</label>
         <div class="layui-input-block">
-            <button type="button" class="layui-btn" id="test1">
+            <button type="button" class="layui-btn" id="upload_alipay_img">
                 <i class="layui-icon">&#xe67c;</i>上传图片
             </button>
-            <input type="text" name="alipay_img" lay-verify="tags" autocomplete="off" class="layui-input">
+            <input type="text" name="alipay_img" lay-verify="url" autocomplete="off" class="layui-input alipay_img" disabled>
         </div>
     </div>
 
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">简介信息</label>
         <div class="layui-input-block">
-            <textarea class="layui-textarea layui-hide" name="introduce" lay-verify="content" id="LAY_article_editor"></textarea>
+            <textarea class="layui-textarea layui-hide" name="introduce" lay-verify="introduce" id="LAY_article_editor"></textarea>
         </div>
     </div>
 
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="create-article">立即提交</button>
-            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <button class="layui-btn" lay-submit lay-filter="save-aboutme">立即提交</button>
         </div>
     </div>
 </form>
 
 <script type="text/javascript" src="/static/lib/layui-2.3.0/layui.js"></script>
 <script>
-    layui.use(['form', 'layedit'], function(){
-        var form = layui.form ,layer = layui.layer ,layedit = layui.layedit, $ = layui.jquery;
+    layui.use(['form', 'layedit', 'layer', 'upload'], function(){
+        var form = layui.form, layer = layui.layer, layedit = layui.layedit, upload = layui.upload, $ = layui.jquery;
+
+        // 文件上传
+        var uploadImg1 = upload.render({
+            elem: '#upload_wchat_public_img', //绑定元素
+            url: '/upload/uploadEditorImage', //上传接口
+            done: function(res){
+                //上传完毕回调
+                var width = res.data.width;
+                var height = res.data.height;
+                var imgurl = res.data.src;
+                var str = imgurl + " (" + width + "x" + height + ")";
+                $(".wchat_public_img").val(str);
+            },
+            error: function(){
+                //请求异常回调
+                layer.alert("error", {title: '提示!'});
+            }
+        });
+        // 文件上传
+        var uploadImg2 = upload.render({
+            elem: '#upload_wchat_pay_img', //绑定元素
+            url: '/upload/uploadEditorImage', //上传接口
+            done: function(res){
+                //上传完毕回调
+                var width = res.data.width;
+                var height = res.data.height;
+                var imgurl = res.data.src;
+                var str = imgurl + " (" + width + "x" + height + ")";
+                $(".wchat_pay_img").val(str);
+            },
+            error: function(){
+                //请求异常回调
+                layer.alert("error", {title: '提示!'});
+            }
+        });
+        // 文件上传
+        var uploadImg3 = upload.render({
+            elem: '#upload_alipay_img', //绑定元素
+            url: '/upload/uploadEditorImage', //上传接口
+            done: function(res){
+                //上传完毕回调
+                var width = res.data.width;
+                var height = res.data.height;
+                var imgurl = res.data.src;
+                var str = imgurl + " (" + width + "x" + height + ")";
+                $(".alipay_img").val(str);
+            },
+            error: function(){
+                //请求异常回调
+                layer.alert("error", {title: '提示!'});
+            }
+        });
 
         // 提前配置上传图片操作
         layedit.set({
@@ -133,13 +174,13 @@
         var editor = layedit.build('LAY_article_editor');
 
         //监听提交
-        form.on('submit(create-article)', function(data){
+        form.on('submit(save-aboutme)', function(data){
 
             data.field.content = layedit.getContent(editor);
 
             var is_ok = false;
 
-            $.post("/blog/doCreateArticle", data.field, function(data){
+            $.post("/blog/saveAboutMe", data.field, function(data){
                 if (data.state!=200) {
                     layer.alert(data.message, {title: '提示!'});
                 } else {
