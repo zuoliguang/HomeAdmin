@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 15:54:58
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-09-07 11:00:49
+ * @Last Modified time: 2018-09-22 18:34:22
  */
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
@@ -16,9 +16,11 @@ class Base_Controller extends CI_Controller
 	public $microtimestemp;
 
 	// 不需要登录验证的操作
+	
 	public $unLoginActions = [ "home/login", "home/doLogin", "home/logout" ];
 
-	// 设置操作权限的路由
+	// 设置操作权限的路由, 该操作在控制器内设置
+	
 	public $rightUris; 
 
 	function __construct()

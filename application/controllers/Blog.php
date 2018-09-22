@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-23 08:54:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-09-22 18:21:52
+ * @Last Modified time: 2018-09-22 18:32:38
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -14,7 +14,26 @@ class Blog extends Base_Controller {
 	function __construct()
 	{
 		// 设置该区域的权限操作
-		$this->rightUris = [ "doCreateCategory", "doUpdateCategory", "deleteCategory", "doCreateArticle", "doUpdateArticle", "deleteArticle" ];
+		
+		$this->rightUris = [ 
+			"doCreateCategory", 
+			"doUpdateCategory", 
+			"deleteCategory", 
+
+			"doCreateArticle", 
+			"doUpdateArticle", 
+			"deleteArticle",
+
+			"doCreateTop",
+			"doUpdateTop",
+			"deleteTop",
+
+			"insertFriendships",
+			"updateFriendships",
+			"deleteFriendships",
+
+			"saveAboutMe"
+		];
 
 		parent::__construct();
 
