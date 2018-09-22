@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-09-16 22:12:22
+Date: 2018-09-22 18:22:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -44,7 +44,7 @@ CREATE TABLE `ha_admin` (
 -- ----------------------------
 -- Records of ha_admin
 -- ----------------------------
-INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$p0TtmYTZtN1JmzhNbvfqae47LZ.glSEOw5.7JcDWPfd.rwyViCmpm', 'http://himg.bdimg.com/sys/portrait/item/39557a6c67636778797afd33.jpg', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1537104025');
+INSERT INTO `ha_admin` VALUES ('1', 'zlgcg', '$2y$10$p0TtmYTZtN1JmzhNbvfqae47LZ.glSEOw5.7JcDWPfd.rwyViCmpm', 'http://himg.bdimg.com/sys/portrait/item/39557a6c67636778797afd33.jpg', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', '北京', '北京', '通州区', '0', '1', '1537611168');
 INSERT INTO `ha_admin` VALUES ('2', 'test', '$2y$10$2HQevjH9yZeTkUcbd4i6fO3IjFH0GtmUYG3.cMISOoDDLgSldhDKq', '', '18612701228', 'zlgcg@sina.com', 'https://github.com/zuoliguang', '1', null, null, null, '1', '0', '1535098995');
 
 -- ----------------------------
@@ -79,7 +79,7 @@ INSERT INTO `ha_catalog` VALUES ('8', '7', '博文分类', '&#xe630;', '/blog/ca
 INSERT INTO `ha_catalog` VALUES ('9', '7', '博文管理', '&#xe60a;', '/blog/articles', '0', '1535347378', '1537014559');
 INSERT INTO `ha_catalog` VALUES ('10', '7', '首页展示图', '&#xe634;', '/blog/tops', '0', '1535347508', null);
 INSERT INTO `ha_catalog` VALUES ('11', '7', '关于我', '&#xe60c;', '/blog/aboutme', '0', '1535347595', null);
-INSERT INTO `ha_catalog` VALUES ('12', '7', '友情链接', '&#xe64c;', '/blog/friendship', '0', '1535347702', null);
+INSERT INTO `ha_catalog` VALUES ('12', '7', '友情链接', '&#xe64c;', '/blog/friendships', '0', '1535347702', '1537608581');
 INSERT INTO `ha_catalog` VALUES ('13', '7', '数据统计', '&#xe629;', '/blog/dataCenter', '0', '1535347814', null);
 
 -- ----------------------------

@@ -5,7 +5,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-23 08:54:52
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-09-18 20:46:27
+ * @Last Modified time: 2018-09-22 18:21:52
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -18,13 +18,15 @@ class Blog extends Base_Controller {
 
 		parent::__construct();
 
-		$this->load->model("category_model");
+		$this->load->model("category_model"); // 博文分类
 
-		$this->load->model("article_model");
+		$this->load->model("article_model"); // 文章
 
-		$this->load->model("tops_model");
+		$this->load->model("tops_model"); // 首页tops
 
-		$this->load->model("aboutme_model");
+		$this->load->model("aboutme_model"); // 关于我
+
+		$this->load->model("friendships_model"); // 友情链接
 	}
 
 	/**
@@ -52,7 +54,7 @@ class Blog extends Base_Controller {
 
 		$start = (intval($page) - 1 ) * intval($size);
 
-		$where = ["is_del"=>0];
+		$where = ["is_del" => 0];
 
 		!empty($post["title"]) && $where["title like"] = "%".$post["title"]."%"; // 模糊搜索
 
@@ -194,7 +196,7 @@ class Blog extends Base_Controller {
 	{
 		$data = [];
 
-		$data['categoryList'] = $this->category_model->all("id,title", ["is_del"=>0], 0, 100);
+		$data['categoryList'] = $this->category_model->all("id,title", ["is_del" => 0], 0, 100);
 
 		$this->load->view('blog/articles.html', $data);
 	}
@@ -251,7 +253,7 @@ class Blog extends Base_Controller {
 	{
 		$data = [];
 
-		$data['categoryList'] = $this->category_model->all("id,title", ["is_del"=>0], 0, 100);
+		$data['categoryList'] = $this->category_model->all("id,title", ["is_del" => 0], 0, 100);
 
 		$this->load->view('blog/create-article.html', $data);
 	}
@@ -309,7 +311,7 @@ class Blog extends Base_Controller {
 
 		$data['article'] = $this->article_model->getOneById($id);
 
-		$data['categoryList'] = $this->category_model->all("id,title", ["is_del"=>0], 0, 100);
+		$data['categoryList'] = $this->category_model->all("id,title", ["is_del" => 0], 0, 100);
 
 		$this->load->view('blog/update-article.html', $data);
 	}
@@ -525,18 +527,27 @@ class Blog extends Base_Controller {
 	 */
 	public function aboutMe()
 	{
+		$this->load->view('blog/aboutme.html');
+	}
+
+	/**
+	 * 获取关于我
+	 * @return [type] [description]
+	 */
+	public function getAboutMe()
+	{
 		$where = ['is_del' => 0];
 
 		$data = $this->aboutme_model->all("*", $where, 0, 1, "id", "DESC");
 
-		if (empty($data)) {
+		$aboutme = [];
 
-			$this->load->view('blog/aboutme.html');
-
-		} else {
-
-			$this->load->view('blog/aboutme.html', $data);
+		if (!empty($data)) {
+			
+			$aboutme = current($data);
 		}
+
+		$this->ajaxJson(200, "ok", $aboutme);
 	}
 
 	/**
@@ -547,44 +558,187 @@ class Blog extends Base_Controller {
 	{
 		$data = $this->input->post();
 
-		echo json_encode($data);die();
+		unset($data['file']);
+
+		$data['introduce'] = htmlspecialchars($data['introduce']);
+		
+		$data['is_default'] = 1;
+
+		$result = false;
+
+		if (empty($data['id'])) { // 创建
+			
+			$data['create_time'] = $this->timestemp;
+
+			$insert_id = $this->aboutme_model->insert($data);
+
+			if ($insert_id > 0) {
+				
+				$result = true;
+			}
+
+		} else { // 更新
+
+			$id = intval($data['id']);
+
+			unset($data['id']);
+
+			$data['modify_time'] = $this->timestemp;
+
+			$res = $this->aboutme_model->update($data, ['id'=>$id]);
+
+			if ($res > 0) {
+				
+				$result = true;
+			}
+		}
+
+		if(!$result) {
+			$this->ajaxJson(-1, "保存失败");
+		}
+
+		$this->ajaxJson(200);
 	}
 
 	/******************************************************/
 
 	/**
-	 * 友情链接地址
+	 * 友情链接
 	 * @return [type] [description]
 	 */
 	public function friendships()
 	{
-		# code...
+		$this->load->view('blog/friendships.html');
 	}
 
+	/**
+	 * 友情链接地址
+	 * @return [type] [description]
+	 */
+	public function ajaxFriendshipsList()
+	{
+		$post = $this->input->post();
+		
+		$page = isset($post["page"]) ? intval($post["page"]) : 1;
+
+		$size = isset($post["limit"]) ? intval($post["limit"]) : 20; // 为0时使用默认
+
+		$start = (intval($page) - 1 ) * intval($size);
+
+		$where = ['is_del' => 0];
+
+		!empty($post["title"]) && $where["title like"] = "%".$post["title"]."%"; // 模糊搜索
+
+		!empty($post["friendsship_link"]) && $where["friendsship_link like"] = "%".$post["friendsship_link"]."%"; // 模糊搜索
+
+		$data = $this->friendships_model->all("*", $where, $start, $size);
+
+		$count = $this->friendships_model->count($where);
+
+		$this->ajaxLayuiTableDatas(0, "ok", $count, $data);
+	}
+
+	/**
+	 * 新增链接
+	 * @return [type] [description]
+	 */
 	public function insertFriendships()
 	{
-		# code...
+		$data = $this->input->post();
+
+		$friendships = [];
+
+		$friendships['title'] = $data['title'];
+
+		$friendships['pic'] = $data['pic'];
+
+		$friendships['friendsship_link'] = $data['friendsship_link'];
+
+		$friendships['is_del'] = 0;
+
+		$friendships['create_time'] = $this->timestemp;
+
+		$id = $this->friendships_model->insert($friendships);
+
+		if ($id > 0) {
+			
+			$this->ajaxJson(200);
+		} else {
+
+			$this->ajaxJson(1, "操作失败");
+		}
 	}
 
+	/**
+	 * 获取链接
+	 * @return [type] [description]
+	 */
 	public function getOneFriendships()
 	{
-		# code...
+		$id = $this->input->post("id");
+
+		$data = $this->friendships_model->getOneById(intval($id));
+
+		$this->ajaxJson(200, "获取成功", $data);
 	}
 
+	/**
+	 * 更新链接
+	 * @return [type] [description]
+	 */
 	public function updateFriendships()
 	{
-		# code...
+		$data = $this->input->post();
+
+		$friendships = [];
+
+		foreach ($data as $k => $v) {
+			
+			if (strpos($k, "update_")!==false) {
+				
+				$friendships[str_replace("update_", "", $k)] = $v;
+			}
+		}
+
+		$friendships['modify_time'] = $this->timestemp;
+
+		$res = $this->friendships_model->update($friendships, ['id'=>intval($friendships['id'])]);
+
+		if ($res > 0) {
+			
+			$this->ajaxJson(200);
+		} else {
+
+			$this->ajaxJson(1, "操作失败");
+		}
 	}
 
+	/**
+	 * 删除链接
+	 * @return [type] [description]
+	 */
 	public function deleteFriendships()
 	{
-		# code...
+		if (!$this->input->is_ajax_request()) 
+		{
+			$this->ajaxJson(0, "访问方式错误");
+		}
+
+		$id = $this->input->post("id");
+
+		$this->friendships_model->delete(["id"=>intval($id)]);
+
+		$this->ajaxJson(200);
 	}
 
 	/******************************************************/
 
+	/**
+	 * 博客数据中心
+	 * @return [type] [description]
+	 */
 	public function dataCenter()
 	{
-		# code...
+		echo "博客数据中心";
 	}
 }

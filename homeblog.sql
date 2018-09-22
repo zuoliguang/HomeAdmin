@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-09-16 22:12:30
+Date: 2018-09-22 18:23:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -37,11 +37,12 @@ CREATE TABLE `hb_about_me` (
   `create_time` int(11) DEFAULT NULL,
   `modify_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of hb_about_me
 -- ----------------------------
+INSERT INTO `hb_about_me` VALUES ('1', 'testindex', 'test测试', '北京市', '北京市', '朝阳区', '测试哈哈哈哈', 'zlgcg@sina.com', 'http://www.homeadmin.com/upload/image/2018-09-18/2018-09-18-1537278691.jpg?(2976x3968)', 'http://www.homeadmin.com/upload/image/2018-09-18/2018-09-18-1537278693.jpg?(2976x3968)', 'http://www.homeadmin.com/upload/image/2018-09-18/2018-09-18-1537278694.jpg?(300x301)', '测试，&lt;b&gt;&lt;i&gt;&lt;u&gt;test&lt;/u&gt;&lt;/i&gt;&lt;/b&gt;!&amp;nbsp; 哈哈哈', '1', '0', '1537278716', '1537280543');
 
 -- ----------------------------
 -- Table structure for `hb_article`
@@ -137,11 +138,12 @@ CREATE TABLE `hb_friendships` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique` (`title`,`friendsship_link`) USING BTREE,
   KEY `title` (`title`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of hb_friendships
 -- ----------------------------
+INSERT INTO `hb_friendships` VALUES ('1', 'test', 'http://www.homeadmin.com/upload/image/2018-09-22/2018-09-22-1537611178.jpg?(300x301)', 'www.test1.com', '0', '1537611198', '1537611564');
 
 -- ----------------------------
 -- Table structure for `hb_pv`
@@ -150,14 +152,14 @@ DROP TABLE IF EXISTS `hb_pv`;
 CREATE TABLE `hb_pv` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `referer` varchar(255) DEFAULT '' COMMENT 'ip 来源',
-  `local` varchar(255) DEFAULT '' COMMENT '本站地址',
-  `tags` varchar(60) DEFAULT '' COMMENT '被访问的文章标签-用户兴趣点',
+  `local` varchar(255) DEFAULT '' COMMENT '被访问本站地址',
+  `tags` varchar(60) DEFAULT '' COMMENT '被访问的文章标签-热点',
   `create_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `referer` (`referer`),
   KEY `local` (`local`),
   KEY `tags` (`tags`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='记录网站被访问的次数，同一个IP半小时内被访问无效';
 
 -- ----------------------------
 -- Records of hb_pv
@@ -181,5 +183,5 @@ CREATE TABLE `hb_tops` (
 -- ----------------------------
 -- Records of hb_tops
 -- ----------------------------
-INSERT INTO `hb_tops` VALUES ('2', 'test测试标题', 'http://www.homeadmin.com/upload/image/2018-09-16/2018-09-16-1537105020.jpg', '0', '1537105026', null);
-INSERT INTO `hb_tops` VALUES ('3', 'test', 'http://www.homeadmin.com/upload/image/2018-09-16/2018-09-16-1537106485.jpg', '0', '1537105126', '1537106881');
+INSERT INTO `hb_tops` VALUES ('2', 'test测试标题', 'http://www.homeadmin.com/upload/image/2018-09-17/2018-09-17-1537188787.jpg', '0', '1537105026', '1537188788');
+INSERT INTO `hb_tops` VALUES ('3', 'test', 'http://www.homeadmin.com/upload/image/2018-09-17/2018-09-17-1537188778.jpg', '0', '1537105126', '1537188780');
