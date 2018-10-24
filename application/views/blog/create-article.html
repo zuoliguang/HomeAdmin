@@ -50,7 +50,8 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">文章内容</label>
         <div class="layui-input-block">
-            <textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="LAY_article_editor"></textarea>
+            <!-- <textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="LAY_article_editor"></textarea> -->
+            <div id="LAY_article_editor"></div>
         </div>
     </div>
 
@@ -93,24 +94,32 @@
 </form>
 
 <script type="text/javascript" src="/static/lib/layui-2.3.0/layui.js"></script>
+<script type="text/javascript" src="/static/lib/wangEditor/release/wangEditor.js"></script>
 <script>
+    // 后期需要使用的代码编辑，这里更换编辑器
+    var E = window.wangEditor;
+    var editor = new E('#LAY_article_editor');
+    editor.create();
+
     layui.use(['form', 'layedit'], function(){
         var form = layui.form ,layer = layui.layer ,layedit = layui.layedit, $ = layui.jquery;
 
         // 提前配置上传图片操作
-        layedit.set({
-            uploadImage: {
-                url: "/upload/uploadEditorImage"
-            }
-        });
+        // layedit.set({
+        //     uploadImage: {
+        //         url: "/upload/uploadEditorImage"
+        //     }
+        // });
         
         //创建一个编辑器
-        var editor = layedit.build('LAY_article_editor');
+        // var editor = layedit.build('LAY_article_editor');
 
         //监听提交
         form.on('submit(create-article)', function(data){
 
-            data.field.content = layedit.getContent(editor);
+            // data.field.content = layedit.getContent(editor);
+            
+            data.field.content = editor.txt.html();
 
             var is_ok = false;
 
