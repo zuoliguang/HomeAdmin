@@ -120,6 +120,7 @@
         form.on('submit(update-article)', function(data){
 
             // data.field.content = layedit.getContent(editor);
+            
             data.field.content = editor.txt.html();
 
             $.post("/blog/doUpdateArticle", data.field, function(data){
