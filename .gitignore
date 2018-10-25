@@ -28,6 +28,7 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-workspace
 *.sublime-project
 /tests/tests/
+/public/sess_save_path/*
 /tests/results/
 /upload/
 /开发帮助文档/
