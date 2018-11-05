@@ -53,7 +53,7 @@ CREATE TABLE `ha_admin` (
 
 LOCK TABLES `ha_admin` WRITE;
 /*!40000 ALTER TABLE `ha_admin` DISABLE KEYS */;
-INSERT INTO `ha_admin` VALUES (1,'zlgcg','$2y$10$p0TtmYTZtN1JmzhNbvfqae47LZ.glSEOw5.7JcDWPfd.rwyViCmpm','http://himg.bdimg.com/sys/portrait/item/39557a6c67636778797afd33.jpg','18612701228','zlgcg@sina.com','https://github.com/zuoliguang',1,'北京','北京','通州区',0,1,1540457002),(2,'test','$2y$10$2HQevjH9yZeTkUcbd4i6fO3IjFH0GtmUYG3.cMISOoDDLgSldhDKq','','18612701228','zlgcg@sina.com','https://github.com/zuoliguang',1,NULL,NULL,NULL,1,0,1540451042);
+INSERT INTO `ha_admin` VALUES (1,'zlgcg','$2y$10$p0TtmYTZtN1JmzhNbvfqae47LZ.glSEOw5.7JcDWPfd.rwyViCmpm','http://himg.bdimg.com/sys/portrait/item/39557a6c67636778797afd33.jpg','18612701228','zlgcg@sina.com','https://github.com/zuoliguang',1,'北京','北京','通州区',0,1,1541385216),(2,'test','$2y$10$2HQevjH9yZeTkUcbd4i6fO3IjFH0GtmUYG3.cMISOoDDLgSldhDKq','','18612701228','zlgcg@sina.com','https://github.com/zuoliguang',1,NULL,NULL,NULL,1,0,1540451042);
 /*!40000 ALTER TABLE `ha_admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -124,7 +124,7 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-25 16:52:19
+-- Dump completed on 2018-11-05 16:42:06
 CREATE DATABASE  IF NOT EXISTS `homeblog` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `homeblog`;
 -- MySQL dump 10.13  Distrib 5.7.24, for Linux (x86_64)
@@ -329,6 +329,8 @@ CREATE TABLE `hb_pv` (
   `referer` varchar(255) DEFAULT '' COMMENT 'ip 来源',
   `local` varchar(255) DEFAULT '' COMMENT '被访问本站地址',
   `tags` varchar(60) DEFAULT '' COMMENT '被访问的文章标签-热点',
+  `agent` varchar(100) DEFAULT '' COMMENT 'server中agent信息用于区分设备类型',
+  `province` varchar(60) DEFAULT '' COMMENT 'IP所属地区',
   `create_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `referer` (`referer`),
@@ -371,7 +373,7 @@ CREATE TABLE `hb_tops` (
 
 LOCK TABLES `hb_tops` WRITE;
 /*!40000 ALTER TABLE `hb_tops` DISABLE KEYS */;
-INSERT INTO `hb_tops` VALUES (2,'test测试标题','http://hadmin.com/upload/image/2018-10-25/2018-10-25-1540451114.jpg',1,1537105026,1540451115),(3,'test','http://hadmin.com/upload/image/2018-10-25/2018-10-25-1540451125.jpg',1,1537105126,1540451126);
+INSERT INTO `hb_tops` VALUES (2,'test测试标题','http://hadmin.com/upload/image/2018-10-25/2018-10-25-1540451114.jpg',0,1537105026,1540451115),(3,'test','http://hadmin.com/upload/image/2018-10-25/2018-10-25-1540451125.jpg',0,1537105126,1540451126);
 /*!40000 ALTER TABLE `hb_tops` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -384,4 +386,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-25 16:52:19
+-- Dump completed on 2018-11-05 16:42:06
