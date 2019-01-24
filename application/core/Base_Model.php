@@ -4,7 +4,7 @@
  * @Author: zuoliguang
  * @Date:   2018-08-17 15:59:41
  * @Last Modified by:   zuoliguang
- * @Last Modified time: 2018-09-07 09:50:49
+ * @Last Modified time: 2019-01-24 13:10:01
  */
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
@@ -28,8 +28,6 @@ class Base_Model extends CI_Model
 		$this->microtimestemp = microtime();
 
 		$this->bd_admin = $this->load->database('homeadmin', true);
-
-		$this->bd_blog = $this->load->database('homeblog', true);
 	}
 
 	/**
