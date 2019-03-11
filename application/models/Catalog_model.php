@@ -14,7 +14,7 @@ class Catalog_model extends Base_Model
 	{
 		parent::__construct();
 
-		$this->database = $this->bd_admin;
+		$this->database = $this->db_admin;
 
 		$this->tableName = "catalog";
 	}
@@ -30,15 +30,15 @@ class Catalog_model extends Base_Model
 
 		$where = ["is_del" => 0];
 
-		$this->bd_admin->select($fields);
+		$this->db_admin->select($fields);
 
-		$this->bd_admin->from($this->tableName);
+		$this->db_admin->from($this->tableName);
 
-		$this->bd_admin->where($where);
+		$this->db_admin->where($where);
 
-		$this->bd_admin->order_by("id", "ASC");
+		$this->db_admin->order_by("id", "ASC");
 
-		return $this->bd_admin->get()->result_array();
+		return $this->db_admin->get()->result_array();
 	}
 
 	/**
@@ -51,7 +51,7 @@ class Catalog_model extends Base_Model
 	{
 		$sql = "SELECT c.* FROM `ha_catalog` AS c LEFT JOIN `ha_permission` AS p ON p.catalog_id = c.id WHERE p.admin_id = $admin_id ORDER BY c.id";
 
-		$data = $this->bd_admin->query($sql)->result_array();
+		$data = $this->db_admin->query($sql)->result_array();
 
 		$ids = [0];
 
@@ -71,17 +71,17 @@ class Catalog_model extends Base_Model
 
 		$where = ["is_del" => 0, ];
 
-		$this->bd_admin->select($fields);
+		$this->db_admin->select($fields);
 
-		$this->bd_admin->from($this->tableName);
+		$this->db_admin->from($this->tableName);
 
-		$this->bd_admin->where($where);
+		$this->db_admin->where($where);
 
-		$this->bd_admin->where_in("id", $ids);
+		$this->db_admin->where_in("id", $ids);
 
-		$this->bd_admin->order_by("id", "ASC");
+		$this->db_admin->order_by("id", "ASC");
 
-		return $this->bd_admin->get()->result_array();
+		return $this->db_admin->get()->result_array();
 	}
 
 	/**

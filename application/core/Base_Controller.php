@@ -55,8 +55,7 @@ class Base_Controller extends CI_Controller
 
 			if (!$admin) { // 登录信息过期
 
-				echo "<script language='JavaScript'>if (window != top) { top.location.href = '/home/login'; } else { window.location.href = '/home/login'; }</script>";
-				exit();die();
+				echo "<script language='JavaScript'>if (window != top) { top.location.href = '/home/login'; } else { window.location.href = '/home/login'; }</script>";exit();die();
 			}
 		}
 	}

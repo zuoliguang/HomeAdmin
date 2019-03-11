@@ -15,7 +15,7 @@ class Permission_model extends Base_Model
 	{
 		parent::__construct();
 
-		$this->database = $this->bd_admin;
+		$this->database = $this->db_admin;
 
 		$this->tableName = "permission";
 	}
@@ -28,13 +28,13 @@ class Permission_model extends Base_Model
 	 */
 	public function getPermissionByaid($admin_id)
 	{
-		$this->bd_admin->select("*");
+		$this->db_admin->select("*");
 
-		$this->bd_admin->from($this->tableName);
+		$this->db_admin->from($this->tableName);
 
-		$this->bd_admin->where("admin_id", $admin_id);
+		$this->db_admin->where("admin_id", $admin_id);
 
-		return $this->bd_admin->get()->result_array();
+		return $this->db_admin->get()->result_array();
 	}
 
 }

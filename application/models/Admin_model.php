@@ -14,7 +14,7 @@ class Admin_model extends Base_Model
 	{
 		parent::__construct();
 
-		$this->database = $this->bd_admin;
+		$this->database = $this->db_admin;
 
 		$this->tableName = "admin";
 	}
@@ -27,13 +27,13 @@ class Admin_model extends Base_Model
 	 */
 	public function getAdminByName($name)
 	{
-		$this->bd_admin->select("*");
+		$this->db_admin->select("*");
 
-		$this->bd_admin->from($this->tableName);
+		$this->db_admin->from($this->tableName);
 
-		$this->bd_admin->where("username", $name);
+		$this->db_admin->where("username", $name);
 
-		return $this->bd_admin->get()->row_array();
+		return $this->db_admin->get()->row_array();
 	}
 
 	/**
@@ -44,13 +44,13 @@ class Admin_model extends Base_Model
 	 */
 	public function getAdminsByTelphone($telphone)
 	{
-		$this->bd_admin->select("*");
+		$this->db_admin->select("*");
 
-		$this->bd_admin->from($this->tableName);
+		$this->db_admin->from($this->tableName);
 
-		$this->bd_admin->where("telphone", $telphone);
+		$this->db_admin->where("telphone", $telphone);
 
-		return $this->bd_admin->get()->result_array();
+		return $this->db_admin->get()->result_array();
 	}
 
 	/**
@@ -66,11 +66,11 @@ class Admin_model extends Base_Model
 			return false;
 		}
 
-		$this->bd_admin->where("id", $admin["adminId"]);
+		$this->db_admin->where("id", $admin["adminId"]);
 
-		$this->bd_admin->update($this->tableName, ["last_login_time" => $this->timestemp]);
+		$this->db_admin->update($this->tableName, ["last_login_time" => $this->timestemp]);
 		
-		return $this->bd_admin->affected_rows();
+		return $this->db_admin->affected_rows();
 	}
 
 	/**
@@ -80,10 +80,10 @@ class Admin_model extends Base_Model
 	 */
 	public function allAdmins()
 	{
-		$this->bd_admin->select("*");
+		$this->db_admin->select("*");
 
-		$this->bd_admin->from($this->tableName);
+		$this->db_admin->from($this->tableName);
 
-		return $this->bd_admin->get()->result_array();
+		return $this->db_admin->get()->result_array();
 	}
 }

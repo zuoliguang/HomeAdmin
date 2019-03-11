@@ -27,7 +27,9 @@ class Base_Model extends CI_Model
 
 		$this->microtimestemp = microtime();
 
-		$this->bd_admin = $this->load->database('homeadmin', true);
+		$this->db_admin = $this->load->database('homeadmin', true);
+
+		$this->db_channel = $this->load->database('channel', true);
 	}
 
 	/**

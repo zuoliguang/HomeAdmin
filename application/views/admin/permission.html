@@ -36,7 +36,7 @@
 
     <!-- 新增，编辑层 -->
     <div id="action-model" class="action-model" style="display: none;">
-        <form class="layui-form" lay-filter="catalogs" style="padding: 15px">
+        <form id="catalogs_form" class="layui-form" lay-filter="catalogs" style="padding: 15px">
             <input id="admin_id" type="hidden" name="admin_id" value=""> <!-- 隐藏字段 id -->
             <div class="layui-collapse">
                 <?php foreach($catalogs as $first): ?>
@@ -103,14 +103,14 @@
             var data = obj.data;
             var layEvent = obj.event;
             if (layEvent=="edit") {
-                console.log(data);
                 var name = data.username;
                 var admin_id = data.id;
                 $("#admin_id").val(admin_id);
                 $.post("/home/getPermissions", {admin_id : admin_id}, function(json){
                     if (json.state==200) {
+                        $(":checked").prop("checked", false); // 清空所有选中的复选框
                         $.each(json.data, function(i, vo){
-                            $("#checkboxitem[data-id='"+vo.catalog_id+"']").attr("checked", true);
+                            $("#checkboxitem[data-id='"+vo.catalog_id+"']").prop("checked", true);
                             layui.form.render(); //重新渲染显示效果
                         });
                         layer.open({

@@ -40,7 +40,7 @@ class Home extends Base_Controller
 	{
 		$bgid = rand(1, 15);
 		
-		$data = ['bgid' => $bgid];
+		$data['bgid'] = $bgid;
 
 		$this->load->view('signout/login.html', $data);
 	}
@@ -85,15 +85,21 @@ class Home extends Base_Controller
 		// 验证通过 seesion 1 小时
 		
 		$tempAdminData = [
+
 			"adminId" 	=> $admin["id"],
+
 			"username" 	=> $admin["username"],
+
 			"icon" 		=> $admin["icon"] ? $admin["icon"] : DEFAULT_ICON,
+
 			"type" 		=> $admin["type"],
+
 			"right" 	=> $admin["right"],
+
 			"time" 		=> $this->timestemp
 		];
 
-		$this->session->set_tempdata([LOGIN_ADMIN_TAG => $tempAdminData], NULL, 60*60); // 有效时间1小时
+		$this->session->set_tempdata([LOGIN_ADMIN_TAG => $tempAdminData], NULL, 2*60*60); // 有效时间1小时
 
 		$this->admin_model->loginAdmin();
 
@@ -601,6 +607,11 @@ class Home extends Base_Controller
 		} else {
 
 			$this->permission_model->delete(["admin_id"=>intval($admin_id)], true);// 先删除原有的权限
+
+			if (!isset($data["catalog_ids"])) {
+
+				$this->ajaxJson(200, "修改成功");
+			}
 
 			$catalog_ids = $data["catalog_ids"];
 
