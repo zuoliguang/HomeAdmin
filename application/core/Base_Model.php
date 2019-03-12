@@ -155,12 +155,35 @@ class Base_Model extends CI_Model
 	 */
 	public function count($where=[])
 	{
-		$this->database->select("*");
+		$this->database->select("COUNT(*) AS num");
 
 		$this->database->from($this->tableName);
 
 		$this->database->where($where);
 
-		return $this->database->get()->num_rows();
+		$data = $this->database->get()->row_array();
+
+		return $data['num'];
 	}
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
