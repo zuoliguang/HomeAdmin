@@ -26,11 +26,10 @@ class Upload extends Base_Controller {
         $this->upload_config['max_height'] = 1024 * 5; // 图片的最大高度（单位为像素），设置为 0 表示无限制
 	}
 
-	/**
-	 * layui富文本图片上传
-	 * @param  string $target_index 上传的角标名称
-	 * @return [type]               [description]
-	 */
+    /**
+     * layui富文本图片上传
+     * @param string $target_index
+     */
 	public function uploadEditorImage($target_index="file")
 	{
 		$save_path = FCPATH.'upload/image/'.date('Y-m-d');
@@ -85,7 +84,7 @@ class Upload extends Base_Controller {
 
 					'height' => $height,
 
-					'title' => 'HOMEADMIN图片'
+					'title' => '图片'
 				]
 			];
 		}

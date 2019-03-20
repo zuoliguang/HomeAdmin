@@ -154,6 +154,7 @@ class Home extends Base_Controller
 	public function doCreateAdmin()
 	{
 		if (!$this->input->is_ajax_request()) {
+
 			$this->ajaxJson(0, "访问方式错误");
 		}
 
@@ -264,14 +265,17 @@ class Home extends Base_Controller
 		$renewpassword = $postData['renewpassword'];
 
 		if (empty($password) || empty($newpassword) || empty($renewpassword)) {
+
 			$this->ajaxJson(1, "参数不能为空!");
 		}
 
 		if ($newpassword !== $renewpassword) {
+
 			$this->ajaxJson(2, "确认新密码不正确!");
 		}
 
 		if ($password == $newpassword) {
+
 			$this->ajaxJson(3, "新旧密码相同!");
 		}
 
@@ -280,12 +284,14 @@ class Home extends Base_Controller
 		$admin = $this->admin_model->getOneById($loginfo["adminId"]);
 
 		if (empty($admin)) {
+
 			$this->ajaxJson(4, "未找到该用户信息");
 		}
 
 		$hash_pass = $admin["password"];
 
 		if (!password_verify($password, $hash_pass)) {
+
 			$this->ajaxJson(5, "旧密码验证错误");
 		}
 
@@ -300,8 +306,10 @@ class Home extends Base_Controller
 		$res = $this->admin_model->update($update, $where);
 
 		if ($res > 0) {
+
 			$this->ajaxJson(200, "密码更新成功");
 		} else {
+
 			$this->ajaxJson(6, "更新失败");
 		}
 	}
@@ -405,12 +413,14 @@ class Home extends Base_Controller
 		$id = $this->input->post("id");
 
 		if (intval($id) == 0) {
+
 			$this->ajaxJson(1, "参数错误!");
 		}
 
 		$data = $this->catalog_model->getOneById($id);
 
 		if (empty($data)) {
+
 			$this->ajaxJson(2, "未找到该菜单信息!");
 		}
 
@@ -432,14 +442,17 @@ class Home extends Base_Controller
 		$id = $this->input->post("id");
 
 		if (intval($id) == 0) {
+
 			$this->ajaxJson(1, "参数错误!");
 		}
 
 		$res = $this->catalog_model->delete(["id" => $id]);
 
 		if ($res > 0) {
+
 			$this->ajaxJson(200);
 		} else {
+
 			$this->ajaxJson(2, "执行失败!");
 		}
 	}
@@ -484,12 +497,15 @@ class Home extends Base_Controller
 
 			$res = $this->catalog_model->update($data, $where);
 		} else {
+
 			$this->ajaxJson(1, "数据错误");
 		}
 
 		if ($res > 0) {
+
 			$this->ajaxJson(200);
 		} else {
+
 			$this->ajaxJson(2, "操作失败");
 		}
 	}
@@ -618,6 +634,7 @@ class Home extends Base_Controller
 			$insertData = [];
 
 			foreach ($catalog_ids as $catalog_id) {
+
 				$insertData[] = [ "admin_id" => $admin_id, "catalog_id" => $catalog_id ];
 			}
 

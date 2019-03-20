@@ -80,11 +80,12 @@
     var actionID = 0;
     layui.use(['layer', 'form', 'tree'], function () {
         var layer = layui.layer, form = layui.form, tree = layui.tree, $ = layui.jquery;
+        var alert_index;
         // 增加一级菜单
         $("[id=addcatalog-0]").click(function(){
             $("#pid").val(0);
             $("#act").val("create");
-            layer.open({
+            alert_index = layer.open({
                 type : 1,
                 title : "添加一级菜单",
                 content : $('#action-model'),
@@ -97,7 +98,7 @@
             var id = actionID;
             $("#pid").val(id);
             $("#act").val("create");
-            layer.open({
+            alert_index = layer.open({
                 type : 1,
                 title : "添加二级菜单",
                 content : $('#action-model'),
@@ -108,6 +109,7 @@
         // 更新菜单
         $("[id=update-catalog]").click(function(){
             var id = actionID;
+            layer.close(alert_index);
             $.post("/home/getOneCatalog", {id:id}, function(json){
                 if (json.state==200) {
                     // 填充信息
@@ -117,7 +119,7 @@
                     $("#icon").val(json.data.icon);
                     $("#title").val(json.data.title);
                     $("#url").val(json.data.url);
-                    layer.open({
+                    alert_index = layer.open({
                         type : 1,
                         title : "编辑菜单",
                         content : $('#action-model'),
@@ -132,6 +134,7 @@
         // 删除菜单
         $("[id=delete-catalog]").click(function(){
             var id = actionID;
+            layer.close(alert_index);
             $.post("/home/deleteCatalog", {id:id}, function(json){
                 if (json.state==200) {
                     layer.alert("删除成功!", {title: '提示!'});
@@ -144,6 +147,7 @@
 
         // 表单提交
         form.on('submit(catalog)', function(data){
+            layer.close(alert_index);
             $.post("/home/doCatalog", data.field, function(json){
                 if (json.state==200) {
                     layer.alert("操作成功!", {title: '提示!'});
@@ -164,13 +168,13 @@
                     click: function(node){
                         actionID = node.id; // 临时存储当前页面的js中
                         if (node.is_first==1) {
-                            layer.open({
+                            alert_index = layer.open({
                                 type : 1,
                                 title : "操作",
                                 content : $('#catalog1-model')
                             });
                         } else {
-                            layer.open({
+                            alert_index = layer.open({
                                 type : 1,
                                 title : "操作",
                                 content : $('#catalog2-model')

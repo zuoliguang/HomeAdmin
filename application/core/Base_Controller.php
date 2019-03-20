@@ -70,11 +70,11 @@ class Base_Controller extends CI_Controller
 
 		$admin = $this->session->tempdata(LOGIN_ADMIN_TAG);
 
+        $urlparms = explode('/', current_url());
+
 		if ($admin["right"]==0) // 只读
 		{
-			$uriName = $this->uri->segment(2);
-
-			if (in_array($uriName, $this->rightUris)) 
+			if (in_array(end($urlparms), $this->rightUris))
 			{
 				$this->ajaxJson(403, "暂时没有操作权限");
 			}

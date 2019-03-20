@@ -102,10 +102,37 @@ class Base_Model extends CI_Model
 	{
 		$this->database->where($where);
 
-		$this->database->update($this->tableName, $data);
+        $this->database->set($data);
+
+		$this->database->update($this->tableName);
 
 		return $this->database->affected_rows();
 	}
+
+    /**
+     * 保存数据，无增添加，有则更新
+     * @author zuoliguang 2018-08-22
+     * @param  array  $data  [description]
+     * @param  array  $where [description]
+     * @return [type]        [description]
+     */
+	public function save($data=[], $where=[]){
+
+        $this->database->from($this->tableName);
+
+        $this->database->where($where);
+
+        $res = $this->database->get()->result_array();
+
+        if (empty($res)) {
+
+            return $this->insert($data);
+
+        } else {
+
+            return $this->update($data, $where);
+        }
+    }
 
 	/**
 	 * 批量更新
@@ -166,9 +193,47 @@ class Base_Model extends CI_Model
 		return $data['num'];
 	}
 
+	/**
+	 * 宝库sql获取数据
+	 * @author zuoliguang
+	 */
+	public function get_data_by_sql_from_baoku($sql='')
+    {
+         if (empty($sql)) {
 
+             return false;
+         }
 
-	
+        $api = "http://101.201.196.218:8055/getDataBySql";
+
+        $data = ["sql"=>$sql];
+
+        $res = curl_request($api, $data);
+
+        return json_decode($res, true);
+    }
+
+    /**
+     * 获取erp商品品类数据
+     * @return array
+     */
+	public function getErpProductCategorys()
+	{
+		$sql = "SELECT CategoryId, CategoryId1, CategoryId2, CategoryId3, Description, DetailDescription FROM ArtProduct.dbo.Category WHERE Status = 1";
+
+		$data = $this->get_data_by_sql_from_baoku($sql);
+
+		$result = [];
+
+		foreach ($data as $cat) {
+
+			$key = $cat['CategoryId'];
+
+			$result["$key"] = $cat;
+		}
+
+		return $result;
+	}
 
 
 
