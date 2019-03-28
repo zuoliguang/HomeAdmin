@@ -87,7 +87,7 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 /**
  * 自定义信息
  */
-defined('APP_NAME') OR define('APP_NAME', "SUP系统 V1.0"); // login admin info
+defined('APP_NAME') OR define('APP_NAME', "导购员系统"); // APP name
 defined('LOGIN_ADMIN_TAG') OR define('LOGIN_ADMIN_TAG', "login_admin_info"); // login admin info
 defined('DEFAULT_ICON') OR define('DEFAULT_ICON', "/static/images/default_icon.png"); // default icon
 

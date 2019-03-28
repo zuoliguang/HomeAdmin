@@ -78,7 +78,91 @@ function curl_request($url, $post = null, $header = null)
     return $result;
 }
 
+/**
+ * 数字转换为A、B...AZ
+ * @param $n
+ * @param $key_array
+ * @return string
+ */
+function num_to_excel_column($n, $key_array) {
+    $str = "";
+    while ($n > 0) {
+        $yu = $n % 26;
+        $n = intval($n / 26);
+        if ($yu == 0) {
+            $str = $str . $key_array[25];
+            $n--;
+        } else {
+            $str = $str . $key_array[$yu - 1];
+        }
+    }
+    return strrev($str);
+}
 
+/**
+ * excel表导出
+ * @param $head
+ * @param $fields
+ * @param $data
+ * @param $name
+ * @throws PHPExcel_Exception
+ * @throws PHPExcel_Reader_Exception
+ * @throws PHPExcel_Writer_Exception
+ */
+function export_excel($head, $fields, $data, $name)
+{
+    require_once LIBPATH."php_excel/lib/Classes/PHPExcel.php";
+
+    $key_array = array();
+
+    for ($i = 0; $i < 26; $i++) {
+
+        $key_array[] = chr($i + 65);
+    }
+
+    $objPHPExcel = new PHPExcel();
+
+    $objPHPExcel->setActiveSheetIndex(0);
+
+    $objActSheet = $objPHPExcel->getActiveSheet();
+
+    $objActSheet->setTitle($name);
+
+    $objDrawing = new PHPExcel_Worksheet_Drawing();
+
+    foreach ($head as $key => $value) {
+
+        $column = num_to_excel_column($key + 1, $key_array);
+
+        $objActSheet->setCellValueExplicit($column . 1, $value, PHPExcel_Cell_DataType::TYPE_STRING);
+    }
+
+    foreach ($data as $k => $obj) {
+
+        $num = $k + 2;
+
+        $j = 1;
+
+        foreach ($fields as $field) {
+
+            $column = num_to_excel_column($j, $key_array);
+
+            $objActSheet->setCellValueExplicit($column . $num, $obj[$field], PHPExcel_Cell_DataType::TYPE_STRING);
+
+            $j++;
+        }
+    }
+
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+
+    header('Content-Type: application/vnd.ms-excel');
+
+    header('Content-Disposition: attachment;filename="' . $name . '.xlsx"');
+
+    header('Cache-Control: max-age=0');
+
+    $objWriter->save('php://output');
+}
 
 
 
