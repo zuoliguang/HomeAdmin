@@ -65,6 +65,13 @@
                 <input id="url" type="text" name="url" placeholder="链接地址" autocomplete="off" class="layui-input">
             </div>
         </div>
+		
+		<div class="layui-form-item">
+            <label class="layui-form-label">组内排序</label>
+            <div class="layui-input-block">
+                <input id="sort" type="text" name="sort" placeholder="排序" autocomplete="off" class="layui-input">
+            </div>
+        </div>
 
         <div class="layui-form-item">
             <div class="layui-input-block">
@@ -119,6 +126,7 @@
                     $("#icon").val(json.data.icon);
                     $("#title").val(json.data.title);
                     $("#url").val(json.data.url);
+					$("#sort").val(json.data.sort);
                     alert_index = layer.open({
                         type : 1,
                         title : "编辑菜单",
