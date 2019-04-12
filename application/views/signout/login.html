@@ -68,6 +68,33 @@
 	                }
 	            }, "json");
 	        });
+		    
+		// 键盘事件
+		document.onkeydown = function (ev) {
+			ev = ev || window.event;
+			// 回车登录
+			if ((ev.keyCode || ev.which)==13) {
+				var username = $("input[name=username]").val();
+				var password = $("input[name=password]").val();
+				if (!!username==false) {
+					layer.alert("账号信息错误", {title: '提示!'});
+					return false;
+				}
+				if (!!password==false) {
+					layer.alert("密码信息错误", {title: '提示!'});
+					return false;
+				}
+				$.post("/home/doLogin", { username : username, password : password }, function(json){
+					if (json.state==200) {
+						window.location.href = "/home/index";
+						return false;
+					} else {
+						layer.alert(json.message, {title: '提示!'});
+						return false;
+					}
+				}, "json");
+			}
+		}
 
 	    });
 	</script>
