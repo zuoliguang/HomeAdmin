@@ -26,7 +26,7 @@ class Catalog_model extends Base_Model
 	 */
 	public function getAllCatalogs()
 	{
-		$fields = "id, pid, title, icon, url";
+		$fields = "id, pid, title, icon, url, sort";
 
 		$where = ["is_del" => 0];
 
@@ -36,7 +36,9 @@ class Catalog_model extends Base_Model
 
 		$this->db_admin->where($where);
 
-		$this->db_admin->order_by("id", "ASC");
+		$this->db_admin->order_by("pid", "ASC");
+		
+		$this->db_admin->order_by("sort", "ASC");
 
 		return $this->db_admin->get()->result_array();
 	}
@@ -49,7 +51,7 @@ class Catalog_model extends Base_Model
 	 */
 	public function getAidCatalogs($admin_id)
 	{
-		$sql = "SELECT c.* FROM `ha_catalog` AS c LEFT JOIN `ha_permission` AS p ON p.catalog_id = c.id WHERE p.admin_id = $admin_id ORDER BY c.id";
+		$sql = "SELECT c.* FROM `ha_catalog` AS c LEFT JOIN `ha_permission` AS p ON p.catalog_id = c.id WHERE p.admin_id = $admin_id ORDER BY c.pid asc, c.sort asc";
 
 		$data = $this->db_admin->query($sql)->result_array();
 
@@ -67,7 +69,7 @@ class Catalog_model extends Base_Model
 			}
 		});
 
-		$fields = "id, pid, title, icon, url";
+		$fields = "id, pid, title, icon, url, sort";
 
 		$where = ["is_del" => 0, ];
 
@@ -79,7 +81,9 @@ class Catalog_model extends Base_Model
 
 		$this->db_admin->where_in("id", $ids);
 
-		$this->db_admin->order_by("id", "ASC");
+		$this->db_admin->order_by("pid", "ASC");
+		
+		$this->db_admin->order_by("sort", "ASC");
 
 		return $this->db_admin->get()->result_array();
 	}
